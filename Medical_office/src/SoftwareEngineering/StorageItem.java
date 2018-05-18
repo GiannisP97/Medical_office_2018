@@ -16,7 +16,7 @@ import java.io.Serializable;
 public class StorageItem implements Serializable
 {
     private String name;
-    private int quantity;
+    private int quantity;//testing
     
     
     public StorageItem()
