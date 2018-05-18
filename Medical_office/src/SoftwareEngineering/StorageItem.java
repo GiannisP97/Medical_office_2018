@@ -41,6 +41,16 @@ public class StorageItem implements Serializable
 	return this.quantity;
     }
     
+    public void setItemQuantity(int i)
+    {
+	this.quantity= i;
+    }
+    
+    public void seyItemName(String n)
+    {
+	this.name= n;
+    }
+    
     @Override
     public String toString()
     {

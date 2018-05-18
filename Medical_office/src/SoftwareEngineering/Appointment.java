@@ -20,7 +20,8 @@ public class Appointment implements Serializable{
     private String prescription;
     private int doctor_id;
     
-    public Appointment(){
+    public Appointment()
+    {
         id = 0;
         p = null;
         date = null;
