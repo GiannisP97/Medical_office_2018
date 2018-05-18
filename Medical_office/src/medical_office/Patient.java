@@ -7,6 +7,7 @@ package medical_office;
 
 /**
  *
+ *
  * @author Giannis
  */
 public class Patient {
