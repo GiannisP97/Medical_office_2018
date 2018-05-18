@@ -11,5 +11,5 @@ package SoftwareEngineering;
  * @author Giannis
  */
 public class Patient {
-    
+    //test kiriazis
 }
