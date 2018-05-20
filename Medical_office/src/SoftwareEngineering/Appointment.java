@@ -6,7 +6,9 @@
 package SoftwareEngineering;
 
 import java.io.Serializable;
-import java.util.Calendar;
+
+import java.time.LocalDateTime;
+
 
 /**
  *
@@ -16,7 +18,7 @@ public class Appointment implements Serializable{
     
     private int id ;
     private Patient p;
-    private Calendar date;
+    private LocalDateTime date;
     private String prescription;
     private int doctor_id;
     
@@ -29,21 +31,27 @@ public class Appointment implements Serializable{
         doctor_id = 0;
     }
     
-    public Appointment(Patient p,Calendar d,String pres,int did)
+    public Appointment(Patient p,LocalDateTime d,String pres,int did)
     {  
         this.p = p;
         this.date = d;
         this.prescription = pres;
         this.doctor_id = did;
-        
+    }
     
+    public Appointment(Patient p,LocalDateTime d,int did)
+    {  
+        this.p = p;
+        this.date = d;
+        this.prescription = "";
+        this.doctor_id = did;
     }
     
     public Patient getPetient(){
         return this.p;
     }
     
-    public Calendar getDate(){
+    public LocalDateTime getDate(){
         return this.date;
     }
     
