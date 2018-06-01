@@ -15,7 +15,7 @@ import java.time.LocalDate;
  */
 public class Order implements Serializable
 {
-    private ArrayList<StorageItem> item_list;
+    private final ArrayList<StorageItem> item_list;
     private final LocalDate order_date;
     
     
@@ -38,11 +38,11 @@ public class Order implements Serializable
     
     public StorageItem getStorageItem(int i)
     {
-	if( i<this.item_list.size())
-	{
-	    return this.item_list.get(i);
-	}
-	return null;
+		if( i<this.item_list.size())
+		{
+		    return this.item_list.get(i);
+		}
+		return null;
     }
     
 }
