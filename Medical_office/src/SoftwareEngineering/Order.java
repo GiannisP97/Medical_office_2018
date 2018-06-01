@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.time.LocalDate;
 
 /**
- *
  * @author thanasis
  */
 public class Order implements Serializable
