@@ -16,6 +16,7 @@ public class MedicalOffice {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        LoginUI.main(args);
     }
     
 }
