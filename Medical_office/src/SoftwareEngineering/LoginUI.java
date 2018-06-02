@@ -5,12 +5,6 @@
  */
 package SoftwareEngineering;
 
-import java.awt.Image;
-import static java.lang.Thread.sleep;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.ImageIcon;
-import static oracle.jrockit.jfr.events.Bits.intValue;
 
 /**
  *
@@ -45,16 +39,12 @@ public class LoginUI extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Ιατρικό Γραφείο");
         setName("MainFrame"); // NOI18N
-        setPreferredSize(new java.awt.Dimension(1024, 720));
         setResizable(false);
 
         LoginFrame.setBackground(new java.awt.Color(204, 204, 255));
         LoginFrame.setAlignmentX(0.0F);
         LoginFrame.setAlignmentY(0.0F);
 
-        int parentHeight = LoginFrame.getHeight();
-        int parentWidth = LoginFrame.getWidth();
-        int new_Height =intValue(parentHeight*0.6) ,new_Width = intValue(parentWidth*0.6);
         LoginForm.setBackground(new java.awt.Color(255, 255, 255));
         javax.swing.border.SoftBevelBorder border = new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED);
         LoginForm.setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED));
@@ -88,7 +78,7 @@ public class LoginUI extends javax.swing.JFrame {
             }
         });
 
-        LoginForm_Image.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/profile-icon-png-898.png"))); // NOI18N
+        LoginForm_Image.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Avatar.png"))); // NOI18N
 
         javax.swing.GroupLayout LoginFormLayout = new javax.swing.GroupLayout(LoginForm);
         LoginForm.setLayout(LoginFormLayout);
@@ -97,12 +87,11 @@ public class LoginUI extends javax.swing.JFrame {
             .addGroup(LoginFormLayout.createSequentialGroup()
                 .addGap(71, 71, 71)
                 .addGroup(LoginFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(LoginForm_Image, javax.swing.GroupLayout.PREFERRED_SIZE, 196, Short.MAX_VALUE)
-                    .addGroup(LoginFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(LoginForm_Password)
-                        .addComponent(LoginForm_Username)
-                        .addComponent(LoginForm_SubmitButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(LoginForm_ForgotPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)))
+                    .addComponent(LoginForm_Image, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(LoginForm_Password, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(LoginForm_Username, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(LoginForm_SubmitButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(LoginForm_ForgotPassword, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(69, Short.MAX_VALUE))
         );
         LoginFormLayout.setVerticalGroup(
@@ -128,7 +117,7 @@ public class LoginUI extends javax.swing.JFrame {
             .addGroup(LoginFrameLayout.createSequentialGroup()
                 .addGap(336, 336, 336)
                 .addComponent(LoginForm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(348, Short.MAX_VALUE))
+                .addContainerGap(344, Short.MAX_VALUE))
         );
         LoginFrameLayout.setVerticalGroup(
             LoginFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
