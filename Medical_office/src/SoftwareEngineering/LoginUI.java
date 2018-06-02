@@ -23,7 +23,7 @@ public class LoginUI extends javax.swing.JFrame {
     public LoginUI() {
         initComponents();
         borderc = this.LoginForm_Username.getBorder();
-        this.passworderror.setVisible(false);
+        //this.passworderror.setVisible(false);
     }
 
     /**
@@ -51,7 +51,6 @@ public class LoginUI extends javax.swing.JFrame {
         LoginForm_Image = new javax.swing.JLabel();
         UsernameLabel = new javax.swing.JLabel();
         PasswordLabel = new javax.swing.JLabel();
-        passworderror = new javax.swing.JLabel();
 
         ForgotPassword.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         ForgotPassword.setTitle("Ιατρικό Γραφείο");
@@ -147,10 +146,12 @@ public class LoginUI extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Ιατρικό Γραφείο");
+        setBackground(new java.awt.Color(204, 204, 255));
         setName("LoginWindow"); // NOI18N
         setResizable(false);
 
         LoginFrame.setBackground(new java.awt.Color(204, 204, 255));
+        LoginFrame.setForeground(new java.awt.Color(204, 204, 255));
         LoginFrame.setAlignmentX(0.0F);
         LoginFrame.setAlignmentY(0.0F);
 
@@ -198,25 +199,19 @@ public class LoginUI extends javax.swing.JFrame {
         PasswordLabel.setText("Κωδικός Πρόσβασης");
         PasswordLabel.setToolTipText("");
 
-        passworderror.setFont(new java.awt.Font("Dialog", 1, 8)); // NOI18N
-        passworderror.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        passworderror.setText("* 6 χαρακτήρες ελάχιστο");
-        passworderror.setFocusable(false);
-
         javax.swing.GroupLayout LoginFormLayout = new javax.swing.GroupLayout(LoginForm);
         LoginForm.setLayout(LoginFormLayout);
         LoginFormLayout.setHorizontalGroup(
             LoginFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(LoginFormLayout.createSequentialGroup()
                 .addGap(71, 71, 71)
-                .addGroup(LoginFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(passworderror, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(LoginFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(LoginForm_ForgotPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(LoginFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(LoginForm_Image, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(LoginForm_Password, javax.swing.GroupLayout.Alignment.TRAILING)
                         .addComponent(LoginForm_Username, javax.swing.GroupLayout.Alignment.TRAILING)
                         .addComponent(LoginForm_SubmitButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(LoginForm_ForgotPassword, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(UsernameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(PasswordLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap(69, Short.MAX_VALUE))
@@ -234,13 +229,11 @@ public class LoginUI extends javax.swing.JFrame {
                 .addComponent(PasswordLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(LoginForm_Password, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(passworderror)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
                 .addComponent(LoginForm_SubmitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(LoginForm_ForgotPassword)
-                .addGap(47, 47, 47))
+                .addGap(41, 41, 41))
         );
 
         javax.swing.GroupLayout LoginFrameLayout = new javax.swing.GroupLayout(LoginFrame);
@@ -276,23 +269,28 @@ public class LoginUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void LoginForm_SubmitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoginForm_SubmitButtonActionPerformed
-        // TODO add your handling code here:        
-        
-        
-        //VALIDATE USER INPUT
-        javax.swing.border.Border tmp = this.LoginForm_Username.getBorder();
-        if (this.LoginForm_Username.getText().equals("")){
-            //this.UsernameLabel.setText(this.UsernameLabel.getText()+"*");
-            
-            this.LoginForm_Username.setBorder(BorderFactory.createLineBorder(Color.red));
+    private boolean isUserInputValid(){
+        boolean flag =true;
+        if (this.LoginForm_Username.getText().equals("") || (!(this.LoginForm_Username.getText().matches("^[a-zA-Z0-9]+$")))){
+            this.LoginForm_Username.setBorder(BorderFactory.createLineBorder(Color.red)); 
+            flag = false;
         }
-        //javax.swing.border.Border tmp = this.LoginForm_Username.getBorder();
+
         if (this.LoginForm_Password.getPassword().length < 6){
-            //this.PasswordLabel.setText(this.PasswordLabel.getText()+"*");
-            this.passworderror.setVisible(true);
+            //this.passworderror.setVisible(true);
             this.LoginForm_Password.setBorder(BorderFactory.createLineBorder(Color.red));
+            flag=false;
         }
+        return flag;
+    }
+    private void LoginForm_SubmitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoginForm_SubmitButtonActionPerformed
+        if (this.isUserInputValid() == true){
+            
+            //TODO LOGIN
+            
+            
+        }
+
         
         
         
@@ -325,7 +323,7 @@ public class LoginUI extends javax.swing.JFrame {
     private void LoginForm_PasswordFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_LoginForm_PasswordFocusGained
         // TODO add your handling code here:
         this.LoginForm_Password.setBorder(borderc);
-        this.passworderror.setVisible(false);
+        //this.passworderror.setVisible(false);
     }//GEN-LAST:event_LoginForm_PasswordFocusGained
 
     /**
@@ -380,6 +378,5 @@ public class LoginUI extends javax.swing.JFrame {
     private javax.swing.JPanel LoginFrame;
     private javax.swing.JLabel PasswordLabel;
     private javax.swing.JLabel UsernameLabel;
-    private javax.swing.JLabel passworderror;
     // End of variables declaration//GEN-END:variables
 }
