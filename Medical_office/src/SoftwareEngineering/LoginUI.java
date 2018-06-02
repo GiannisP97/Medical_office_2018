@@ -19,7 +19,7 @@ public class LoginUI extends javax.swing.JFrame {
     /**
      * Creates new form LoginUI
      */
-    private Border borderc ;
+    private final Border borderc ;
     public LoginUI() {
         initComponents();
         borderc = this.LoginForm_Username.getBorder();
@@ -40,8 +40,9 @@ public class LoginUI extends javax.swing.JFrame {
         ForgotPasswordForm = new javax.swing.JPanel();
         ForgotPassword_Username = new javax.swing.JTextField();
         ForgotPassword_Password = new javax.swing.JPasswordField();
-        ForgotPassword_Submit = new javax.swing.JButton();
-        ForgotPassword_Image = new javax.swing.JLabel();
+        ForgotPassword_SubmitButton = new javax.swing.JButton();
+        UsernameLabel1 = new javax.swing.JLabel();
+        PasswordLabel1 = new javax.swing.JLabel();
         LoginFrame = new javax.swing.JPanel();
         LoginForm = new javax.swing.JPanel();
         LoginForm_Username = new javax.swing.JTextField();
@@ -54,10 +55,18 @@ public class LoginUI extends javax.swing.JFrame {
 
         ForgotPassword.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         ForgotPassword.setTitle("Ιατρικό Γραφείο");
+        ForgotPassword.setModalExclusionType(null);
         ForgotPassword.setName("MainFrame"); // NOI18N
-        ForgotPassword.setResizable(false);
+        ForgotPassword.setPreferredSize(new java.awt.Dimension(464, 569));
+        ForgotPassword.setSize(new java.awt.Dimension(464, 569));
+        ForgotPassword.addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                ForgotPasswordWindowClosed(evt);
+            }
+        });
 
         ForgotPasswordFrame.setBackground(new java.awt.Color(204, 204, 255));
+        ForgotPasswordFrame.setForeground(new java.awt.Color(204, 204, 255));
         ForgotPasswordFrame.setAlignmentX(0.0F);
         ForgotPasswordFrame.setAlignmentY(0.0F);
 
@@ -65,53 +74,76 @@ public class LoginUI extends javax.swing.JFrame {
         ForgotPasswordForm.setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED));
         ForgotPasswordForm.setForeground(new java.awt.Color(255, 255, 255));
 
-        ForgotPassword_Username.setBorder(javax.swing.BorderFactory.createTitledBorder("Όνομα Χρήστη"));
-        ForgotPassword_Username.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ForgotPassword_UsernameActionPerformed(evt);
+        ForgotPassword_Username.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
+        ForgotPassword_Username.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                ForgotPassword_UsernameFocusGained(evt);
             }
         });
 
-        ForgotPassword_Submit.setText("Αλλαγή Κωδικού");
-        ForgotPassword_Submit.setBorder(new javax.swing.border.MatteBorder(null));
-        ForgotPassword_Submit.addMouseListener(new java.awt.event.MouseAdapter() {
+        ForgotPassword_Password.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
+        ForgotPassword_Password.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                ForgotPassword_PasswordFocusGained(evt);
+            }
+        });
+        ForgotPassword_Password.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ForgotPassword_PasswordActionPerformed(evt);
+            }
+        });
+
+        ForgotPassword_SubmitButton.setText("Αλλαγή Κωδικού");
+        ForgotPassword_SubmitButton.setBorder(new javax.swing.border.MatteBorder(null));
+        ForgotPassword_SubmitButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                ForgotPassword_SubmitMouseClicked(evt);
+                ForgotPassword_SubmitButtonMouseClicked(evt);
             }
         });
-        ForgotPassword_Submit.addActionListener(new java.awt.event.ActionListener() {
+        ForgotPassword_SubmitButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ForgotPassword_SubmitActionPerformed(evt);
+                ForgotPassword_SubmitButtonActionPerformed(evt);
             }
         });
 
-        ForgotPassword_Image.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Avatar.png"))); // NOI18N
+        UsernameLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        UsernameLabel1.setText("Όνομα Χρήστη");
+
+        PasswordLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        PasswordLabel1.setText("Νέος Κωδικός Πρόσβασης");
+        PasswordLabel1.setToolTipText("");
 
         javax.swing.GroupLayout ForgotPasswordFormLayout = new javax.swing.GroupLayout(ForgotPasswordForm);
         ForgotPasswordForm.setLayout(ForgotPasswordFormLayout);
         ForgotPasswordFormLayout.setHorizontalGroup(
             ForgotPasswordFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ForgotPasswordFormLayout.createSequentialGroup()
-                .addGap(71, 71, 71)
-                .addGroup(ForgotPasswordFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(ForgotPassword_Image, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(ForgotPassword_Password, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(ForgotPassword_Username, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(ForgotPassword_Submit, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(69, Short.MAX_VALUE))
+                .addGap(37, 37, 37)
+                .addGroup(ForgotPasswordFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(ForgotPassword_SubmitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ForgotPassword_Password, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(UsernameLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ForgotPassword_Username, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(PasswordLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(37, Short.MAX_VALUE))
         );
+
+        ForgotPasswordFormLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {ForgotPassword_Password, ForgotPassword_SubmitButton, ForgotPassword_Username, PasswordLabel1, UsernameLabel1});
+
         ForgotPasswordFormLayout.setVerticalGroup(
             ForgotPasswordFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ForgotPasswordFormLayout.createSequentialGroup()
-                .addContainerGap(82, Short.MAX_VALUE)
-                .addComponent(ForgotPassword_Image, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(38, 38, 38)
+                .addGap(63, 63, 63)
+                .addComponent(UsernameLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(ForgotPassword_Username, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(PasswordLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(ForgotPassword_Password, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32)
-                .addComponent(ForgotPassword_Submit, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(47, 47, 47))
+                .addGap(18, 18, 18)
+                .addComponent(ForgotPassword_SubmitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(69, 69, 69))
         );
 
         javax.swing.GroupLayout ForgotPasswordFrameLayout = new javax.swing.GroupLayout(ForgotPasswordFrame);
@@ -119,16 +151,16 @@ public class LoginUI extends javax.swing.JFrame {
         ForgotPasswordFrameLayout.setHorizontalGroup(
             ForgotPasswordFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ForgotPasswordFrameLayout.createSequentialGroup()
-                .addGap(60, 60, 60)
+                .addGap(93, 93, 93)
                 .addComponent(ForgotPasswordForm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(60, Short.MAX_VALUE))
+                .addGap(93, 93, 93))
         );
         ForgotPasswordFrameLayout.setVerticalGroup(
             ForgotPasswordFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ForgotPasswordFrameLayout.createSequentialGroup()
-                .addGap(28, 28, 28)
+                .addGap(114, 114, 114)
                 .addComponent(ForgotPasswordForm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(37, Short.MAX_VALUE))
+                .addContainerGap(141, Short.MAX_VALUE))
         );
 
         //jPanel1.setBounds(0,0,new_Height,new_Width*100);
@@ -137,11 +169,11 @@ public class LoginUI extends javax.swing.JFrame {
         ForgotPassword.getContentPane().setLayout(ForgotPasswordLayout);
         ForgotPasswordLayout.setHorizontalGroup(
             ForgotPasswordLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(ForgotPasswordFrame, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(ForgotPasswordFrame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         ForgotPasswordLayout.setVerticalGroup(
             ForgotPasswordLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(ForgotPasswordFrame, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(ForgotPasswordFrame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -189,6 +221,11 @@ public class LoginUI extends javax.swing.JFrame {
 
         LoginForm_ForgotPassword.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         LoginForm_ForgotPassword.setText("Ξεχάσατε τον κωδικό σας;");
+        LoginForm_ForgotPassword.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                LoginForm_ForgotPasswordMouseClicked(evt);
+            }
+        });
 
         LoginForm_Image.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Avatar.png"))); // NOI18N
 
@@ -206,7 +243,7 @@ public class LoginUI extends javax.swing.JFrame {
             .addGroup(LoginFormLayout.createSequentialGroup()
                 .addGap(71, 71, 71)
                 .addGroup(LoginFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(LoginForm_ForgotPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(LoginForm_ForgotPassword, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(LoginFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(LoginForm_Image, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(LoginForm_Password, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -229,11 +266,11 @@ public class LoginUI extends javax.swing.JFrame {
                 .addComponent(PasswordLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(LoginForm_Password, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(LoginForm_SubmitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(LoginForm_ForgotPassword)
-                .addGap(41, 41, 41))
+                .addGap(63, 63, 63))
         );
 
         javax.swing.GroupLayout LoginFrameLayout = new javax.swing.GroupLayout(LoginFrame);
@@ -243,14 +280,14 @@ public class LoginUI extends javax.swing.JFrame {
             .addGroup(LoginFrameLayout.createSequentialGroup()
                 .addGap(60, 60, 60)
                 .addComponent(LoginForm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(60, Short.MAX_VALUE))
+                .addGap(60, 60, 60))
         );
         LoginFrameLayout.setVerticalGroup(
             LoginFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(LoginFrameLayout.createSequentialGroup()
-                .addGap(28, 28, 28)
+                .addGap(40, 40, 40)
                 .addComponent(LoginForm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(37, Short.MAX_VALUE))
+                .addGap(40, 40, 40))
         );
 
         //jPanel1.setBounds(0,0,new_Height,new_Width*100);
@@ -259,7 +296,7 @@ public class LoginUI extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(LoginFrame, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(LoginFrame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -291,29 +328,12 @@ public class LoginUI extends javax.swing.JFrame {
             
         }
 
-        
-        
-        
-        
-        
     }//GEN-LAST:event_LoginForm_SubmitButtonActionPerformed
 
     private void LoginForm_SubmitButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LoginForm_SubmitButtonMouseClicked
         // TODO add your handling code here:
         
     }//GEN-LAST:event_LoginForm_SubmitButtonMouseClicked
-
-    private void ForgotPassword_UsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ForgotPassword_UsernameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_ForgotPassword_UsernameActionPerformed
-
-    private void ForgotPassword_SubmitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ForgotPassword_SubmitMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_ForgotPassword_SubmitMouseClicked
-
-    private void ForgotPassword_SubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ForgotPassword_SubmitActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_ForgotPassword_SubmitActionPerformed
 
     private void LoginForm_UsernameFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_LoginForm_UsernameFocusGained
         // TODO add your handling code here:
@@ -325,6 +345,36 @@ public class LoginUI extends javax.swing.JFrame {
         this.LoginForm_Password.setBorder(borderc);
         //this.passworderror.setVisible(false);
     }//GEN-LAST:event_LoginForm_PasswordFocusGained
+
+    private void LoginForm_ForgotPasswordMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LoginForm_ForgotPasswordMouseClicked
+        this.setVisible(false);
+        this.ForgotPassword.setVisible(true);
+    }//GEN-LAST:event_LoginForm_ForgotPasswordMouseClicked
+
+    private void ForgotPassword_SubmitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ForgotPassword_SubmitButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ForgotPassword_SubmitButtonActionPerformed
+
+    private void ForgotPassword_SubmitButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ForgotPassword_SubmitButtonMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ForgotPassword_SubmitButtonMouseClicked
+
+    private void ForgotPassword_PasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ForgotPassword_PasswordActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ForgotPassword_PasswordActionPerformed
+
+    private void ForgotPassword_PasswordFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_ForgotPassword_PasswordFocusGained
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ForgotPassword_PasswordFocusGained
+
+    private void ForgotPassword_UsernameFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_ForgotPassword_UsernameFocusGained
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ForgotPassword_UsernameFocusGained
+
+    private void ForgotPasswordWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_ForgotPasswordWindowClosed
+        // TODO add your handling code here:
+        this.setVisible(true);
+    }//GEN-LAST:event_ForgotPasswordWindowClosed
 
     /**
      * @param args the command line arguments
@@ -354,10 +404,8 @@ public class LoginUI extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new LoginUI().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new LoginUI().setVisible(true);
         });
     }
 
@@ -365,9 +413,8 @@ public class LoginUI extends javax.swing.JFrame {
     private javax.swing.JFrame ForgotPassword;
     private javax.swing.JPanel ForgotPasswordForm;
     private javax.swing.JPanel ForgotPasswordFrame;
-    private javax.swing.JLabel ForgotPassword_Image;
     private javax.swing.JPasswordField ForgotPassword_Password;
-    private javax.swing.JButton ForgotPassword_Submit;
+    private javax.swing.JButton ForgotPassword_SubmitButton;
     private javax.swing.JTextField ForgotPassword_Username;
     private javax.swing.JPanel LoginForm;
     private javax.swing.JLabel LoginForm_ForgotPassword;
@@ -377,6 +424,8 @@ public class LoginUI extends javax.swing.JFrame {
     private javax.swing.JTextField LoginForm_Username;
     private javax.swing.JPanel LoginFrame;
     private javax.swing.JLabel PasswordLabel;
+    private javax.swing.JLabel PasswordLabel1;
     private javax.swing.JLabel UsernameLabel;
+    private javax.swing.JLabel UsernameLabel1;
     // End of variables declaration//GEN-END:variables
 }
