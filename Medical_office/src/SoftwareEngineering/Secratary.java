@@ -9,16 +9,6 @@ package SoftwareEngineering;
  *
  * @author Giannis
  */
-public class MedicalOffice {
-    
-    private Schedule schedule;
-    private User user;
-    private OrderHistory orderHistory;
-
- 
-    public static void main(String[] args) {
-        
-        LoginUI.main(args);
-    }
+public class Secratary extends User{
     
 }
