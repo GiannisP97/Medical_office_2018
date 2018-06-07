@@ -6,7 +6,16 @@
 package SoftwareEngineering;
 
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GraphicsEnvironment;
+import java.awt.Insets;
+import java.awt.Toolkit;
+import java.awt.event.WindowEvent;
 import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.DefaultListModel;
+import javax.swing.JFrame;
+import javax.swing.ListModel;
 import javax.swing.border.Border;
 
 
@@ -20,10 +29,13 @@ public class LoginUI extends javax.swing.JFrame {
      * Creates new form LoginUI
      */
     private final Border borderc ;
+    private DefaultListModel<String> dlm = new DefaultListModel<>();
     public LoginUI() {
         initComponents();
-        borderc = this.LoginForm_Username.getBorder();
-        //this.passworderror.setVisible(false);
+        borderc = this.LoginForm_Username.getBorder(); // USED FOR CREDENTIAL VALIDATION
+        
+        
+
     }
 
     /**
@@ -35,6 +47,25 @@ public class LoginUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        User_MainMenu = new javax.swing.JFrame();
+        User_Home_Panel = new javax.swing.JPanel();
+        User_Home_Header = new javax.swing.JLabel();
+        User_Home_Body = new javax.swing.JPanel();
+        User_Home_Calendar_ScrollPane = new javax.swing.JScrollPane();
+        User_Home_Calendar = new javax.swing.JList<>();
+        User_MenuBar = new javax.swing.JMenuBar();
+        User_Action_Menu = new javax.swing.JMenu();
+        jMenu1 = new javax.swing.JMenu();
+        jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        UserMenuBar_Display = new javax.swing.JMenu();
+        jMenuItem4 = new javax.swing.JMenuItem();
+        Display_Patient_List = new javax.swing.JMenuItem();
+        Display_Order_History = new javax.swing.JMenuItem();
+        User_Profile_Menu = new javax.swing.JMenu();
+        User_Profile_Options = new javax.swing.JMenuItem();
+        User_Profile_Logout = new javax.swing.JMenuItem();
         ForgotPassword = new javax.swing.JFrame();
         ForgotPasswordFrame = new javax.swing.JPanel();
         ForgotPasswordForm = new javax.swing.JPanel();
@@ -52,6 +83,146 @@ public class LoginUI extends javax.swing.JFrame {
         LoginForm_Image = new javax.swing.JLabel();
         UsernameLabel = new javax.swing.JLabel();
         PasswordLabel = new javax.swing.JLabel();
+
+        User_MainMenu.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        User_MainMenu.setTitle("Αρχική Σελίδα Γραμματέας");
+        User_MainMenu.setMinimumSize(new java.awt.Dimension(1024, 720));
+        User_MainMenu.addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                User_MainMenuWindowClosed(evt);
+            }
+        });
+
+        User_Home_Panel.setBackground(new java.awt.Color(204, 204, 255));
+
+        User_Home_Header.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        User_Home_Header.setForeground(new java.awt.Color(51, 51, 51));
+        User_Home_Header.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        User_Home_Header.setText("ΑΡΧΙΚΗ ΣΕΛΙΔΑ ΓΡΑΜΜΑΤΕΑΣ");
+
+        User_Home_Body.setBackground(new java.awt.Color(204, 204, 255));
+        User_Home_Body.setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED));
+        User_Home_Body.setForeground(new java.awt.Color(204, 204, 255));
+
+        User_Home_Calendar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                User_Home_CalendarMouseClicked(evt);
+            }
+        });
+        User_Home_Calendar.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentResized(java.awt.event.ComponentEvent evt) {
+                User_Home_CalendarComponentResized(evt);
+            }
+        });
+        User_Home_Calendar_ScrollPane.setViewportView(User_Home_Calendar);
+
+        javax.swing.GroupLayout User_Home_BodyLayout = new javax.swing.GroupLayout(User_Home_Body);
+        User_Home_Body.setLayout(User_Home_BodyLayout);
+        User_Home_BodyLayout.setHorizontalGroup(
+            User_Home_BodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(User_Home_BodyLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(User_Home_Calendar_ScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 498, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(504, Short.MAX_VALUE))
+        );
+        User_Home_BodyLayout.setVerticalGroup(
+            User_Home_BodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(User_Home_BodyLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(User_Home_Calendar_ScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 618, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        javax.swing.GroupLayout User_Home_PanelLayout = new javax.swing.GroupLayout(User_Home_Panel);
+        User_Home_Panel.setLayout(User_Home_PanelLayout);
+        User_Home_PanelLayout.setHorizontalGroup(
+            User_Home_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, User_Home_PanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(User_Home_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(User_Home_Body, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(User_Home_Header, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        User_Home_PanelLayout.setVerticalGroup(
+            User_Home_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(User_Home_PanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(User_Home_Header, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(User_Home_Body, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        User_MenuBar.setBackground(new java.awt.Color(153, 153, 153));
+        User_MenuBar.setForeground(new java.awt.Color(255, 255, 255));
+
+        User_Action_Menu.setText("Επιλογές");
+
+        jMenu1.setText("Δημιουργία");
+
+        jMenuItem3.setText("Ραντεβού");
+        jMenu1.add(jMenuItem3);
+
+        jMenuItem1.setText("Ασθενής");
+        jMenu1.add(jMenuItem1);
+
+        jMenuItem2.setText("Παραγγελία");
+        jMenu1.add(jMenuItem2);
+
+        User_Action_Menu.add(jMenu1);
+
+        UserMenuBar_Display.setText("Προβολή");
+
+        jMenuItem4.setText("Πρόγραμμα Ραντεβού");
+        UserMenuBar_Display.add(jMenuItem4);
+
+        Display_Patient_List.setText("Λίστα Ασθενών");
+        UserMenuBar_Display.add(Display_Patient_List);
+
+        Display_Order_History.setText("Ιστορικό Παραγγελιών");
+        UserMenuBar_Display.add(Display_Order_History);
+
+        User_Action_Menu.add(UserMenuBar_Display);
+
+        User_MenuBar.add(User_Action_Menu);
+
+        User_Profile_Menu.setText("\"User\"");
+        User_Profile_Menu.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        User_Profile_Menu.setIconTextGap(0);
+
+        User_Profile_Options.setText("Eπιλογές");
+        User_Profile_Options.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                User_Profile_OptionsActionPerformed(evt);
+            }
+        });
+        User_Profile_Menu.add(User_Profile_Options);
+
+        User_Profile_Logout.setText("Αποσύνδεση");
+        User_Profile_Logout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                User_Profile_LogoutActionPerformed(evt);
+            }
+        });
+        User_Profile_Menu.add(User_Profile_Logout);
+
+        User_MenuBar.add(Box.createHorizontalGlue());
+
+        User_MenuBar.add(User_Profile_Menu);
+
+        User_MainMenu.setJMenuBar(User_MenuBar);
+
+        javax.swing.GroupLayout User_MainMenuLayout = new javax.swing.GroupLayout(User_MainMenu.getContentPane());
+        User_MainMenu.getContentPane().setLayout(User_MainMenuLayout);
+        User_MainMenuLayout.setHorizontalGroup(
+            User_MainMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(User_Home_Panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        User_MainMenuLayout.setVerticalGroup(
+            User_MainMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(User_Home_Panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
 
         ForgotPassword.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         ForgotPassword.setTitle("Ιατρικό Γραφείο");
@@ -324,6 +495,24 @@ public class LoginUI extends javax.swing.JFrame {
         if (this.isUserInputValid() == true){
             
             //TODO LOGIN
+            this.setVisible(false); // HIDE LOGIN WINDOW
+            
+            //this.User_MainMenu.setExtendedState(JFrame.MAXIMIZED_BOTH);
+            //size of the screen
+            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
+            //height of the task bar
+            Insets scnMax = Toolkit.getDefaultToolkit().getScreenInsets(getGraphicsConfiguration());
+            int taskBarSize = scnMax.bottom;
+
+            //available size of the screen 
+            setLocation(screenSize.width - getWidth(), screenSize.height - taskBarSize - getHeight());
+            
+            
+            this.User_MainMenu.setSize(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().getSize());
+            
+            this.User_MainMenu.setVisible(true);
+            this.User_MainMenu.setResizable(false);
             
             
         }
@@ -373,8 +562,46 @@ public class LoginUI extends javax.swing.JFrame {
 
     private void ForgotPasswordWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_ForgotPasswordWindowClosed
         // TODO add your handling code here:
+        
         this.setVisible(true);
     }//GEN-LAST:event_ForgotPasswordWindowClosed
+
+    private void User_Profile_OptionsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_User_Profile_OptionsActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_User_Profile_OptionsActionPerformed
+
+    private void User_Profile_LogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_User_Profile_LogoutActionPerformed
+        //SYNC CHANGES WITH SERVER
+        //CLOSE SOCKET
+        //DISPOSE FRAME
+        this.User_MainMenu.setVisible(false);
+        dlm = new DefaultListModel<>();
+        this.User_Home_Calendar.setModel(dlm);
+        
+        
+        this.setVisible(true);
+        
+    }//GEN-LAST:event_User_Profile_LogoutActionPerformed
+
+    private void User_Home_CalendarComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_User_Home_CalendarComponentResized
+        // TODO add your handling code here:
+        
+      
+      
+        
+    }//GEN-LAST:event_User_Home_CalendarComponentResized
+
+    private void User_Home_CalendarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_User_Home_CalendarMouseClicked
+        // TODO add your handling code here:
+        
+        dlm.addElement("Hello");
+        this.User_Home_Calendar.setModel(dlm);
+    }//GEN-LAST:event_User_Home_CalendarMouseClicked
+
+    private void User_MainMenuWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_User_MainMenuWindowClosed
+        // TODO add your handling code here:
+        this.setVisible(true);
+    }//GEN-LAST:event_User_MainMenuWindowClosed
 
     /**
      * @param args the command line arguments
@@ -410,6 +637,8 @@ public class LoginUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem Display_Order_History;
+    private javax.swing.JMenuItem Display_Patient_List;
     private javax.swing.JFrame ForgotPassword;
     private javax.swing.JPanel ForgotPasswordForm;
     private javax.swing.JPanel ForgotPasswordFrame;
@@ -425,7 +654,24 @@ public class LoginUI extends javax.swing.JFrame {
     private javax.swing.JPanel LoginFrame;
     private javax.swing.JLabel PasswordLabel;
     private javax.swing.JLabel PasswordLabel1;
+    private javax.swing.JMenu UserMenuBar_Display;
+    private javax.swing.JMenu User_Action_Menu;
+    private javax.swing.JPanel User_Home_Body;
+    private javax.swing.JList<String> User_Home_Calendar;
+    private javax.swing.JScrollPane User_Home_Calendar_ScrollPane;
+    private javax.swing.JLabel User_Home_Header;
+    private javax.swing.JPanel User_Home_Panel;
+    private javax.swing.JFrame User_MainMenu;
+    private javax.swing.JMenuBar User_MenuBar;
+    private javax.swing.JMenuItem User_Profile_Logout;
+    private javax.swing.JMenu User_Profile_Menu;
+    private javax.swing.JMenuItem User_Profile_Options;
     private javax.swing.JLabel UsernameLabel;
     private javax.swing.JLabel UsernameLabel1;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
     // End of variables declaration//GEN-END:variables
 }

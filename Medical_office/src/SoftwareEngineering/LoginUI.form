@@ -2,6 +2,232 @@
 
 <Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <NonVisualComponents>
+    <Container class="javax.swing.JFrame" name="User_MainMenu">
+      <Properties>
+        <Property name="defaultCloseOperation" type="int" value="2"/>
+        <Property name="title" type="java.lang.String" value="&#x391;&#x3c1;&#x3c7;&#x3b9;&#x3ba;&#x3ae; &#x3a3;&#x3b5;&#x3bb;&#x3af;&#x3b4;&#x3b1; &#x393;&#x3c1;&#x3b1;&#x3bc;&#x3bc;&#x3b1;&#x3c4;&#x3ad;&#x3b1;&#x3c2;"/>
+        <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[1024, 720]"/>
+        </Property>
+      </Properties>
+      <Events>
+        <EventHandler event="windowClosed" listener="java.awt.event.WindowListener" parameters="java.awt.event.WindowEvent" handler="User_MainMenuWindowClosed"/>
+      </Events>
+
+      <Layout>
+        <DimensionLayout dim="0">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Component id="User_Home_Panel" alignment="0" max="32767" attributes="0"/>
+          </Group>
+        </DimensionLayout>
+        <DimensionLayout dim="1">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Component id="User_Home_Panel" alignment="0" max="32767" attributes="0"/>
+          </Group>
+        </DimensionLayout>
+      </Layout>
+      <SubComponents>
+        <Container class="javax.swing.JPanel" name="User_Home_Panel">
+          <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="ff" green="cc" red="cc" type="rgb"/>
+            </Property>
+          </Properties>
+
+          <Layout>
+            <DimensionLayout dim="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Component id="User_Home_Body" max="32767" attributes="0"/>
+                          <Component id="User_Home_Header" max="32767" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+            <DimensionLayout dim="1">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="User_Home_Header" min="-2" pref="49" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="User_Home_Body" max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+          </Layout>
+          <SubComponents>
+            <Component class="javax.swing.JLabel" name="User_Home_Header">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Dialog" size="18" style="1"/>
+                </Property>
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="33" green="33" red="33" type="rgb"/>
+                </Property>
+                <Property name="horizontalAlignment" type="int" value="0"/>
+                <Property name="text" type="java.lang.String" value="&#x391;&#x3a1;&#x3a7;&#x399;&#x39a;&#x397; &#x3a3;&#x395;&#x39b;&#x399;&#x394;&#x391; &#x393;&#x3a1;&#x391;&#x39c;&#x39c;&#x391;&#x3a4;&#x395;&#x391;&#x3a3;"/>
+              </Properties>
+            </Component>
+            <Container class="javax.swing.JPanel" name="User_Home_Body">
+              <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="ff" green="cc" red="cc" type="rgb"/>
+                </Property>
+                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                  <Border info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
+                    <EtchetBorder bevelType="0"/>
+                  </Border>
+                </Property>
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="ff" green="cc" red="cc" type="rgb"/>
+                </Property>
+              </Properties>
+
+              <Layout>
+                <DimensionLayout dim="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="User_Home_Calendar_ScrollPane" min="-2" pref="498" max="-2" attributes="0"/>
+                          <EmptySpace pref="504" max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+                <DimensionLayout dim="1">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="User_Home_Calendar_ScrollPane" pref="618" max="32767" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+              </Layout>
+              <SubComponents>
+                <Container class="javax.swing.JScrollPane" name="User_Home_Calendar_ScrollPane">
+                  <AuxValues>
+                    <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+                  </AuxValues>
+
+                  <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+                  <SubComponents>
+                    <Component class="javax.swing.JList" name="User_Home_Calendar">
+                      <Properties>
+                        <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
+                          <StringArray count="0"/>
+                        </Property>
+                      </Properties>
+                      <Events>
+                        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="User_Home_CalendarMouseClicked"/>
+                        <EventHandler event="componentResized" listener="java.awt.event.ComponentListener" parameters="java.awt.event.ComponentEvent" handler="User_Home_CalendarComponentResized"/>
+                      </Events>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+                      </AuxValues>
+                    </Component>
+                  </SubComponents>
+                </Container>
+              </SubComponents>
+            </Container>
+          </SubComponents>
+        </Container>
+        <Menu class="javax.swing.JMenuBar" name="User_MenuBar">
+          <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="99" green="99" red="99" type="rgb"/>
+            </Property>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="ff" green="ff" red="ff" type="rgb"/>
+            </Property>
+          </Properties>
+          <SubComponents>
+            <Menu class="javax.swing.JMenu" name="User_Action_Menu">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="&#x395;&#x3c0;&#x3b9;&#x3bb;&#x3bf;&#x3b3;&#x3ad;&#x3c2;"/>
+              </Properties>
+              <SubComponents>
+                <Menu class="javax.swing.JMenu" name="jMenu1">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="&#x394;&#x3b7;&#x3bc;&#x3b9;&#x3bf;&#x3c5;&#x3c1;&#x3b3;&#x3af;&#x3b1;"/>
+                  </Properties>
+                  <SubComponents>
+                    <MenuItem class="javax.swing.JMenuItem" name="jMenuItem3">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="&#x3a1;&#x3b1;&#x3bd;&#x3c4;&#x3b5;&#x3b2;&#x3bf;&#x3cd;"/>
+                      </Properties>
+                    </MenuItem>
+                    <MenuItem class="javax.swing.JMenuItem" name="jMenuItem1">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="&#x391;&#x3c3;&#x3b8;&#x3b5;&#x3bd;&#x3ae;&#x3c2;"/>
+                      </Properties>
+                    </MenuItem>
+                    <MenuItem class="javax.swing.JMenuItem" name="jMenuItem2">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="&#x3a0;&#x3b1;&#x3c1;&#x3b1;&#x3b3;&#x3b3;&#x3b5;&#x3bb;&#x3af;&#x3b1;"/>
+                      </Properties>
+                    </MenuItem>
+                  </SubComponents>
+                </Menu>
+                <Menu class="javax.swing.JMenu" name="UserMenuBar_Display">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="&#x3a0;&#x3c1;&#x3bf;&#x3b2;&#x3bf;&#x3bb;&#x3ae;"/>
+                  </Properties>
+                  <SubComponents>
+                    <MenuItem class="javax.swing.JMenuItem" name="jMenuItem4">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="&#x3a0;&#x3c1;&#x3cc;&#x3b3;&#x3c1;&#x3b1;&#x3bc;&#x3bc;&#x3b1; &#x3a1;&#x3b1;&#x3bd;&#x3c4;&#x3b5;&#x3b2;&#x3bf;&#x3cd;"/>
+                      </Properties>
+                    </MenuItem>
+                    <MenuItem class="javax.swing.JMenuItem" name="Display_Patient_List">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="&#x39b;&#x3af;&#x3c3;&#x3c4;&#x3b1; &#x391;&#x3c3;&#x3b8;&#x3b5;&#x3bd;&#x3ce;&#x3bd;"/>
+                      </Properties>
+                    </MenuItem>
+                    <MenuItem class="javax.swing.JMenuItem" name="Display_Order_History">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="&#x399;&#x3c3;&#x3c4;&#x3bf;&#x3c1;&#x3b9;&#x3ba;&#x3cc; &#x3a0;&#x3b1;&#x3c1;&#x3b1;&#x3b3;&#x3b3;&#x3b5;&#x3bb;&#x3b9;&#x3ce;&#x3bd;"/>
+                      </Properties>
+                    </MenuItem>
+                  </SubComponents>
+                </Menu>
+              </SubComponents>
+            </Menu>
+            <Menu class="javax.swing.JMenu" name="User_Profile_Menu">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="&quot;User&quot;"/>
+                <Property name="horizontalAlignment" type="int" value="2"/>
+                <Property name="iconTextGap" type="int" value="0"/>
+              </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_LayoutCodePost" type="java.lang.String" value="User_MenuBar.add(Box.createHorizontalGlue());"/>
+              </AuxValues>
+              <SubComponents>
+                <MenuItem class="javax.swing.JMenuItem" name="User_Profile_Options">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="E&#x3c0;&#x3b9;&#x3bb;&#x3bf;&#x3b3;&#x3ad;&#x3c2;"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="User_Profile_OptionsActionPerformed"/>
+                  </Events>
+                </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="User_Profile_Logout">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="&#x391;&#x3c0;&#x3bf;&#x3c3;&#x3cd;&#x3bd;&#x3b4;&#x3b5;&#x3c3;&#x3b7;"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="User_Profile_LogoutActionPerformed"/>
+                  </Events>
+                </MenuItem>
+              </SubComponents>
+            </Menu>
+          </SubComponents>
+        </Menu>
+      </SubComponents>
+    </Container>
     <Container class="javax.swing.JFrame" name="ForgotPassword">
       <Properties>
         <Property name="defaultCloseOperation" type="int" value="2"/>
