@@ -55,6 +55,12 @@ public class Appointments implements Serializable {
     private String doctorPrescription;
 
     public Appointments() {
+        
+        appointmentId = 0;
+        patientAMKA = 0;
+        mediclauserId = 0 ;
+        appointmentDay = new Date(0);
+        doctorPrescription = "";
     }
 
     public Appointments(Integer appointmentId) {

@@ -22,7 +22,7 @@ public class Patient implements Serializable{
     
     
     public Patient(){
-        this.AMKA="";
+        this.AMKA="0";
         this.birth_date=null;
         this.gender=0;
         this.name="";

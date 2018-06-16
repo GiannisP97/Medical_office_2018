@@ -28,9 +28,9 @@ public class Appointment implements Serializable{
     public Appointment()
     {
         id = 0;
-        p = null;
-        date = null;
-        prescription  = null;
+        p = new Patient();
+        date = date.now();
+        prescription  = " ";
         doctor_id = 0;
     }
     
@@ -70,6 +70,9 @@ public class Appointment implements Serializable{
         
         ZonedDateTime zdt = this.date.atZone(ZoneId.systemDefault());
         Date output = Date.from(zdt.toInstant());
+        if(output == null){
+            return new Date(0);
+        }
         return output;
     }
     

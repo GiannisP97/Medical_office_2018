@@ -15,8 +15,10 @@ import javax.persistence.Persistence;
 public final class DBManager {
     
     
+    DBManager(){}
+    
     public boolean createAppointment(Appointment obj){
-        EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "persistence" );
+        EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Medical_officePU" );
 
         EntityManager entitymanager = emfactory.createEntityManager( );
         entitymanager.getTransaction( ).begin( );
@@ -36,13 +38,14 @@ public final class DBManager {
     }
     
     public boolean updateAppointment(Appointment obj){
-        EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "persistence" );
+        EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Medical_officePU" );
         
         EntityManager entitymanager = emfactory.createEntityManager();
         entitymanager.getTransaction().begin();
         
         Appointments temp = entitymanager.find(Appointments.class, obj.getID());
         
+//        System.out.println(obj.getDate());
         temp.setAppointmentDay(obj.getDate());
         temp.setDoctorPrescription(obj.getPrescription());
         temp.setMediclauserId(obj.getDoctorId());
@@ -56,7 +59,7 @@ public final class DBManager {
     }
     
     public boolean deleteAppointment(Appointment obj){
-        EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "persistence" );
+        EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Medical_officePU" );
         
         EntityManager entitymanager = emfactory.createEntityManager();
         entitymanager.getTransaction().begin();
@@ -73,10 +76,10 @@ public final class DBManager {
         return true;
     }
     
-    public Appointment findAppointment()
+//    public Appointment findAppointment()
     
     public boolean createRestock(int meduserid , String fn , int supid){
-        EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "persistence" );
+        EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Medical_officePU" );
 
         EntityManager entitymanager = emfactory.createEntityManager( );
         entitymanager.getTransaction( ).begin( );
@@ -85,7 +88,7 @@ public final class DBManager {
         
         temp.setMedicaluserId(meduserid);
         temp.setFileName(fn);
-        temp.setSupplierId(supid); // find supplier
+//        temp.setSupplierId(supid); // find supplier
         
         entitymanager.persist( temp );
         entitymanager.getTransaction( ).commit( );
@@ -97,7 +100,7 @@ public final class DBManager {
     }
     
     public boolean updateARestock(int meduserid , String fn , int supid){
-        EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "persistence" );
+        EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Medical_officePU" );
         
         EntityManager entitymanager = emfactory.createEntityManager();
         entitymanager.getTransaction().begin();
@@ -106,7 +109,7 @@ public final class DBManager {
         
         temp.setMedicaluserId(meduserid);
         temp.setFileName(fn);
-        temp.setSupplierId(supid); // find supplier
+//        temp.setSupplierId(supid); // find supplier
         
         entitymanager.getTransaction( ).commit( );
         
@@ -116,7 +119,7 @@ public final class DBManager {
     }
     
     public boolean deleteRestock(int resid){
-        EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "persistence" );
+        EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Medical_officePU" );
         
         EntityManager entitymanager = emfactory.createEntityManager();
         entitymanager.getTransaction().begin();
@@ -134,7 +137,7 @@ public final class DBManager {
     }
     
     public boolean createSupplier(Supplier obj){
-        EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "persistence" );
+        EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Medical_officePU" );
 
         EntityManager entitymanager = emfactory.createEntityManager( );
         entitymanager.getTransaction( ).begin( );
@@ -156,7 +159,7 @@ public final class DBManager {
     }
     
     public boolean updateASupplier(Supplier obj){
-        EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "persistence" );
+        EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Medical_officePU" );
         
         EntityManager entitymanager = emfactory.createEntityManager();
         entitymanager.getTransaction().begin();
@@ -176,7 +179,7 @@ public final class DBManager {
     }
     
     public boolean deleteSupplier(Supplier obj){
-        EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "persistence" );
+        EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Medical_officePU" );
         
         EntityManager entitymanager = emfactory.createEntityManager();
         entitymanager.getTransaction().begin();
