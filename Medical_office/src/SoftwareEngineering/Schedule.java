@@ -8,11 +8,13 @@ package SoftwareEngineering;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  *
  * @author DeRed
  */
+
 public class Schedule {
     private ArrayList<Appointment> appointment_list;
     
@@ -36,7 +38,11 @@ public class Schedule {
         return true;
     }
     
+    
+    
      public ArrayList getSchedule(){
+         
+        Collections.sort(appointment_list);
         return this.appointment_list;
     }
 }
