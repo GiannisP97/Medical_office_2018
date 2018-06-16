@@ -36,5 +36,7 @@ public class Schedule {
         return true;
     }
     
-    
+     public ArrayList getSchedule(){
+        return this.appointment_list;
+    }
 }
