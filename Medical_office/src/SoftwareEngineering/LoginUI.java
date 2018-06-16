@@ -6,6 +6,8 @@
 package SoftwareEngineering;
 
 import java.awt.Color;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -39,6 +41,8 @@ public class LoginUI extends javax.swing.JFrame {
         initComponents();
         borderc = this.LoginForm_Username.getBorder(); // USED FOR CREDENTIAL VALIDATION
         //this.loading_icon.setVisible(false);
+        //AppointmentList.AddAppointment(78, new Patient("435345","John","Smith","283097923",(short)0,LocalTime.now()),LocalDateTime.now());
+        
         FillSchedule();
        // this.User_Home_LeftSide.add()
         
