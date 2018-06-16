@@ -35,6 +35,7 @@ public class LoginUI extends javax.swing.JFrame {
     
     
     public LoginUI() {
+
         initComponents();
         borderc = this.LoginForm_Username.getBorder(); // USED FOR CREDENTIAL VALIDATION
         //this.loading_icon.setVisible(false);
@@ -43,7 +44,13 @@ public class LoginUI extends javax.swing.JFrame {
         
 
     }
+    public LoginUI(int a) {
 
+        initComponents();
+        borderc = this.LoginForm_Username.getBorder(); // USED FOR CREDENTIAL VALIDATION        
+        this.ErrorDialog.setVisible(true);
+        this.ErrorDialog.requestFocus();
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -74,6 +81,10 @@ public class LoginUI extends javax.swing.JFrame {
         User_Profile_Menu = new javax.swing.JMenu();
         User_Profile_Options = new javax.swing.JMenuItem();
         User_Profile_Logout = new javax.swing.JMenuItem();
+        ErrorDialog = new javax.swing.JDialog();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
         LoginFrame = new javax.swing.JPanel();
         LoginForm = new javax.swing.JPanel();
         LoginForm_Username = new javax.swing.JTextField();
@@ -247,6 +258,64 @@ public class LoginUI extends javax.swing.JFrame {
         User_MainMenuLayout.setVerticalGroup(
             User_MainMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(User_Home_Panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        ErrorDialog.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        ErrorDialog.setTitle("Error");
+        ErrorDialog.setResizable(false);
+        ErrorDialog.setSize(new java.awt.Dimension(456, 90));
+        ErrorDialog.addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                ErrorDialogWindowClosed(evt);
+            }
+        });
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setForeground(new java.awt.Color(0, 0, 0));
+
+        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel2.setText("Could not find \"config.ini\" in the application folder! Program will now terminate.");
+
+        jButton1.setBackground(new java.awt.Color(255, 255, 255));
+        jButton1.setText("OK");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(205, 205, 205)
+                .addComponent(jButton1)
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton1)
+                .addGap(17, 17, 17))
+        );
+
+        javax.swing.GroupLayout ErrorDialogLayout = new javax.swing.GroupLayout(ErrorDialog.getContentPane());
+        ErrorDialog.getContentPane().setLayout(ErrorDialogLayout);
+        ErrorDialogLayout.setHorizontalGroup(
+            ErrorDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        ErrorDialogLayout.setVerticalGroup(
+            ErrorDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -470,6 +539,16 @@ public class LoginUI extends javax.swing.JFrame {
         this.setVisible(true);
     }//GEN-LAST:event_User_MainMenuWindowClosed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        System.exit(0);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void ErrorDialogWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_ErrorDialogWindowClosed
+        // TODO add your handling code here:
+        System.exit(0);
+    }//GEN-LAST:event_ErrorDialogWindowClosed
+
     /**
      * @param args the command line arguments
      */
@@ -498,15 +577,25 @@ public class LoginUI extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
+        if (MedicalOffice.ConfigFileExists() == false){
+            java.awt.EventQueue.invokeLater(() -> {
+            new LoginUI(1);
+            
+            });
+        }
+        else {
+        
         java.awt.EventQueue.invokeLater(() -> {
             new LoginUI().setVisible(true);
         });
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable AppointmentTable;
     private javax.swing.JMenuItem Display_Order_History;
     private javax.swing.JMenuItem Display_Patient_List;
+    private javax.swing.JDialog ErrorDialog;
     private javax.swing.JPanel LoginForm;
     private javax.swing.JLabel LoginForm_Image;
     private javax.swing.JPasswordField LoginForm_Password;
@@ -526,12 +615,15 @@ public class LoginUI extends javax.swing.JFrame {
     private javax.swing.JMenu User_Profile_Menu;
     private javax.swing.JMenuItem User_Profile_Options;
     private javax.swing.JLabel UsernameLabel;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel loading_icon;
     // End of variables declaration//GEN-END:variables
