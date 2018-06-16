@@ -18,7 +18,7 @@ public class Patient implements Serializable{
     private String AMKA;
     private LocalTime birth_date;
     private String phone_number;
-    private short gender;
+    private int gender;
     
     
     public Patient(){
@@ -40,7 +40,7 @@ public class Patient implements Serializable{
         this.phone_number=p.phone_number;
     }
     
-    public Patient(String AMKA,String name,String surname,String phonenumber,short g,LocalTime d){
+    public Patient(String AMKA,String name,String surname,String phonenumber,int g,LocalTime d){
         this.AMKA = AMKA;
         this.name = name;
         this.surname = surname;
@@ -82,5 +82,10 @@ public class Patient implements Serializable{
     
     public String getName(){
         return this.name;
+    }
+    
+    @Override
+    public String toString(){
+        return this.name+"$"+this.surname+"$"+this.phone_number+"$"+this.AMKA+String.valueOf(this.gender)+"$"+this.birth_date.toString();
     }
 }
