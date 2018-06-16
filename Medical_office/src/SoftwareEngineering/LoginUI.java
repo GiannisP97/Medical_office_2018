@@ -6,17 +6,12 @@
 package SoftwareEngineering;
 
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.GraphicsEnvironment;
-import java.awt.Insets;
-import java.awt.Toolkit;
-import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.DefaultListModel;
-import javax.swing.JFrame;
-import javax.swing.ListModel;
 import javax.swing.border.Border;
+import javax.swing.table.DefaultTableModel;
 
 
 /**
@@ -28,12 +23,23 @@ public class LoginUI extends javax.swing.JFrame {
     /**
      * Creates new form LoginUI
      */
+
     private final Border borderc ;
     private DefaultListModel<String> dlm = new DefaultListModel<>();
+    private Schedule AppointmentList = new Schedule();
+    
+    
+    
+    
+    
+    
+    
     public LoginUI() {
         initComponents();
         borderc = this.LoginForm_Username.getBorder(); // USED FOR CREDENTIAL VALIDATION
-        
+        //this.loading_icon.setVisible(false);
+        FillSchedule();
+       // this.User_Home_LeftSide.add()
         
 
     }
@@ -49,10 +55,12 @@ public class LoginUI extends javax.swing.JFrame {
 
         User_MainMenu = new javax.swing.JFrame();
         User_Home_Panel = new javax.swing.JPanel();
-        User_Home_Header = new javax.swing.JLabel();
         User_Home_Body = new javax.swing.JPanel();
-        User_Home_Calendar_ScrollPane = new javax.swing.JScrollPane();
-        User_Home_Calendar = new javax.swing.JList<>();
+        User_Home_LeftSide = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        AppointmentTable = new javax.swing.JTable();
+        User_Home_RightSide = new javax.swing.JPanel();
         User_MenuBar = new javax.swing.JMenuBar();
         User_Action_Menu = new javax.swing.JMenu();
         jMenu1 = new javax.swing.JMenu();
@@ -66,27 +74,20 @@ public class LoginUI extends javax.swing.JFrame {
         User_Profile_Menu = new javax.swing.JMenu();
         User_Profile_Options = new javax.swing.JMenuItem();
         User_Profile_Logout = new javax.swing.JMenuItem();
-        ForgotPassword = new javax.swing.JFrame();
-        ForgotPasswordFrame = new javax.swing.JPanel();
-        ForgotPasswordForm = new javax.swing.JPanel();
-        ForgotPassword_Username = new javax.swing.JTextField();
-        ForgotPassword_Password = new javax.swing.JPasswordField();
-        ForgotPassword_SubmitButton = new javax.swing.JButton();
-        UsernameLabel1 = new javax.swing.JLabel();
-        PasswordLabel1 = new javax.swing.JLabel();
         LoginFrame = new javax.swing.JPanel();
         LoginForm = new javax.swing.JPanel();
         LoginForm_Username = new javax.swing.JTextField();
         LoginForm_Password = new javax.swing.JPasswordField();
         LoginForm_SubmitButton = new javax.swing.JButton();
-        LoginForm_ForgotPassword = new javax.swing.JLabel();
         LoginForm_Image = new javax.swing.JLabel();
         UsernameLabel = new javax.swing.JLabel();
         PasswordLabel = new javax.swing.JLabel();
+        loading_icon = new javax.swing.JLabel();
 
-        User_MainMenu.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        User_MainMenu.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         User_MainMenu.setTitle("Αρχική Σελίδα Γραμματέας");
         User_MainMenu.setMinimumSize(new java.awt.Dimension(1024, 720));
+        User_MainMenu.setResizable(false);
         User_MainMenu.addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 User_MainMenuWindowClosed(evt);
@@ -95,63 +96,87 @@ public class LoginUI extends javax.swing.JFrame {
 
         User_Home_Panel.setBackground(new java.awt.Color(204, 204, 255));
 
-        User_Home_Header.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        User_Home_Header.setForeground(new java.awt.Color(51, 51, 51));
-        User_Home_Header.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        User_Home_Header.setText("ΑΡΧΙΚΗ ΣΕΛΙΔΑ ΓΡΑΜΜΑΤΕΑΣ");
-
-        User_Home_Body.setBackground(new java.awt.Color(204, 204, 255));
+        User_Home_Body.setBackground(new java.awt.Color(153, 153, 153));
         User_Home_Body.setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED));
         User_Home_Body.setForeground(new java.awt.Color(204, 204, 255));
 
-        User_Home_Calendar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                User_Home_CalendarMouseClicked(evt);
+        User_Home_LeftSide.setBackground(new java.awt.Color(255, 255, 255));
+        User_Home_LeftSide.setPreferredSize(new java.awt.Dimension(505, 630));
+
+        jLabel1.setBackground(new java.awt.Color(153, 153, 153));
+        jLabel1.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("ΣΗΜΕΡΙΝΟ ΠΡΟΓΡΑΜΜΑ");
+        jLabel1.setFocusable(false);
+        jLabel1.setPreferredSize(new java.awt.Dimension(505, 19));
+
+        AppointmentTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
             }
-        });
-        User_Home_Calendar.addComponentListener(new java.awt.event.ComponentAdapter() {
-            public void componentResized(java.awt.event.ComponentEvent evt) {
-                User_Home_CalendarComponentResized(evt);
-            }
-        });
-        User_Home_Calendar_ScrollPane.setViewportView(User_Home_Calendar);
+        ));
+        jScrollPane1.setViewportView(AppointmentTable);
+
+        javax.swing.GroupLayout User_Home_LeftSideLayout = new javax.swing.GroupLayout(User_Home_LeftSide);
+        User_Home_LeftSide.setLayout(User_Home_LeftSideLayout);
+        User_Home_LeftSideLayout.setHorizontalGroup(
+            User_Home_LeftSideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, User_Home_LeftSideLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        User_Home_LeftSideLayout.setVerticalGroup(
+            User_Home_LeftSideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(User_Home_LeftSideLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1))
+        );
+
+        User_Home_RightSide.setBackground(new java.awt.Color(255, 255, 255));
+
+        javax.swing.GroupLayout User_Home_RightSideLayout = new javax.swing.GroupLayout(User_Home_RightSide);
+        User_Home_RightSide.setLayout(User_Home_RightSideLayout);
+        User_Home_RightSideLayout.setHorizontalGroup(
+            User_Home_RightSideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 517, Short.MAX_VALUE)
+        );
+        User_Home_RightSideLayout.setVerticalGroup(
+            User_Home_RightSideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 697, Short.MAX_VALUE)
+        );
 
         javax.swing.GroupLayout User_Home_BodyLayout = new javax.swing.GroupLayout(User_Home_Body);
         User_Home_Body.setLayout(User_Home_BodyLayout);
         User_Home_BodyLayout.setHorizontalGroup(
             User_Home_BodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(User_Home_BodyLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(User_Home_Calendar_ScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 498, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(504, Short.MAX_VALUE))
+                .addComponent(User_Home_LeftSide, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(User_Home_RightSide, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         User_Home_BodyLayout.setVerticalGroup(
             User_Home_BodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(User_Home_BodyLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(User_Home_Calendar_ScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 618, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(User_Home_LeftSide, javax.swing.GroupLayout.DEFAULT_SIZE, 697, Short.MAX_VALUE)
+            .addComponent(User_Home_RightSide, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout User_Home_PanelLayout = new javax.swing.GroupLayout(User_Home_Panel);
         User_Home_Panel.setLayout(User_Home_PanelLayout);
         User_Home_PanelLayout.setHorizontalGroup(
             User_Home_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, User_Home_PanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(User_Home_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(User_Home_Body, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(User_Home_Header, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+            .addComponent(User_Home_Body, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         User_Home_PanelLayout.setVerticalGroup(
             User_Home_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(User_Home_PanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(User_Home_Header, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(User_Home_Body, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(User_Home_Body, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         User_MenuBar.setBackground(new java.awt.Color(153, 153, 153));
@@ -224,134 +249,10 @@ public class LoginUI extends javax.swing.JFrame {
             .addComponent(User_Home_Panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        ForgotPassword.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        ForgotPassword.setTitle("Ιατρικό Γραφείο");
-        ForgotPassword.setModalExclusionType(null);
-        ForgotPassword.setName("MainFrame"); // NOI18N
-        ForgotPassword.setPreferredSize(new java.awt.Dimension(464, 569));
-        ForgotPassword.setSize(new java.awt.Dimension(464, 569));
-        ForgotPassword.addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosed(java.awt.event.WindowEvent evt) {
-                ForgotPasswordWindowClosed(evt);
-            }
-        });
-
-        ForgotPasswordFrame.setBackground(new java.awt.Color(204, 204, 255));
-        ForgotPasswordFrame.setForeground(new java.awt.Color(204, 204, 255));
-        ForgotPasswordFrame.setAlignmentX(0.0F);
-        ForgotPasswordFrame.setAlignmentY(0.0F);
-
-        ForgotPasswordForm.setBackground(new java.awt.Color(255, 255, 255));
-        ForgotPasswordForm.setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED));
-        ForgotPasswordForm.setForeground(new java.awt.Color(255, 255, 255));
-
-        ForgotPassword_Username.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
-        ForgotPassword_Username.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                ForgotPassword_UsernameFocusGained(evt);
-            }
-        });
-
-        ForgotPassword_Password.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
-        ForgotPassword_Password.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                ForgotPassword_PasswordFocusGained(evt);
-            }
-        });
-        ForgotPassword_Password.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ForgotPassword_PasswordActionPerformed(evt);
-            }
-        });
-
-        ForgotPassword_SubmitButton.setText("Αλλαγή Κωδικού");
-        ForgotPassword_SubmitButton.setBorder(new javax.swing.border.MatteBorder(null));
-        ForgotPassword_SubmitButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                ForgotPassword_SubmitButtonMouseClicked(evt);
-            }
-        });
-        ForgotPassword_SubmitButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ForgotPassword_SubmitButtonActionPerformed(evt);
-            }
-        });
-
-        UsernameLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        UsernameLabel1.setText("Όνομα Χρήστη");
-
-        PasswordLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        PasswordLabel1.setText("Νέος Κωδικός Πρόσβασης");
-        PasswordLabel1.setToolTipText("");
-
-        javax.swing.GroupLayout ForgotPasswordFormLayout = new javax.swing.GroupLayout(ForgotPasswordForm);
-        ForgotPasswordForm.setLayout(ForgotPasswordFormLayout);
-        ForgotPasswordFormLayout.setHorizontalGroup(
-            ForgotPasswordFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(ForgotPasswordFormLayout.createSequentialGroup()
-                .addGap(37, 37, 37)
-                .addGroup(ForgotPasswordFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(ForgotPassword_SubmitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(ForgotPassword_Password, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(UsernameLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(ForgotPassword_Username, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(PasswordLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(37, Short.MAX_VALUE))
-        );
-
-        ForgotPasswordFormLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {ForgotPassword_Password, ForgotPassword_SubmitButton, ForgotPassword_Username, PasswordLabel1, UsernameLabel1});
-
-        ForgotPasswordFormLayout.setVerticalGroup(
-            ForgotPasswordFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ForgotPasswordFormLayout.createSequentialGroup()
-                .addGap(63, 63, 63)
-                .addComponent(UsernameLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(ForgotPassword_Username, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(PasswordLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(ForgotPassword_Password, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(ForgotPassword_SubmitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(69, 69, 69))
-        );
-
-        javax.swing.GroupLayout ForgotPasswordFrameLayout = new javax.swing.GroupLayout(ForgotPasswordFrame);
-        ForgotPasswordFrame.setLayout(ForgotPasswordFrameLayout);
-        ForgotPasswordFrameLayout.setHorizontalGroup(
-            ForgotPasswordFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(ForgotPasswordFrameLayout.createSequentialGroup()
-                .addGap(93, 93, 93)
-                .addComponent(ForgotPasswordForm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(93, 93, 93))
-        );
-        ForgotPasswordFrameLayout.setVerticalGroup(
-            ForgotPasswordFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(ForgotPasswordFrameLayout.createSequentialGroup()
-                .addGap(114, 114, 114)
-                .addComponent(ForgotPasswordForm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(141, Short.MAX_VALUE))
-        );
-
-        //jPanel1.setBounds(0,0,new_Height,new_Width*100);
-
-        javax.swing.GroupLayout ForgotPasswordLayout = new javax.swing.GroupLayout(ForgotPassword.getContentPane());
-        ForgotPassword.getContentPane().setLayout(ForgotPasswordLayout);
-        ForgotPasswordLayout.setHorizontalGroup(
-            ForgotPasswordLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(ForgotPasswordFrame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        ForgotPasswordLayout.setVerticalGroup(
-            ForgotPasswordLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(ForgotPasswordFrame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Ιατρικό Γραφείο");
         setBackground(new java.awt.Color(204, 204, 255));
         setName("LoginWindow"); // NOI18N
-        setResizable(false);
 
         LoginFrame.setBackground(new java.awt.Color(204, 204, 255));
         LoginFrame.setForeground(new java.awt.Color(204, 204, 255));
@@ -390,14 +291,6 @@ public class LoginUI extends javax.swing.JFrame {
             }
         });
 
-        LoginForm_ForgotPassword.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        LoginForm_ForgotPassword.setText("Ξεχάσατε τον κωδικό σας;");
-        LoginForm_ForgotPassword.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                LoginForm_ForgotPasswordMouseClicked(evt);
-            }
-        });
-
         LoginForm_Image.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Avatar.png"))); // NOI18N
 
         UsernameLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -407,21 +300,29 @@ public class LoginUI extends javax.swing.JFrame {
         PasswordLabel.setText("Κωδικός Πρόσβασης");
         PasswordLabel.setToolTipText("");
 
+        loading_icon.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        loading_icon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/loader.gif"))); // NOI18N
+        loading_icon.setDisabledIcon(null);
+        loading_icon.setFocusable(false);
+
         javax.swing.GroupLayout LoginFormLayout = new javax.swing.GroupLayout(LoginForm);
         LoginForm.setLayout(LoginFormLayout);
         LoginFormLayout.setHorizontalGroup(
             LoginFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(LoginFormLayout.createSequentialGroup()
-                .addGap(71, 71, 71)
                 .addGroup(LoginFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(LoginForm_ForgotPassword, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(LoginFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(LoginForm_Image, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(LoginForm_Password, javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(LoginForm_Username, javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(LoginForm_SubmitButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(UsernameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(PasswordLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(LoginFormLayout.createSequentialGroup()
+                        .addGap(71, 71, 71)
+                        .addGroup(LoginFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(LoginForm_Image, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(LoginForm_Password, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(LoginForm_Username, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(LoginForm_SubmitButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(UsernameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(PasswordLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(LoginFormLayout.createSequentialGroup()
+                        .addGap(151, 151, 151)
+                        .addComponent(loading_icon)))
                 .addContainerGap(69, Short.MAX_VALUE))
         );
         LoginFormLayout.setVerticalGroup(
@@ -440,7 +341,7 @@ public class LoginUI extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(LoginForm_SubmitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(LoginForm_ForgotPassword)
+                .addComponent(loading_icon)
                 .addGap(63, 63, 63))
         );
 
@@ -471,12 +372,28 @@ public class LoginUI extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(LoginFrame, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(LoginFrame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
+    private void FillSchedule(){
+        DefaultTableModel model = new DefaultTableModel();
+        model.addColumn("ΩΡΑ");
+        model.addColumn("ΑΣΘΕΝΗΣ");
+        model.addColumn("ΙΑΤΡΟΣ");
+        
+        ArrayList<Appointment> list = AppointmentList.getSchedule();
+        
+        for ( Appointment x : list){
+            model.addRow(new Object[]{x.getDate(), x.getPetient().getName(), x.getDoctorId()});
+        } 
+        
+        this.AppointmentTable.setModel(model);
+    }
+    
     private boolean isUserInputValid(){
         boolean flag =true;
         if (this.LoginForm_Username.getText().equals("") || (!(this.LoginForm_Username.getText().matches("^[a-zA-Z0-9]+$")))){
@@ -492,27 +409,23 @@ public class LoginUI extends javax.swing.JFrame {
         return flag;
     }
     private void LoginForm_SubmitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoginForm_SubmitButtonActionPerformed
+  
+    
         if (this.isUserInputValid() == true){
-            
+            this.loading_icon.setVisible(true);
             //TODO LOGIN
+
             this.setVisible(false); // HIDE LOGIN WINDOW
-            
-            //this.User_MainMenu.setExtendedState(JFrame.MAXIMIZED_BOTH);
-            //size of the screen
-            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-
-            //height of the task bar
-            Insets scnMax = Toolkit.getDefaultToolkit().getScreenInsets(getGraphicsConfiguration());
-            int taskBarSize = scnMax.bottom;
-
-            //available size of the screen 
-            setLocation(screenSize.width - getWidth(), screenSize.height - taskBarSize - getHeight());
+            //this.User_MainMenu.setExtendedState(JFrame.MAXIMIZED_BOTH); // MAXIMIZE WINDOW
+            //Dimension body = this.User_Home_Body.getSize();
+            // this.User_Home_RightSide.setSize(body.width/2, body.height);
             
             
-            this.User_MainMenu.setSize(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().getSize());
             
-            this.User_MainMenu.setVisible(true);
-            this.User_MainMenu.setResizable(false);
+            
+            
+            this.User_MainMenu.setVisible(true); // SHOW HOME SCREEN
+            
             
             
         }
@@ -535,37 +448,6 @@ public class LoginUI extends javax.swing.JFrame {
         //this.passworderror.setVisible(false);
     }//GEN-LAST:event_LoginForm_PasswordFocusGained
 
-    private void LoginForm_ForgotPasswordMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LoginForm_ForgotPasswordMouseClicked
-        this.setVisible(false);
-        this.ForgotPassword.setVisible(true);
-    }//GEN-LAST:event_LoginForm_ForgotPasswordMouseClicked
-
-    private void ForgotPassword_SubmitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ForgotPassword_SubmitButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_ForgotPassword_SubmitButtonActionPerformed
-
-    private void ForgotPassword_SubmitButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ForgotPassword_SubmitButtonMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_ForgotPassword_SubmitButtonMouseClicked
-
-    private void ForgotPassword_PasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ForgotPassword_PasswordActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_ForgotPassword_PasswordActionPerformed
-
-    private void ForgotPassword_PasswordFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_ForgotPassword_PasswordFocusGained
-        // TODO add your handling code here:
-    }//GEN-LAST:event_ForgotPassword_PasswordFocusGained
-
-    private void ForgotPassword_UsernameFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_ForgotPassword_UsernameFocusGained
-        // TODO add your handling code here:
-    }//GEN-LAST:event_ForgotPassword_UsernameFocusGained
-
-    private void ForgotPasswordWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_ForgotPasswordWindowClosed
-        // TODO add your handling code here:
-        
-        this.setVisible(true);
-    }//GEN-LAST:event_ForgotPasswordWindowClosed
-
     private void User_Profile_OptionsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_User_Profile_OptionsActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_User_Profile_OptionsActionPerformed
@@ -576,27 +458,12 @@ public class LoginUI extends javax.swing.JFrame {
         //DISPOSE FRAME
         this.User_MainMenu.setVisible(false);
         dlm = new DefaultListModel<>();
-        this.User_Home_Calendar.setModel(dlm);
+       // this.User_Home_Calendar.setModel(dlm);
         
         
         this.setVisible(true);
         
     }//GEN-LAST:event_User_Profile_LogoutActionPerformed
-
-    private void User_Home_CalendarComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_User_Home_CalendarComponentResized
-        // TODO add your handling code here:
-        
-      
-      
-        
-    }//GEN-LAST:event_User_Home_CalendarComponentResized
-
-    private void User_Home_CalendarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_User_Home_CalendarMouseClicked
-        // TODO add your handling code here:
-        
-        dlm.addElement("Hello");
-        this.User_Home_Calendar.setModel(dlm);
-    }//GEN-LAST:event_User_Home_CalendarMouseClicked
 
     private void User_MainMenuWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_User_MainMenuWindowClosed
         // TODO add your handling code here:
@@ -637,41 +504,35 @@ public class LoginUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable AppointmentTable;
     private javax.swing.JMenuItem Display_Order_History;
     private javax.swing.JMenuItem Display_Patient_List;
-    private javax.swing.JFrame ForgotPassword;
-    private javax.swing.JPanel ForgotPasswordForm;
-    private javax.swing.JPanel ForgotPasswordFrame;
-    private javax.swing.JPasswordField ForgotPassword_Password;
-    private javax.swing.JButton ForgotPassword_SubmitButton;
-    private javax.swing.JTextField ForgotPassword_Username;
     private javax.swing.JPanel LoginForm;
-    private javax.swing.JLabel LoginForm_ForgotPassword;
     private javax.swing.JLabel LoginForm_Image;
     private javax.swing.JPasswordField LoginForm_Password;
     private javax.swing.JButton LoginForm_SubmitButton;
     private javax.swing.JTextField LoginForm_Username;
     private javax.swing.JPanel LoginFrame;
     private javax.swing.JLabel PasswordLabel;
-    private javax.swing.JLabel PasswordLabel1;
     private javax.swing.JMenu UserMenuBar_Display;
     private javax.swing.JMenu User_Action_Menu;
     private javax.swing.JPanel User_Home_Body;
-    private javax.swing.JList<String> User_Home_Calendar;
-    private javax.swing.JScrollPane User_Home_Calendar_ScrollPane;
-    private javax.swing.JLabel User_Home_Header;
+    private javax.swing.JPanel User_Home_LeftSide;
     private javax.swing.JPanel User_Home_Panel;
+    private javax.swing.JPanel User_Home_RightSide;
     private javax.swing.JFrame User_MainMenu;
     private javax.swing.JMenuBar User_MenuBar;
     private javax.swing.JMenuItem User_Profile_Logout;
     private javax.swing.JMenu User_Profile_Menu;
     private javax.swing.JMenuItem User_Profile_Options;
     private javax.swing.JLabel UsernameLabel;
-    private javax.swing.JLabel UsernameLabel1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel loading_icon;
     // End of variables declaration//GEN-END:variables
 }
