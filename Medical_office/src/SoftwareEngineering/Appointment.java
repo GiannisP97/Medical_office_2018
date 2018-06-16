@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
  *
  * @author Giannis
  */
-public class Appointment implements Serializable{
+public class Appointment implements Serializable,Comparable<Appointment>{
     
     private int id ;
     private Patient p;
@@ -61,6 +61,11 @@ public class Appointment implements Serializable{
     
     public int getDoctorId(){
         return this.doctor_id;
+    }
+
+    @Override
+    public int compareTo(Appointment o) {
+        return getDate().compareTo(o.getDate());
     }
     
 

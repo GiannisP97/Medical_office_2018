@@ -40,6 +40,17 @@ public class Patient implements Serializable{
         this.phone_number=p.phone_number;
     }
     
+    public Patient(String AMKA,String name,String surname,String phonenumber,short g,LocalTime d){
+        this.AMKA = AMKA;
+        this.name = name;
+        this.surname = surname;
+        this.phone_number = phonenumber;
+        this.birth_date = d;
+        this.gender = g;
+        
+        
+    }
+    
     public void setName(String name){
         this.name = name;
     }
