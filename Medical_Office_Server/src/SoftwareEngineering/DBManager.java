@@ -8,6 +8,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import DBEntities.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -332,5 +335,17 @@ public final class DBManager {
         entitymanager.close( );
         emfactory.close( );
         return output;
+    }
+    
+    public List<Appointment> fetchAppointments(int meduserid , Date date){
+        
+        MediclaUsers md = findMedicalUser(meduserid);
+        List<Appointment> aplist = new ArrayList<Appointment>();
+        for(Appointments temp: md.getAppointmentsList()){
+            if(temp.getAppointmentDay().equals(date)){
+                aplist.add(temp.toAppointment());
+            }
+        }
+        return aplist;
     }
 }

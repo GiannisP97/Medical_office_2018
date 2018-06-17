@@ -19,6 +19,7 @@ import java.util.Date;
  */
 public class Appointment implements Serializable{
     
+    private static final long serialVersionUID = 3L;
     private int id ;
     private Patient p;
     private LocalDateTime date;

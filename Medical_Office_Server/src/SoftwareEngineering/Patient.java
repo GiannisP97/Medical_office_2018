@@ -14,6 +14,7 @@ import java.time.LocalTime;
  * @author Giannis
  */
 public class Patient implements Serializable{
+    private static final long serialVersionUID = 2L;
     private String name;
     private String surname;
     private Integer AMKA;
