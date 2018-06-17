@@ -5,6 +5,7 @@
  */
 package DBEntities;
 
+import SoftwareEngineering.Appointment;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -126,4 +127,14 @@ public class Appointments implements Serializable {
         return "DBEntities.Appointments[ appointmentId=" + appointmentId + " ]";
     }
     
+    public Appointment toAppointment(){
+        
+        Appointment ap = new Appointment();
+        ap.setID(this.appointmentId);
+        ap.setPatient(this.patientAMKA.toPatient());
+        ap.setPrescription(this.doctorPrescription);
+        ap.setDoctorID(this.mediclauserId.getUserId());
+        
+        return ap;
+    }
 }

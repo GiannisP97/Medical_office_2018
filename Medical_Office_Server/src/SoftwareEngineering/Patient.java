@@ -6,6 +6,7 @@
 package SoftwareEngineering;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalTime;
 /**
  *
@@ -16,7 +17,7 @@ public class Patient implements Serializable{
     private String name;
     private String surname;
     private Integer AMKA;
-    private LocalTime birth_date;
+    private LocalDate birth_date;
     private String phone_number;
     private short gender;
     
@@ -65,7 +66,7 @@ public class Patient implements Serializable{
     }
     
 
-    public void setBirth(LocalTime birthdate){
+    public void setBirth(LocalDate birthdate){
         this.birth_date = birthdate;
     }
     

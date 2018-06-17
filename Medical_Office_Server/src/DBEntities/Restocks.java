@@ -100,4 +100,12 @@ public class Restocks implements Serializable {
         return "DBEntities.Restocks[ restockId=" + restockId + " ]";
     }
     
+//    public Restock toPatient(){
+//        
+//        Restock rs = new Restock();
+//        
+//        
+//        return rs;
+//    }
+    
 }

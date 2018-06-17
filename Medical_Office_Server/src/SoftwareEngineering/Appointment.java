@@ -83,4 +83,20 @@ public class Appointment implements Serializable{
     public void setID(int ID){
         this.id = ID;
     }
+    
+    public void setPatient(Patient pt){
+        this.p = pt;
+    }
+                
+    public void setDate(LocalDateTime d){
+        this.date = d;
+    }
+    
+    public void setPrescription(String pr){
+        this.prescription = pr;
+    }  
+     
+    public void setDoctorID(int id){
+        this.doctor_id = id;
+    }              
 }

@@ -210,11 +210,69 @@ public final class DBManager {
         return true;
     }
     
+//    public Patients createPatient(Patient obj){
+//        EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Medical_Office_ServerPU" );
+//
+//        EntityManager entitymanager = emfactory.createEntityManager( );
+//        entitymanager.getTransaction( ).begin( );
+//        
+//        Patients pt = new Patients();
+//        pt.setAmka(obj.getAMKA());
+//        pt.setBirthDate(obj.g);
+//        pt.setContactNumber(obj.getContactNumber());
+//        pt.setName(obj.getName());
+//        pt.setSex(obj.getSex());
+//        
+//        entitymanager.persist( pt );
+//        entitymanager.getTransaction( ).commit( );
+//        
+//        entitymanager.close( );
+//        emfactory.close( );
+//        
+//        System.out.println("Patient: " + obj.getAmka());
+//        
+//        return pt;
+//    }
     
+    public boolean updatePatient(Patients obj){
+        EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Medical_Office_ServerPU" );
+        
+        EntityManager entitymanager = emfactory.createEntityManager();
+        entitymanager.getTransaction().begin();
+        
+        Patients pt = entitymanager.find(Patients.class, obj.getAmka());
+        pt.setAmka(obj.getAmka());
+        pt.setBirthDate(obj.getBirthDate());
+        pt.setContactNumber(obj.getContactNumber());
+        pt.setName(obj.getName());
+        pt.setSex(obj.getSex());
+        System.out.println("Patient: " + pt.getName());
+//        md.setAfm(156126);
+        
+        entitymanager.getTransaction( ).commit( );
+        
+        entitymanager.close( );
+        emfactory.close( );
+        return true;
+    }
     
-    
-    
-    
+    public boolean deletePatient(Patients obj){
+        EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Medical_Office_ServerPU" );
+        
+        EntityManager entitymanager = emfactory.createEntityManager();
+        entitymanager.getTransaction().begin();
+        
+        Patients pt = entitymanager.find(Patients.class, obj.getAmka());
+        
+        entitymanager.remove(pt);
+        
+        entitymanager.getTransaction( ).commit( );
+        
+        entitymanager.close( );
+        emfactory.close( );
+        
+        return true;
+    }
     //Patients
     
     
@@ -258,20 +316,21 @@ public final class DBManager {
         return temp;
     }
     
-    public Appointments findAppointment(int id){
+    public Appointment findAppointment(int id){
         EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Medical_Office_ServerPU" );
         
         EntityManager entitymanager = emfactory.createEntityManager();
         entitymanager.getTransaction().begin();
         
+         
         Appointments temp = entitymanager.find(Appointments.class, id);
-        
+        Appointment output  = temp.toAppointment();
 //        System.out.println(obj.getDate());
 
         entitymanager.getTransaction( ).commit( );
         
         entitymanager.close( );
         emfactory.close( );
-        return temp;
+        return output;
     }
 }

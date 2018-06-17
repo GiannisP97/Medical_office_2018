@@ -23,7 +23,7 @@ public class MedicalOffice {
         LocalDateTime date = null;
         date = date.now();
         Patient p = new Patient();
-        p.setAMKA(333333333);
+        p.setAMKA(444444444);
         Appointment ap = new Appointment(p,date," ",1);
 //        dbmanager.createAppointment(ap);
         ap.setID(4);
@@ -34,12 +34,14 @@ public class MedicalOffice {
 //        System.out.println(dbmanager.updateRestock(1, "/file83.txt" , 1));
 //        System.out.println(dbmanager.deleteRestock(2));
 
-        MediclaUsers md = new MediclaUsers(2,"Nursey Nurse", "987654321", new Integer(2).shortValue(), 665198665);
+//        MediclaUsers md = new MediclaUsers(2,"Nursey Nurse", "987654321", new Integer(2).shortValue(), 665198665);
 //        dbmanager.createMedicalUser(md);
-        dbmanager.updateMedicalUser(md);
+//        dbmanager.updateMedicalUser(md);
 //        dbmanager.deleteMedicalUser(md);
 //        ap = new Appointment(p,LocalDateTime.now(),"farmaka",1000);
 //        dbmanager.updateAppointment(ap);
+//        dbmanager.createPatient(p);
+
     }
 
     private static Object LocalDateTime() {

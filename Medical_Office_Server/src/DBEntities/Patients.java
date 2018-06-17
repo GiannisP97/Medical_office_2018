@@ -5,7 +5,11 @@
  */
 package DBEntities;
 
+import SoftwareEngineering.Patient;
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -144,4 +148,26 @@ public class Patients implements Serializable {
         return "DBEntities.Patients[ amka=" + amka + " ]";
     }
     
+    public Patient toPatient(){
+        
+        Patient pt = new Patient();
+        pt.setAMKA(this.amka);
+        pt.setBirth(convertToLocalDateViaInstant(this.birthDate));
+        if(sex.equals("MALE")) pt.setGender(new Integer(1).shortValue());
+        else pt.setGender(new Integer(0).shortValue());
+//        pt.setGender(this.sex);
+        pt.setName(this.name);
+        pt.setPhoneNumber(this.contactNumber);
+        pt.setSurname(this.name);
+        return pt;
+    }
+    
+    public LocalDateTime convertToLocalDateTimeViaInstant(Date dateToConvert) {
+    return dateToConvert.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+    }
+    public LocalDate convertToLocalDateViaInstant(Date dateToConvert) {
+    return dateToConvert.toInstant()
+      .atZone(ZoneId.systemDefault())
+      .toLocalDate();
+    }
 }
