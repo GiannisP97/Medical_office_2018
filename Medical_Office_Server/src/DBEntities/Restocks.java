@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package SoftwareEngineering;
+package DBEntities;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
@@ -29,7 +29,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Restocks.findAll", query = "SELECT r FROM Restocks r")
     , @NamedQuery(name = "Restocks.findByRestockId", query = "SELECT r FROM Restocks r WHERE r.restockId = :restockId")
-    , @NamedQuery(name = "Restocks.findByMedicaluserId", query = "SELECT r FROM Restocks r WHERE r.medicaluserId = :medicaluserId")
     , @NamedQuery(name = "Restocks.findByFileName", query = "SELECT r FROM Restocks r WHERE r.fileName = :fileName")})
 public class Restocks implements Serializable {
 
@@ -39,25 +38,17 @@ public class Restocks implements Serializable {
     @Basic(optional = false)
     @Column(name = "restock_id")
     private Integer restockId;
-    @Basic(optional = false)
-    @Column(name = "medicaluser_id")
-    private int medicaluserId;
     @Column(name = "file_name")
     private String fileName;
-    @JoinColumn(name = "supplier_id", referencedColumnName = "supplier_id")
+    @JoinColumn(name = "medicaluser_id", referencedColumnName = "user_id")
     @ManyToOne(optional = false)
-    private Suppliers supplierId;
+    private MediclaUsers medicaluserId;
 
     public Restocks() {
     }
 
     public Restocks(Integer restockId) {
         this.restockId = restockId;
-    }
-
-    public Restocks(Integer restockId, int medicaluserId) {
-        this.restockId = restockId;
-        this.medicaluserId = medicaluserId;
     }
 
     public Integer getRestockId() {
@@ -68,14 +59,6 @@ public class Restocks implements Serializable {
         this.restockId = restockId;
     }
 
-    public int getMedicaluserId() {
-        return medicaluserId;
-    }
-
-    public void setMedicaluserId(int medicaluserId) {
-        this.medicaluserId = medicaluserId;
-    }
-
     public String getFileName() {
         return fileName;
     }
@@ -84,12 +67,12 @@ public class Restocks implements Serializable {
         this.fileName = fileName;
     }
 
-    public Suppliers getSupplierId() {
-        return supplierId;
+    public MediclaUsers getMedicaluserId() {
+        return medicaluserId;
     }
 
-    public void setSupplierId(Suppliers supplierId) {
-        this.supplierId = supplierId;
+    public void setMedicaluserId(MediclaUsers medicaluserId) {
+        this.medicaluserId = medicaluserId;
     }
 
     @Override
@@ -114,7 +97,7 @@ public class Restocks implements Serializable {
 
     @Override
     public String toString() {
-        return "SoftwareEngineering.Restocks[ restockId=" + restockId + " ]";
+        return "DBEntities.Restocks[ restockId=" + restockId + " ]";
     }
     
 }

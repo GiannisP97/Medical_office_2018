@@ -5,6 +5,7 @@
  */
 package SoftwareEngineering;
 
+import DBEntities.MediclaUsers;
 import java.time.LocalDateTime;
 
 /**
@@ -19,12 +20,26 @@ public class MedicalOffice {
     public static void main(String[] args) {
         // TODO code application logic here
         DBManager dbmanager = new DBManager();
-        Appointment ap = new Appointment();
-        dbmanager.createAppointment(ap);
-        
+        LocalDateTime date = null;
+        date = date.now();
         Patient p = new Patient();
-        ap = new Appointment(p,LocalDateTime.now(),"farmaka",1000);
-        dbmanager.updateAppointment(ap);
+        p.setAMKA(333333333);
+        Appointment ap = new Appointment(p,date," ",1);
+//        dbmanager.createAppointment(ap);
+        ap.setID(4);
+//        dbmanager.updateAppointment(ap);
+//        dbmanager.deleteAppointment(ap);
+
+//        System.out.println(dbmanager.createRestock(1, "/file01.txt"));
+//        System.out.println(dbmanager.updateRestock(1, "/file83.txt" , 1));
+//        System.out.println(dbmanager.deleteRestock(2));
+
+        MediclaUsers md = new MediclaUsers(2,"Nursey Nurse", "987654321", new Integer(2).shortValue(), 665198665);
+//        dbmanager.createMedicalUser(md);
+        dbmanager.updateMedicalUser(md);
+//        dbmanager.deleteMedicalUser(md);
+//        ap = new Appointment(p,LocalDateTime.now(),"farmaka",1000);
+//        dbmanager.updateAppointment(ap);
     }
 
     private static Object LocalDateTime() {

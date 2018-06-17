@@ -15,14 +15,14 @@ import java.time.LocalTime;
 public class Patient implements Serializable{
     private String name;
     private String surname;
-    private String AMKA;
+    private Integer AMKA;
     private LocalTime birth_date;
     private String phone_number;
     private short gender;
     
     
     public Patient(){
-        this.AMKA="0";
+        this.AMKA=0;
         this.birth_date=null;
         this.gender=0;
         this.name="";
@@ -56,7 +56,7 @@ public class Patient implements Serializable{
         
     
 
-    public void setAMKA(String AMKA){
+    public void setAMKA(Integer AMKA){
         this.AMKA = AMKA;
     }
 
@@ -69,7 +69,7 @@ public class Patient implements Serializable{
         this.birth_date = birthdate;
     }
     
-    public String getAMKA(){
+    public Integer getAMKA(){
         return this.AMKA;
     }
     

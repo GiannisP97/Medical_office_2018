@@ -50,7 +50,7 @@ public class Appointment implements Serializable{
         this.doctor_id = did;
     }
     
-    public Patient getPetient(){
+    public Patient getPatient(){
         return this.p;
     }
     
@@ -80,4 +80,7 @@ public class Appointment implements Serializable{
         return this.id;
     }
     
+    public void setID(int ID){
+        this.id = ID;
+    }
 }
