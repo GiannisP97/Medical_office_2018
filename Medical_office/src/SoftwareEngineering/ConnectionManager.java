@@ -8,6 +8,7 @@ package SoftwareEngineering;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.io.Serializable;
@@ -24,6 +25,21 @@ public class ConnectionManager {
     private String iBuffer,oBuffer;
     private PrintWriter writer;
     private BufferedReader reader;
+    
+public <T> T receiveObject() throws IOException, ClassNotFoundException{
+        try(ObjectInputStream ois = new ObjectInputStream(conn.getInputStream())){
+            T temp = (T) ois.readObject();
+            return temp;
+        }
+        catch(IOException e){
+            System.out.println("recvMessage()-> IOException: " + e.getMessage());
+            return null;
+        }
+        catch(ClassNotFoundException e){
+            System.out.println("recvMessage()-> ClassNotFoundException: " + e.getMessage());
+            return null;
+        }
+    }
     
     public ConnectionManager(){
         hostName = ""; 
@@ -45,19 +61,35 @@ public class ConnectionManager {
         }
 
     }
-    
+    public boolean sendObject(Object obj) throws IOException{
+        try(ObjectOutputStream oos = new ObjectOutputStream(conn.getOutputStream())){
+            oos.writeObject(obj);
+            return true;
+        }
+        catch(IOException e){
+            System.out.println("sendMessage()-> IOException: " + e.getMessage());
+            System.out.println("================StackTrace================");  
+            e.printStackTrace();
+            System.out.println("----------------StackTrace----------------");
+            return false;
+        }
+    }
    
-    public void sendMessage(String s) throws IOException{
+    public boolean sendMessage(String s) throws IOException{
         short i=2;
         System.out.println("Sending... "+s);
         try{
             writer.println(s);
+            return true;
         }
         catch (Exception x){
             System.out.println(x.getMessage());
+            return false;
         }
     }
     public void Close() throws IOException{
+        this.sendMessage("L3");
+        System.out.println("Closing Connection");
         conn.close();
     }
     public boolean isReadReady() throws IOException{
@@ -65,7 +97,8 @@ public class ConnectionManager {
     }
     public String receiveMessage() throws IOException{
         try {
-            return reader.readLine();
+            String recv = reader.readLine();
+            return recv;
         }
         catch (Exception x) {
             return "No Response";

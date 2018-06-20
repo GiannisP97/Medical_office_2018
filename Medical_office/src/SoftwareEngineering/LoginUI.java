@@ -176,7 +176,7 @@ public class LoginUI extends javax.swing.JFrame {
         PasswordLabel = new javax.swing.JLabel();
         WrongCredentialsMessage = new javax.swing.JLabel();
 
-        User_MainMenu.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        User_MainMenu.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         User_MainMenu.setTitle("Αρχική Σελίδα Γραμματέας");
         User_MainMenu.setMinimumSize(new java.awt.Dimension(1024, 720));
         User_MainMenu.setResizable(false);
@@ -362,7 +362,7 @@ public class LoginUI extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(New_Patient_Sex, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(New_Patient_BirthDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
                 .addComponent(New_Patient_Submit)
                 .addGap(18, 18, 18))
         );
@@ -456,7 +456,7 @@ public class LoginUI extends javax.swing.JFrame {
                     .addComponent(New_Appointment_Time, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jButton3)
-                .addContainerGap(47, Short.MAX_VALUE))
+                .addContainerGap(36, Short.MAX_VALUE))
         );
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
@@ -506,7 +506,7 @@ public class LoginUI extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(kataxorisi, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 156, Short.MAX_VALUE)
+                    .addComponent(kataxorisi, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 158, Short.MAX_VALUE)
                     .addComponent(paragelia_name, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(paragelia_posotita, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel14, javax.swing.GroupLayout.Alignment.LEADING)
@@ -541,8 +541,8 @@ public class LoginUI extends javax.swing.JFrame {
         User_Home_RightSide.setLayout(User_Home_RightSideLayout);
         User_Home_RightSideLayout.setHorizontalGroup(
             User_Home_RightSideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 738, Short.MAX_VALUE)
-            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 738, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 742, Short.MAX_VALUE)
+            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 742, Short.MAX_VALUE)
             .addGroup(User_Home_RightSideLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 718, Short.MAX_VALUE)
@@ -570,7 +570,7 @@ public class LoginUI extends javax.swing.JFrame {
         );
         User_Home_BodyLayout.setVerticalGroup(
             User_Home_BodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(User_Home_LeftSide, javax.swing.GroupLayout.DEFAULT_SIZE, 978, Short.MAX_VALUE)
+            .addComponent(User_Home_LeftSide, javax.swing.GroupLayout.DEFAULT_SIZE, 979, Short.MAX_VALUE)
             .addComponent(User_Home_RightSide, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
@@ -963,6 +963,17 @@ public class LoginUI extends javax.swing.JFrame {
         //this.AppointmentTable.setDefaultRenderer(this.AppointmentTable.getColumnClass(NORMAL), dtcr);
     }
     
+    private void UIPopulator(){
+        /*   _______________________________________________________
+        *   |                     GENERAL FLAGS                    | 
+        *   |------------------------------------------------------|
+        *   |               L0  :   LOGIN FAILED                   |
+        *   |               L1  :   LOGIN SUCCESS                  |
+        *   |               L2  :       -                          |
+        *   |               L3  :   LOGOUT                         |
+        *   |______________________________________________________|
+        */
+    }
         private void FillSchedule(int did){
         DefaultTableModel model2 = new DefaultTableModel();
         model2.addColumn("ΩΡΑ");
@@ -996,53 +1007,64 @@ public class LoginUI extends javax.swing.JFrame {
         }
         return flag;
     }
+    
+    
+
+    
     private void LoginForm_SubmitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoginForm_SubmitButtonActionPerformed
 
-
+        /*   _______________________________________________________
+        *   |                     LOGIN FLAGS                      | 
+        *   |------------------------------------------------------|
+        *   |               L0  :   LOGIN FAILED                   |
+        *   |               L1  :   LOGIN SUCCESS                  |
+        *   |               L2  :   LOGIN CREDENTIALS              |
+        *   |               L3  :   LOGOUT                         |
+        *   |______________________________________________________|
+        */
                 try {
                     this.WrongCredentialsMessage.setText("");
                     if (this.isUserInputValid() == true){
-            //            conn = new ConnectionManager();
-                        if ( Connection() == true){
-                            //this.loading_icon.setVisible(true);
-
+           
+                    if ( (Connection() == true) && conn.sendMessage("L2") == true){
+                    
+                    
                     conn.sendMessage(this.LoginForm_Username.getText());
-                    //conn.sendMessage(this.LoginForm_Username.getText());
                     conn.sendMessage(String.valueOf(this.LoginForm_Password.getPassword()));
-                    String recv = conn.receiveMessage();
+                    
+                    String recv = conn.receiveObject();
+                    if (recv == null) recv = "No Response";
                     System.out.println("Server sent to me "+recv);
 
                     if ( recv.equals("L1") ){
                         this.setVisible(false); // HIDE LOGIN WINDOW
                         this.User_MainMenu.setVisible(true); // SHOW HOME SCREEN
+                        this.UIPopulator();
+                        
                     }
                     else if ( recv.equals("L0") ){
                        this.WrongCredentialsMessage.setText("Εισάγατε λάθος στοιχεία. Δοκιμάστε ξανά");
-                       conn.sendMessage("L3");
                        conn.Close();
-                       System.exit(10);
+                       
                     }
                     else if ( recv.equals("No Response")){
                         this.WrongCredentialsMessage.setText("Ο διακομιστής άργησε πολύ να απαντήσει.");
-                        conn.sendMessage("L3");
                         conn.Close();
                     }
                     else {
                         this.WrongCredentialsMessage.setText("Μή έγκυρη απάντηση απο το διακομιστή.");
-                        conn.sendMessage("L3");
                         conn.Close();
                     }
                   // this.loading_icon.setVisible(false);
             }
             else {
                 this.WrongCredentialsMessage.setText("Αποτυχία σύνδεσης με τον διακομιστή.");
-                conn.sendMessage("L3");
                 conn.Close();
             }
                         }
-            } catch (IOException ex) {
+            } catch (Exception ex) {
                     System.out.println(ex.getMessage());
-                }
+            }
         
          
     }//GEN-LAST:event_LoginForm_SubmitButtonActionPerformed
@@ -1072,7 +1094,6 @@ public class LoginUI extends javax.swing.JFrame {
             //SYNC CHANGES WITH SERVER
             //CLOSE SOCKET
             //DISPOSE FRAME
-            conn.sendMessage("L3");
             conn.Close();
         } catch (IOException ex) {
             Logger.getLogger(LoginUI.class.getName()).log(Level.SEVERE, null, ex);
@@ -1087,8 +1108,13 @@ public class LoginUI extends javax.swing.JFrame {
     }//GEN-LAST:event_User_Profile_LogoutActionPerformed
 
     private void User_MainMenuWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_User_MainMenuWindowClosed
-        // TODO add your handling code here:
-        this.setVisible(true);
+        try {
+            // TODO add your handling code here:
+            this.setVisible(true);
+            conn.Close();
+        } catch (IOException ex) {
+            Logger.getLogger(LoginUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_User_MainMenuWindowClosed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
