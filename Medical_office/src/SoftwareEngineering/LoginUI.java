@@ -21,6 +21,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 
 /**
@@ -71,6 +72,12 @@ public class LoginUI extends javax.swing.JFrame {
         borderc = this.LoginForm_Username.getBorder(); // USED FOR CREDENTIAL VALIDATION
         FillSchedule();
         this.setVisible(false);
+        TableModel model = new DefaultTableModel() {
+            public boolean isCellEditable(int rowIndex, int mColIndex) {
+              return false;
+            }
+        };
+        this.TableOrder.setModel(model);
         //this.User_MainMenu.setVisible(true);
         
  
@@ -1037,8 +1044,11 @@ public class LoginUI extends javax.swing.JFrame {
                        conn.Close();
                        System.exit(10);
                     }
+                    else if ( recv.equals("No Response")){
+                        this.WrongCredentialsMessage.setText("Ο διακομιστής άργησε πολύ να απαντήσει.");
+                    }
                     else {
-
+                        this.WrongCredentialsMessage.setText("Μή έγκυρη απάντηση απο το διακομιστή.");
                     }
 
                 } catch (IOException ex) {

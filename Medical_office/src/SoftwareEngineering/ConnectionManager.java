@@ -36,6 +36,7 @@ public class ConnectionManager {
     public boolean CreateSocket(String host,int port) throws IOException{
         try{
             conn = new Socket(host,port);
+            conn.setSoTimeout(3000);
             writer = new PrintWriter(conn.getOutputStream(),true);
             reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             return true;
@@ -65,8 +66,12 @@ public class ConnectionManager {
         return reader.ready();
     }
     public String receiveMessage() throws IOException{
-        
-        return reader.readLine();
+        try {
+            return reader.readLine();
+        }
+        catch (Exception x) {
+            return "No Response";
+        }
     }
     
     public void sendMessage(Serializable s) throws IOException{
