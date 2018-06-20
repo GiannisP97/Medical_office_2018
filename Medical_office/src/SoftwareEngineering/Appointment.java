@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
  */
 public class Appointment implements Serializable,Comparable<Appointment>{
     
+    private static final long serialVersionUID= 3L;
     private int id ;
     private Patient p;
     private LocalDateTime date;
@@ -62,10 +63,18 @@ public class Appointment implements Serializable,Comparable<Appointment>{
     public int getDoctorId(){
         return this.doctor_id;
     }
+    
+    public void setId(int y){
+        this.id = y;
+    }
 
     @Override
     public int compareTo(Appointment o) {
         return getDate().compareTo(o.getDate());
+    }
+    
+    public String toString(){
+        return this.id+"$"+this.p+"$"+this.doctor_id+"$"+this.date.toString();
     }
     
 

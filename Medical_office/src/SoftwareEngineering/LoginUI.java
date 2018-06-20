@@ -6,7 +6,6 @@
 package SoftwareEngineering;
 
 import java.awt.Color;
-import java.awt.Dialog;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -18,8 +17,6 @@ import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.DefaultListModel;
-import javax.swing.JDialog;
-import javax.swing.SwingWorker;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -41,6 +38,7 @@ public class LoginUI extends javax.swing.JFrame {
     private DefaultListModel<String> dlm = new DefaultListModel<>();
     private Schedule AppointmentList = new Schedule();
     private User loginUser;
+    private ArrayList<StorageItem> item_list = new ArrayList<StorageItem>();
     
     public static void setConnectionInfo(String h,int p){
         LoginUI.hostname = h;
@@ -63,10 +61,12 @@ public class LoginUI extends javax.swing.JFrame {
     public LoginUI() {
 
         initComponents();
+        
         borderc = this.LoginForm_Username.getBorder(); // USED FOR CREDENTIAL VALIDATION
         FillSchedule();
         this.setVisible(false);
         //this.User_MainMenu.setVisible(true);
+        this.User_MainMenu.setVisible(true);
         
  
 
@@ -120,6 +120,14 @@ public class LoginUI extends javax.swing.JFrame {
         New_Appointment_Date = new javax.swing.JFormattedTextField();
         New_Appointment_Time = new javax.swing.JFormattedTextField();
         jPanel4 = new javax.swing.JPanel();
+        jLabel14 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        paragelia_name = new javax.swing.JTextField();
+        paragelia_posotita = new javax.swing.JTextField();
+        kataxorisi = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        TableOrder = new javax.swing.JTable();
         User_MenuBar = new javax.swing.JMenuBar();
         User_Action_Menu = new javax.swing.JMenu();
         jMenu1 = new javax.swing.JMenu();
@@ -162,6 +170,7 @@ public class LoginUI extends javax.swing.JFrame {
         User_MainMenu.setTitle("Αρχική Σελίδα Γραμματέας");
         User_MainMenu.setMinimumSize(new java.awt.Dimension(1024, 720));
         User_MainMenu.setResizable(false);
+        User_MainMenu.setSize(new java.awt.Dimension(1198, 1008));
         User_MainMenu.addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 User_MainMenuWindowClosed(evt);
@@ -199,7 +208,7 @@ public class LoginUI extends javax.swing.JFrame {
         User_Home_LeftSide.setLayout(User_Home_LeftSideLayout);
         User_Home_LeftSideLayout.setHorizontalGroup(
             User_Home_LeftSideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, User_Home_LeftSideLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -444,24 +453,88 @@ public class LoginUI extends javax.swing.JFrame {
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Νέα Παραγγελεία", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.ABOVE_TOP));
         jPanel4.setPreferredSize(new java.awt.Dimension(507, 235));
 
+        jLabel14.setText("Όνομα :");
+
+        jLabel16.setText("Ποσότητα :");
+        jLabel16.setToolTipText("");
+
+        paragelia_name.setMinimumSize(new java.awt.Dimension(69, 22));
+        paragelia_name.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                paragelia_nameActionPerformed(evt);
+            }
+        });
+
+        paragelia_posotita.setMinimumSize(new java.awt.Dimension(69, 22));
+
+        kataxorisi.setText("Καταχώριση");
+        kataxorisi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                kataxorisiActionPerformed(evt);
+            }
+        });
+
+        jButton5.setText("Αποστολή");
+
+        TableOrder.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {},
+                {},
+                {},
+                {}
+            },
+            new String [] {
+
+            }
+        ));
+        jScrollPane4.setViewportView(TableOrder);
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(kataxorisi, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE)
+                    .addComponent(paragelia_name, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(paragelia_posotita, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jLabel14, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel16, javax.swing.GroupLayout.Alignment.LEADING))
+                    .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(132, 132, 132)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 408, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 145, Short.MAX_VALUE)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel14)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(paragelia_name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(14, 14, 14)
+                .addComponent(jLabel16)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(paragelia_posotita, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(kataxorisi)
+                .addGap(18, 18, 18)
+                .addComponent(jButton5)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 444, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout User_Home_RightSideLayout = new javax.swing.GroupLayout(User_Home_RightSide);
         User_Home_RightSide.setLayout(User_Home_RightSideLayout);
         User_Home_RightSideLayout.setHorizontalGroup(
             User_Home_RightSideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 523, Short.MAX_VALUE)
-            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 523, Short.MAX_VALUE)
-            .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 523, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 718, Short.MAX_VALUE)
+            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 718, Short.MAX_VALUE)
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 718, Short.MAX_VALUE)
         );
         User_Home_RightSideLayout.setVerticalGroup(
             User_Home_RightSideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -470,8 +543,8 @@ public class LoginUI extends javax.swing.JFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 484, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout User_Home_BodyLayout = new javax.swing.GroupLayout(User_Home_Body);
@@ -479,13 +552,13 @@ public class LoginUI extends javax.swing.JFrame {
         User_Home_BodyLayout.setHorizontalGroup(
             User_Home_BodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(User_Home_BodyLayout.createSequentialGroup()
-                .addComponent(User_Home_LeftSide, javax.swing.GroupLayout.DEFAULT_SIZE, 491, Short.MAX_VALUE)
+                .addComponent(User_Home_LeftSide, javax.swing.GroupLayout.DEFAULT_SIZE, 469, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(User_Home_RightSide, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         User_Home_BodyLayout.setVerticalGroup(
             User_Home_BodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(User_Home_LeftSide, javax.swing.GroupLayout.DEFAULT_SIZE, 693, Short.MAX_VALUE)
+            .addComponent(User_Home_LeftSide, javax.swing.GroupLayout.DEFAULT_SIZE, 978, Short.MAX_VALUE)
             .addComponent(User_Home_RightSide, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
@@ -591,7 +664,6 @@ public class LoginUI extends javax.swing.JFrame {
         ErrorDialog.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         ErrorDialog.setTitle("Error");
         ErrorDialog.setMinimumSize(new java.awt.Dimension(600, 80));
-        ErrorDialog.setPreferredSize(new java.awt.Dimension(600, 150));
         ErrorDialog.setResizable(false);
         ErrorDialog.setSize(new java.awt.Dimension(600, 150));
         ErrorDialog.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -976,7 +1048,7 @@ public class LoginUI extends javax.swing.JFrame {
             //SYNC CHANGES WITH SERVER
             //CLOSE SOCKET
             //DISPOSE FRAME
-            conn.sendMessage("XX");
+            conn.sendMessage("L3");
             conn.Close();
         } catch (IOException ex) {
             Logger.getLogger(LoginUI.class.getName()).log(Level.SEVERE, null, ex);
@@ -1065,7 +1137,11 @@ public class LoginUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        Appointment ap = new Appointment(new Patient(new Integer(123),"sdfsdf","sdfsdf","sdfsdf",(short) 3,LocalDate.now()),LocalDateTime.now(),5);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        String dateTime = this.New_Appointment_Date +" "+ this.New_Appointment_Time;
+        LocalDateTime i = LocalDateTime.parse(dateTime,formatter);
+        
+        Appointment ap = new Appointment(new Patient(new Integer(123),"sdfsdf","sdfsdf","sdfsdf",(short) 3,LocalDate.now()),i,5);
         
         //this.New_Appointment_Date;
         //this.New_Appointment_Doctor;
@@ -1074,7 +1150,6 @@ public class LoginUI extends javax.swing.JFrame {
         
         try {
                 conn.sendMessage("C1");
-                String ss  = "asdasdsad";
                 //sending an appointment
                 conn.sendMessage(ap);
             } catch (IOException ex) {
@@ -1082,6 +1157,39 @@ public class LoginUI extends javax.swing.JFrame {
             }
         
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void paragelia_nameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_paragelia_nameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_paragelia_nameActionPerformed
+
+    public boolean checkPosotita(){
+        if(!this.paragelia_posotita.getText().matches("[0-9]+")){
+            return false;
+        }
+        
+        return true;
+    }
+    
+    private void kataxorisiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kataxorisiActionPerformed
+        DefaultTableModel model2 = new DefaultTableModel();
+        DefaultTableCellRenderer dtcr = new DefaultTableCellRenderer();
+        dtcr.setHorizontalTextPosition(DefaultTableCellRenderer.CENTER);
+        if(this.checkPosotita()){
+            model2.addColumn("ΟΝΟΜΑ");
+            model2.addColumn("ΠΟΣΟΤΗΤΑ");
+            
+            StorageItem tmp = new StorageItem(this.paragelia_name.getText(),Integer.parseInt(this.paragelia_posotita.getText()));
+            
+            this.item_list.add(tmp);
+            for ( StorageItem x : item_list){
+                    model2.addRow(new Object[]{x.getItemName(),x.getItemQuantity()});
+            } 
+
+            this.TableOrder.setModel(model2);
+            
+        }
+
+    }//GEN-LAST:event_kataxorisiActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1152,6 +1260,7 @@ public class LoginUI extends javax.swing.JFrame {
     private javax.swing.JTextField New_Patient_Surname;
     private javax.swing.JLabel PasswordLabel;
     private javax.swing.JFrame PerscripsionFrame;
+    private javax.swing.JTable TableOrder;
     private javax.swing.JMenu UserMenuBar_Display;
     private javax.swing.JMenu User_Action_Menu;
     private javax.swing.JPanel User_Home_Body;
@@ -1169,12 +1278,15 @@ public class LoginUI extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -1197,6 +1309,10 @@ public class LoginUI extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JButton kataxorisi;
+    private javax.swing.JTextField paragelia_name;
+    private javax.swing.JTextField paragelia_posotita;
     // End of variables declaration//GEN-END:variables
 }

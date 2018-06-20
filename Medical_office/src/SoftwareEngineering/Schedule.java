@@ -40,7 +40,7 @@ public class Schedule {
     
     
     
-     public ArrayList getSchedule(){
+     public ArrayList<Appointment> getSchedule(){
          
         Collections.sort(appointment_list);
         return this.appointment_list;

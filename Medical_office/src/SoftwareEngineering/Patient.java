@@ -6,6 +6,7 @@
 package SoftwareEngineering;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalTime;
 /**
  *
@@ -13,16 +14,18 @@ import java.time.LocalTime;
  * @author Giannis
  */
 public class Patient implements Serializable{
+    
+    private static final long serialVersionUID= 2L;
     private String name;
     private String surname;
-    private String AMKA;
-    private LocalTime birth_date;
+    private Integer AMKA;
+    private LocalDate birth_date;
     private String phone_number;
-    private int gender;
+    private short gender;
     
     
     public Patient(){
-        this.AMKA="";
+        this.AMKA=0;
         this.birth_date=null;
         this.gender=0;
         this.name="";
@@ -40,13 +43,13 @@ public class Patient implements Serializable{
         this.phone_number=p.phone_number;
     }
     
-    public Patient(String AMKA,String name,String surname,String phonenumber,int g,LocalTime d){
+    public Patient(Integer AMKA,String name,String surname,String phonenumber,short g,LocalDate d){
         this.AMKA = AMKA;
         this.name = name;
         this.surname = surname;
         this.phone_number = phonenumber;
         this.birth_date = d;
-        this.gender = g;
+        this.gender = (short ) g;
         
         
     }
@@ -67,7 +70,7 @@ public class Patient implements Serializable{
         
     
 
-    public void setAMKA(String AMKA){
+    public void setAMKA(Integer AMKA){
         this.AMKA = AMKA;
     }
 
@@ -76,7 +79,7 @@ public class Patient implements Serializable{
     }
     
 
-    public void setBirth(LocalTime birthdate){
+    public void setBirth(LocalDate birthdate){
         this.birth_date = birthdate;
     }
     
@@ -88,4 +91,5 @@ public class Patient implements Serializable{
     public String toString(){
         return this.name+"$"+this.surname+"$"+this.phone_number+"$"+this.AMKA+String.valueOf(this.gender)+"$"+this.birth_date.toString();
     }
+
 }

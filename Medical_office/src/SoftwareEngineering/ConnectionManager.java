@@ -10,6 +10,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.io.Serializable;
 import java.net.Socket;
@@ -19,18 +20,18 @@ import java.net.Socket;
  * @author Thanasislt
  */
 public class ConnectionManager {
-    private Socket conn;
+    private Socket conn=null;
     private String hostName;
     private int portNumber;
     private String iBuffer,oBuffer;
     private PrintWriter writer;
     private BufferedReader reader;
+    
     public ConnectionManager(){
         hostName = ""; 
         iBuffer = "";
         oBuffer = "";
         portNumber = 0;
-        conn = null;
     }
     public void CreateSocket(String host,int port) throws IOException{
         try{
@@ -44,9 +45,10 @@ public class ConnectionManager {
 
     }
     
+   //@Deprecated 
     public void sendMessage(String s) throws IOException{
-        
-        System.out.println("Sending: "+s);
+        short i=2;
+        System.out.println("Sending: "+s+ (int) i);
         try{
             writer.println(s);
         }
@@ -61,10 +63,22 @@ public class ConnectionManager {
         return reader.ready();
     }
     public String receiveMessage() throws IOException{
+        
         return reader.readLine();
     }
     
-    public void sendSerializable(){
+    public void sendMessage(Serializable s) throws IOException{
+        //System.out.println("Sending: "+s);
+        
+        try{
+           // writer.println(s);
+            ObjectOutputStream server_objects= new ObjectOutputStream(this.conn.getOutputStream());
+            server_objects.writeObject(s);
+            server_objects.flush();
+        }
+        catch (Exception x){
+            System.out.println(x.getMessage());
+        }
         
     }
 }
