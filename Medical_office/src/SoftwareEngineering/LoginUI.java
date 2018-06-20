@@ -40,7 +40,7 @@ public class LoginUI extends javax.swing.JFrame {
     private DefaultListModel<String> dlm = new DefaultListModel<>();
     private Schedule AppointmentList = new Schedule();
     private User loginUser;
-    private ArrayList<StorageItem> item_list = new ArrayList<StorageItem>();
+    private ArrayList<StorageItem> item_list = new ArrayList<>();
     
     public static void setConnectionInfo(String h,int p){
         LoginUI.hostname = h;
@@ -1200,7 +1200,7 @@ public class LoginUI extends javax.swing.JFrame {
         this.FillSchedule(1);
         this.PerscripsionFrame.setVisible(true);
     }//GEN-LAST:event_jMenu2MousePressed
-
+//
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
