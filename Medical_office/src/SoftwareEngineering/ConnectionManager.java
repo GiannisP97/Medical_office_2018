@@ -33,19 +33,21 @@ public class ConnectionManager {
         oBuffer = "";
         portNumber = 0;
     }
-    public void CreateSocket(String host,int port) throws IOException{
+    public boolean CreateSocket(String host,int port) throws IOException{
         try{
             conn = new Socket(host,port);
             writer = new PrintWriter(conn.getOutputStream(),true);
             reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            return true;
         }
         catch(Exception ex){
             System.out.println(ex.getMessage());
+            return false;
         }
 
     }
     
-   //@Deprecated 
+   
     public void sendMessage(String s) throws IOException{
         short i=2;
         System.out.println("Sending: "+s+ (int) i);

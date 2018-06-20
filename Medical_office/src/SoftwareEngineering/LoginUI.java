@@ -44,12 +44,16 @@ public class LoginUI extends javax.swing.JFrame {
         LoginUI.hostname = h;
         LoginUI.port = p;
     }
-    private static void Connection(){
+    private static boolean Connection(){
 
         try {
-            conn.CreateSocket(hostname, port);
-        } catch (IOException ex) {
             
+            if (conn.CreateSocket(hostname, port))
+                return conn.isReadReady();
+            return false;
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+            return false;
         }
 
         
@@ -989,36 +993,40 @@ public class LoginUI extends javax.swing.JFrame {
         this.WrongCredentialsMessage.setText("");
         if (this.isUserInputValid() == true){
 //            conn = new ConnectionManager();
-            Connection();
-            //this.loading_icon.setVisible(true);
+            if ( Connection() == true){
+                //this.loading_icon.setVisible(true);
 
-            try {
-                
-                conn.sendMessage(this.LoginForm_Username.getText());
-                //conn.sendMessage(this.LoginForm_Username.getText());
-                conn.sendMessage(String.valueOf(this.LoginForm_Password.getPassword()));
-                String recv = conn.receiveMessage();
+                try {
 
-                
-                if ( recv.equals("L1") ){
-                    this.setVisible(false); // HIDE LOGIN WINDOW
-                    this.User_MainMenu.setVisible(true); // SHOW HOME SCREEN
+                    conn.sendMessage(this.LoginForm_Username.getText());
+                    //conn.sendMessage(this.LoginForm_Username.getText());
+                    conn.sendMessage(String.valueOf(this.LoginForm_Password.getPassword()));
+                    String recv = conn.receiveMessage();
+
+
+                    if ( recv.equals("L1") ){
+                        this.setVisible(false); // HIDE LOGIN WINDOW
+                        this.User_MainMenu.setVisible(true); // SHOW HOME SCREEN
+                    }
+                    else if ( recv.equals("L0") ){
+                       this.WrongCredentialsMessage.setText("Εισάγατε λάθος στοιχεία. Δοκιμάστε ξανά");
+                       conn.sendMessage("XX");
+                       conn.Close();
+                       System.exit(10);
+                    }
+                    else {
+
+                    }
+
+                } catch (IOException ex) {
+                    System.out.println(ex.getMessage());
                 }
-                else if ( recv.equals("L0") ){
-                   this.WrongCredentialsMessage.setText("Εισάγατε λάθος στοιχεία. Δοκιμάστε ξανά");
-                   conn.sendMessage("XX");
-                   conn.Close();
-                   System.exit(10);
-                }
-                else {
-                    
-                }
-                
-            } catch (IOException ex) {
-                System.out.println(ex.getMessage());
+
+               // this.loading_icon.setVisible(false);
             }
-            
-           // this.loading_icon.setVisible(false);
+            else {
+                this.WrongCredentialsMessage.setText("Αποτυχία σύνδεσης με τον διακομιστή.");
+            }
         }
          
     }//GEN-LAST:event_LoginForm_SubmitButtonActionPerformed
