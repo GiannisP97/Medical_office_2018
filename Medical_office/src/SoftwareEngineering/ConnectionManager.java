@@ -50,7 +50,7 @@ public class ConnectionManager {
    
     public void sendMessage(String s) throws IOException{
         short i=2;
-        System.out.println("Sending: "+s+ (int) i);
+        System.out.println("Sending... "+s);
         try{
             writer.println(s);
         }
