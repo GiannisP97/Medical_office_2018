@@ -48,9 +48,10 @@ public class LoginUI extends javax.swing.JFrame {
 
         try {
             
-            if (conn.CreateSocket(hostname, port))
-                return conn.isReadReady();
-            return false;
+            if (conn.CreateSocket(hostname, port) == true)
+                return true;
+            else 
+                return false;
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
             return false;
