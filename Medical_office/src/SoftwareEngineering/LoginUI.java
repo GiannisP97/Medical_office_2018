@@ -998,19 +998,19 @@ public class LoginUI extends javax.swing.JFrame {
     }
     private void LoginForm_SubmitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoginForm_SubmitButtonActionPerformed
 
-        this.WrongCredentialsMessage.setText("");
-        if (this.isUserInputValid() == true){
-//            conn = new ConnectionManager();
-            if ( Connection() == true){
-                //this.loading_icon.setVisible(true);
 
                 try {
+                    this.WrongCredentialsMessage.setText("");
+                    if (this.isUserInputValid() == true){
+            //            conn = new ConnectionManager();
+                        if ( Connection() == true){
+                            //this.loading_icon.setVisible(true);
 
                     conn.sendMessage(this.LoginForm_Username.getText());
                     //conn.sendMessage(this.LoginForm_Username.getText());
                     conn.sendMessage(String.valueOf(this.LoginForm_Password.getPassword()));
                     String recv = conn.receiveMessage();
-
+                    System.out.println("Server sent to me "+recv);
 
                     if ( recv.equals("L1") ){
                         this.setVisible(false); // HIDE LOGIN WINDOW
@@ -1018,27 +1018,32 @@ public class LoginUI extends javax.swing.JFrame {
                     }
                     else if ( recv.equals("L0") ){
                        this.WrongCredentialsMessage.setText("Εισάγατε λάθος στοιχεία. Δοκιμάστε ξανά");
-                       conn.sendMessage("XX");
+                       conn.sendMessage("L3");
                        conn.Close();
                        System.exit(10);
                     }
                     else if ( recv.equals("No Response")){
                         this.WrongCredentialsMessage.setText("Ο διακομιστής άργησε πολύ να απαντήσει.");
+                        conn.sendMessage("L3");
+                        conn.Close();
                     }
                     else {
                         this.WrongCredentialsMessage.setText("Μή έγκυρη απάντηση απο το διακομιστή.");
+                        conn.sendMessage("L3");
+                        conn.Close();
                     }
-
-                } catch (IOException ex) {
-                    System.out.println(ex.getMessage());
-                }
-
-               // this.loading_icon.setVisible(false);
+                  // this.loading_icon.setVisible(false);
             }
             else {
                 this.WrongCredentialsMessage.setText("Αποτυχία σύνδεσης με τον διακομιστή.");
+                conn.sendMessage("L3");
+                conn.Close();
             }
-        }
+                        }
+            } catch (IOException ex) {
+                    System.out.println(ex.getMessage());
+                }
+        
          
     }//GEN-LAST:event_LoginForm_SubmitButtonActionPerformed
 
