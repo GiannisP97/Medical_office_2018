@@ -1318,21 +1318,23 @@ public class LoginUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void deleteStorageItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteStorageItemActionPerformed
-        DefaultTableModel model2 = new DefaultTableModel();
-        DefaultTableCellRenderer dtcr = new DefaultTableCellRenderer();
-        dtcr.setHorizontalTextPosition(DefaultTableCellRenderer.CENTER);
+        if(this.item_list.size()>0){
+            DefaultTableModel model2 = new DefaultTableModel();
+            DefaultTableCellRenderer dtcr = new DefaultTableCellRenderer();
+            dtcr.setHorizontalTextPosition(DefaultTableCellRenderer.CENTER);
+        
+            model2.addColumn("ΟΝΟΜΑ");
+            model2.addColumn("ΠΟΣΟΤΗΤΑ");
             
-        this.item_list.remove(this.item_list.size()-1);
+            this.item_list.remove(this.item_list.size()-1);
             for ( StorageItem x : item_list){
-                    model2.addRow(new Object[]{x.getItemName(),x.getItemQuantity()});
+                model2.addRow(new Object[]{x.getItemName(),x.getItemQuantity()});
             } 
-
             this.TableOrder.setModel(model2);
+        }
     }//GEN-LAST:event_deleteStorageItemActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
