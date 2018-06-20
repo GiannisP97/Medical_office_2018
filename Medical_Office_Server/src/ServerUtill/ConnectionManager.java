@@ -5,6 +5,7 @@
  */
 package ServerUtill;
 
+import SoftwareEngineering.DBManager;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -15,28 +16,49 @@ import java.net.Socket;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author ilias
  */
 public class ConnectionManager implements Runnable{
+    
+    private static ConnectionManager connectionManagerInstance = null;
+    
     private ConcurrentLinkedQueue<Connection> connections;
     private boolean PollCycle;
     static final int portNumber = 4444;
     static int connID = 0;
     ServerSocket serverSocket;
     
+    //---Singleton
+    DBManager dbmanager;
+    //------------
+    
+    public static ConnectionManager getInstance(){
+        if(connectionManagerInstance == null){
+            try {
+                connectionManagerInstance = new ConnectionManager();
+            } catch (IOException ex) {
+                System.out.println("getInstance()-> IOException: " + ex.getMessage());
+            }            
+        }
+        return connectionManagerInstance;
+    }
+    
     
     public ConnectionManager() throws IOException{
         connections = new ConcurrentLinkedQueue();
         PollCycle = true;
+        DBManager dbmanager = DBManager.getInstance();
         
         try{
             serverSocket = new ServerSocket(portNumber);
         }
         catch(Exception e){
-            
+            System.out.println("ConnectionManager()-> IOException: " + e.getMessage());
         }
         
         this.run();
@@ -52,7 +74,7 @@ public class ConnectionManager implements Runnable{
             try{
                 System.out.println("Waiting for client...");
                 Socket clientSocket = serverSocket.accept();
-                connections.add(new Connection(clientSocket , connID , this));
+                connections.add(new Connection(clientSocket , connID , this , this.dbmanager));
                 connID++;
                 int j = 0;
                 for(Connection temp: connections){
@@ -61,14 +83,25 @@ public class ConnectionManager implements Runnable{
                 }                
                }
             catch(Exception e){
-            
+                System.out.println("PollCycle-> Exception: " + e.getMessage());
+                
             }            
         }        
     }
     
-    public void removeConnection(InetAddress addr){
+    public synchronized void removeConnection(InetAddress addr) throws IOException{
         for(Connection temp: connections){
                     if(temp.getInet() == addr){
+                        try{
+                            temp.getSoc().close();
+                        }
+                        catch(IOException e){
+                            System.out.println("removeConnection-> IOException: " + e.getMessage());
+                            System.out.println("================StackTrace================");  
+                            e.printStackTrace();
+                            System.out.println("----------------StackTrace----------------");
+                        }
+                        
                         connections.remove(temp);
                     }
                 }  

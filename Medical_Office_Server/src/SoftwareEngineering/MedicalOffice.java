@@ -21,9 +21,11 @@ public class MedicalOffice {
      */
     public static void main(String[] args) throws IOException {
         
-        DBManager dbmanager = new DBManager();
-        ConnectionManager connman = new ConnectionManager();
-        
+//        DBManager dbmanager = DBManager.getInstance();
+//        dbmanager.findMedicalUser("Nick Nickolson");
+        ConnectionManager connman = ConnectionManager.getInstance();
+//        ConnectionManager connman = new ConnectionManager();
+
 //        
 
     }

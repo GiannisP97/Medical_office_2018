@@ -11,6 +11,9 @@ import DBEntities.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.NoResultException;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -18,10 +21,18 @@ import java.util.List;
  */
 public final class DBManager {
     
+    private static DBManager DBManagerInstance = null;
+    
+    public static DBManager getInstance(){
+        if(DBManagerInstance == null){
+            DBManagerInstance = new DBManager();      
+        }
+        return DBManagerInstance;
+    }
     
     DBManager(){}
     
-    public boolean createAppointment(Appointment obj){
+    public synchronized boolean createAppointment(Appointment obj){
         EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Medical_Office_ServerPU" );
 
         EntityManager entitymanager = emfactory.createEntityManager( );
@@ -50,7 +61,7 @@ public final class DBManager {
         return true;
     }
     
-    public boolean updateAppointment(Appointment obj){
+    public synchronized boolean updateAppointment(Appointment obj){
         EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Medical_Office_ServerPU" );
         
         EntityManager entitymanager = emfactory.createEntityManager();
@@ -80,7 +91,7 @@ public final class DBManager {
         return true;
     }
     
-    public boolean deleteAppointment(Appointment obj){
+    public synchronized boolean deleteAppointment(Appointment obj){
         EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Medical_Office_ServerPU" );
         
         EntityManager entitymanager = emfactory.createEntityManager();
@@ -98,7 +109,7 @@ public final class DBManager {
         return true;
     }
 
-   public Integer createRestock(int meduserid , String fn){
+   public synchronized Integer createRestock(int meduserid , String fn){
         EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Medical_Office_ServerPU" );
 
         EntityManager entitymanager = emfactory.createEntityManager( );
@@ -119,7 +130,7 @@ public final class DBManager {
     }
     
     
-    public boolean updateRestock(int meduserid , String fn , int rid){
+    public synchronized boolean updateRestock(int meduserid , String fn , int rid){
         EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Medical_Office_ServerPU" );
         
         EntityManager entitymanager = emfactory.createEntityManager();
@@ -138,7 +149,7 @@ public final class DBManager {
         return true;
     }
     
-    public boolean deleteRestock(int rid){
+    public synchronized boolean deleteRestock(int rid){
         EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Medical_Office_ServerPU" );
         
         EntityManager entitymanager = emfactory.createEntityManager();
@@ -156,7 +167,7 @@ public final class DBManager {
         return true;
     }
     
-    public MediclaUsers createMedicalUser(MediclaUsers obj){
+    public synchronized MediclaUsers createMedicalUser(MediclaUsers obj){
         EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Medical_Office_ServerPU" );
 
         EntityManager entitymanager = emfactory.createEntityManager( );
@@ -173,7 +184,7 @@ public final class DBManager {
         return obj;
     }
     
-    public boolean updateMedicalUser(MediclaUsers obj){
+    public synchronized boolean updateMedicalUser(MediclaUsers obj){
         EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Medical_Office_ServerPU" );
         
         EntityManager entitymanager = emfactory.createEntityManager();
@@ -195,7 +206,7 @@ public final class DBManager {
         return true;
     }
     
-    public boolean deleteMedicalUser(MediclaUsers obj){
+    public synchronized boolean deleteMedicalUser(MediclaUsers obj){
         EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Medical_Office_ServerPU" );
         
         EntityManager entitymanager = emfactory.createEntityManager();
@@ -213,7 +224,7 @@ public final class DBManager {
         return true;
     }
     
-//    public Patients createPatient(Patient obj){
+//    public synchronized Patients createPatient(Patient obj){
 //        EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Medical_Office_ServerPU" );
 //
 //        EntityManager entitymanager = emfactory.createEntityManager( );
@@ -237,7 +248,7 @@ public final class DBManager {
 //        return pt;
 //    }
     
-    public boolean updatePatient(Patients obj){
+    public synchronized boolean updatePatient(Patients obj){
         EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Medical_Office_ServerPU" );
         
         EntityManager entitymanager = emfactory.createEntityManager();
@@ -259,7 +270,7 @@ public final class DBManager {
         return true;
     }
     
-    public boolean deletePatient(Patients obj){
+    public synchronized boolean deletePatient(Patients obj){
         EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Medical_Office_ServerPU" );
         
         EntityManager entitymanager = emfactory.createEntityManager();
@@ -285,7 +296,7 @@ public final class DBManager {
     
     
     
-    public MediclaUsers findMedicalUser(int id){
+    public synchronized MediclaUsers findMedicalUser(int id){
         EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Medical_Office_ServerPU" );
         
         EntityManager entitymanager = emfactory.createEntityManager();
@@ -302,7 +313,37 @@ public final class DBManager {
         return temp;
     }
     
-    public Patients findPatient(int amka){
+    public synchronized MediclaUsers findMedicalUser(String username){
+        EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Medical_Office_ServerPU" );
+        
+        EntityManager entitymanager = emfactory.createEntityManager();
+        entitymanager.getTransaction().begin();
+        
+        TypedQuery<MediclaUsers> query= entitymanager.createQuery("SELECT md FROM MediclaUsers AS md WHERE md.name = :username",MediclaUsers.class); 
+        query.setParameter("username", username);
+//        query 
+        MediclaUsers temp;
+        try{
+            temp = query.getSingleResult();
+        }
+        catch(NoResultException e){
+            System.out.println("findMedicalUser(String username)-> NoResultException: " + e.getMessage());
+            System.out.println("================StackTrace================");  
+            e.printStackTrace();
+            System.out.println("----------------StackTrace----------------");
+            return null;
+        }
+//        System.out.println(query.getParameter("name"));
+//        System.out.println(temp.getName());
+//        System.out.println(obj.getDate());
+        entitymanager.getTransaction( ).commit( );
+        
+        entitymanager.close( );
+        emfactory.close( );
+        return temp;
+    }
+    
+    public synchronized Patients findPatient(int amka){
         EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Medical_Office_ServerPU" );
         
         EntityManager entitymanager = emfactory.createEntityManager();
@@ -319,7 +360,7 @@ public final class DBManager {
         return temp;
     }
     
-    public Appointment findAppointment(int id){
+    public synchronized Appointment findAppointment(int id){
         EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Medical_Office_ServerPU" );
         
         EntityManager entitymanager = emfactory.createEntityManager();
@@ -337,7 +378,7 @@ public final class DBManager {
         return output;
     }
     
-    public List<Appointment> fetchAppointments(int meduserid , Date date){
+    public synchronized List<Appointment> fetchAppointments(int meduserid , Date date){
         
         MediclaUsers md = findMedicalUser(meduserid);
         List<Appointment> aplist = new ArrayList<Appointment>();

@@ -5,11 +5,14 @@
  */
 package ServerUtill;
 
+import DBEntities.MediclaUsers;
 import SoftwareEngineering.Appointment;
+import SoftwareEngineering.DBManager;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.io.StreamCorruptedException;
 import static java.lang.Thread.sleep;
@@ -31,18 +34,29 @@ public class Connection extends Thread{
     Socket soc;
     ArrayList<String> directiveQueue;
     ArrayList<String> sendQueue;
+    
+    //---Singletons
     private ConnectionManager conman;
+    private DBManager dbmanager;
+    //-------------
+    
+    int raw;
+    char directive;
+    char code; 
+    
     boolean logged = false;
     PrintWriter out;
     BufferedReader in;
     
-    Connection(Socket s , int ID , ConnectionManager cm){
+    Connection(Socket s , int ID , ConnectionManager cm , DBManager db){
         super(String.valueOf(ID));
         soc = s;
         id = ID;
         System.out.println(id);
         addr = soc.getInetAddress();      
-        conman = cm;
+//        conman = ConnectionManager.getInstance();
+        conman = cm; // Need to check for Singleton Behavior
+        dbmanager = DBManager.getInstance();
 //        System.out.println(addr);
         directiveQueue = new ArrayList<>();
         sendQueue = new ArrayList<>();
@@ -61,15 +75,48 @@ public class Connection extends Thread{
             try{
                 out =  new PrintWriter(soc.getOutputStream(), true);
                 in = new BufferedReader(new InputStreamReader(soc.getInputStream()));
-                String cuser;
-                String cpass;
+                raw = in.read();
+                directive = (char) raw;
+                raw = in.read();
+                code = (char) raw;
+                System.out.print(directive);
+                System.out.println(code);
+                in.skip(2);
+                System.out.println(raw);
+                if(directive == 'L' && code == '2'){
+                        String cuser;
+                        String cpass;
                         cuser = in.readLine();
-                        System.out.println(cuser);                    
+                        System.out.println("cuser " + cuser);                    
                         cpass = in.readLine();
+                        System.out.println("cpass " + cpass);
+                        MediclaUsers dbuser = null;
+                        try{
+                            dbuser = dbmanager.findMedicalUser(cuser);
+                        }
+                        catch(NullPointerException e){
+                            System.out.println("Login-> IOException: " + e.getMessage());
+                            System.out.println("================StackTrace================");  
+                            e.printStackTrace();
+                            System.out.println("----------------StackTrace----------------");
+//                            this.sendMessage("L0");
+                            out.println("L0");
+                            System.out.println("Client:" + addr + " Failed to Log In!- Wrong Username");
+                            conman.removeConnection(addr);
+                            return;
+                        }
+                        if(dbuser == null){
+                            this.sendMessage("L0");
+                            System.out.println("Client:" + addr + " Failed to Log In!- Wrong Username");
+                            conman.removeConnection(addr);
+                            return;
+                        }
+                        System.out.println(dbuser.getName());
+                        System.out.println(dbuser.getPassword());
                         
-                        
-                        if(cuser.equals("kiriazis") && cpass.equals("12345678")){
-                            out.println("L1");
+                        if(cuser.equals(dbuser.getName()) && cpass.equals(dbuser.getPassword())){
+//                            out.println("L1");
+                            this.sendMessage("L1");
                             logged = true;
                             LocalDateTime date = null;
                             date = date.now();
@@ -79,25 +126,31 @@ public class Connection extends Thread{
                             out.println("L0");
                             System.out.println("Client:" + addr + " Failed to Log In!");
                             conman.removeConnection(addr);
-                        }   
+                        }
+                }
+                
+                           
             }        
             catch (IOException ex) {
-                System.out.println(ex.getMessage());
+                System.out.println("Login-> IOException: " + ex.getMessage());
+                ex.printStackTrace();
             }
             
-            int raw;
-            char directive;
-            char code;
+//            int raw;
+//            char directive;
+//            char code;
             while(logged){
-                raw = in.read();                
+                if(in.ready()){
+                    raw = in.read();  
+                              
                 if(raw != -1){
                     directive = (char) raw;
                     
-                    System.out.println(directive);
+                    System.out.print(directive);
 //                    if(directive.equals("L3")){
 //                        logged = false;
 //                    }
-                switch(directive){
+                    switch(directive){
                     case 'L':
                         raw = in.read();
                         code = (char) raw;
@@ -115,14 +168,21 @@ public class Connection extends Thread{
                         switch(code){
                             case '1':
                                 try{                                    
-                                    ObjectInputStream ois = new ObjectInputStream(soc.getInputStream());
-                                    Appointment ap = (Appointment)ois.readObject();
-//                                    String str = (String)ois.readObject().toString();
+//                                    ObjectInputStream ois = new ObjectInputStream(soc.getInputStream());
+//                                    Appointment ap = (Appointment)ois.readObject();
+                                    Appointment ap = this.recvMessage();
+//                                    String str = this.recvMessage();
 //                                    System.out.println(str);
                                     System.out.println("Appointment ID: " + ap.getID());
+                                    if(dbmanager.createAppointment(ap)){
+                                        this.sendMessage("S0");
+                                    }
                                 }
                                 catch(StreamCorruptedException e){
-                                    System.out.println("Exception: " + e.getMessage());                                    
+                                    System.out.println("Exception: " + e.getMessage());  
+                                    System.out.println("================StackTrace================");  
+                                    e.printStackTrace();
+                                    System.out.println("----------------StackTrace----------------");
                                     conman.removeConnection(addr);
                                     soc.close();
                                     logged = false;
@@ -131,19 +191,47 @@ public class Connection extends Thread{
                                 break;
                         }
                         break;
+                    case 'G':
+                        raw = in.read();
+                        code = (char) raw;
+                        System.out.println(code);
+                        switch(code){
+                            case '0':
+                                Appointment ap = new Appointment();
+                                boolean issent = this.sendMessage(ap);
+                                if(issent){
+                                    System.out.println("Sent Succesfully!!!");
+                                }
+                                else{
+                                    System.out.println("Failed to Sent!!!");
+                                }
+                                break;
+                        }                        
+                        break;
                 }
+                
                 }
                 else{
                     logged = false;
                 }
             }
-            
+            }
+//            soc.close();
             conman.removeConnection(addr);
             System.out.println("Closed");
         }
         catch(Exception e){
-            System.out.println(e.getMessage());
-            conman.removeConnection(addr);
+            System.out.println("Connection.run()-> IOException: " + e.getMessage());
+            System.out.println("================StackTrace================");  
+            e.printStackTrace();
+            System.out.println("----------------StackTrace----------------");
+            try {
+                conman.removeConnection(addr);
+            } catch (IOException ex) {
+                System.out.println("================StackTrace================");  
+                e.printStackTrace();
+                System.out.println("----------------StackTrace----------------");
+            }
         }
     }
     
@@ -155,4 +243,52 @@ public class Connection extends Thread{
         return id;
     }
     
+    public <T> boolean sendMessage(T obj) throws IOException{
+        ObjectOutputStream oos = new ObjectOutputStream(soc.getOutputStream());
+        try{
+            oos.writeObject(obj);  
+            oos = null;
+            return true;
+        }
+        catch(IOException e){
+            System.out.println("sendMessage()-> IOException: " + e.getMessage());
+            System.out.println("================StackTrace================");  
+            e.printStackTrace();
+            System.out.println("----------------StackTrace----------------");
+//            oos.close();
+            oos = null;
+            return false;
+        }
+    }
+    
+    public <T> T recvMessage() throws IOException, ClassNotFoundException{
+        ObjectInputStream ois = new ObjectInputStream(soc.getInputStream());
+        try{
+            T temp = (T) ois.readObject();
+            ois = null;
+            return temp;
+        }
+        catch(IOException e){
+            System.out.println("recvMessage()-> IOException: " + e.getMessage());
+            System.out.println("================StackTrace================");  
+            e.printStackTrace();
+            System.out.println("----------------StackTrace----------------");
+            ois = null;
+            return null;
+        }
+        catch(ClassNotFoundException e){
+            System.out.println("recvMessage()-> ClassNotFoundException: " + e.getMessage());
+            System.out.println("================StackTrace================");  
+            e.printStackTrace();
+            System.out.println("----------------StackTrace----------------");
+            ois = null;
+            return null;
+        }
+    }
+    
+    public Socket getSoc(){
+        return this.soc;
+    }
 }
+
+
