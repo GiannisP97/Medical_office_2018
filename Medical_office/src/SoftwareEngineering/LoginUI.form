@@ -554,6 +554,9 @@
                               <Dimension value="[220, 25]"/>
                             </Property>
                           </Properties>
+                          <Events>
+                            <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="New_Appointment_Patient_NameFocusGained"/>
+                          </Events>
                         </Component>
                         <Component class="javax.swing.JLabel" name="jLabel9">
                           <Properties>
@@ -579,6 +582,9 @@
                               <Dimension value="[220, 25]"/>
                             </Property>
                           </Properties>
+                          <Events>
+                            <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="New_Appointment_DoctorFocusGained"/>
+                          </Events>
                         </Component>
                         <Component class="javax.swing.JLabel" name="jLabel13">
                           <Properties>
@@ -608,6 +614,9 @@
                               <Dimension value="[220, 25]"/>
                             </Property>
                           </Properties>
+                          <Events>
+                            <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="New_Appointment_DateFocusGained"/>
+                          </Events>
                         </Component>
                         <Component class="javax.swing.JFormattedTextField" name="New_Appointment_Time">
                           <Properties>
@@ -624,6 +633,9 @@
                               <Dimension value="[220, 25]"/>
                             </Property>
                           </Properties>
+                          <Events>
+                            <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="New_Appointment_TimeFocusGained"/>
+                          </Events>
                         </Component>
                       </SubComponents>
                     </Container>

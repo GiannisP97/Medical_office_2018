@@ -7,6 +7,7 @@ package SoftwareEngineering;
 
 import java.awt.Color;
 import java.io.IOException;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -366,6 +367,11 @@ public class LoginUI extends javax.swing.JFrame {
 
         New_Appointment_Patient_Name.setMinimumSize(new java.awt.Dimension(220, 25));
         New_Appointment_Patient_Name.setPreferredSize(new java.awt.Dimension(220, 25));
+        New_Appointment_Patient_Name.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                New_Appointment_Patient_NameFocusGained(evt);
+            }
+        });
 
         jLabel9.setText("Όνομα ασθενούς :");
 
@@ -375,6 +381,11 @@ public class LoginUI extends javax.swing.JFrame {
 
         New_Appointment_Doctor.setMinimumSize(new java.awt.Dimension(220, 25));
         New_Appointment_Doctor.setPreferredSize(new java.awt.Dimension(220, 25));
+        New_Appointment_Doctor.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                New_Appointment_DoctorFocusGained(evt);
+            }
+        });
 
         jLabel13.setText("Ώρα :");
 
@@ -390,11 +401,21 @@ public class LoginUI extends javax.swing.JFrame {
         );
         New_Appointment_Date.setMinimumSize(new java.awt.Dimension(220, 25));
         New_Appointment_Date.setPreferredSize(new java.awt.Dimension(220, 25));
+        New_Appointment_Date.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                New_Appointment_DateFocusGained(evt);
+            }
+        });
 
         New_Appointment_Time.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("hh:mm"))));
         New_Appointment_Time.setText(LocalTime.now().getHour()+":"+LocalTime.now().getMinute());
         New_Appointment_Time.setMinimumSize(new java.awt.Dimension(220, 25));
         New_Appointment_Time.setPreferredSize(new java.awt.Dimension(220, 25));
+        New_Appointment_Time.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                New_Appointment_TimeFocusGained(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -490,6 +511,7 @@ public class LoginUI extends javax.swing.JFrame {
 
             }
         ));
+        TableOrder.setFocusable(false);
         jScrollPane4.setViewportView(TableOrder);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -1145,26 +1167,48 @@ public class LoginUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    public boolean checkNewAppointment(){
+        if(!this.New_Appointment_Patient_Name.getText().matches("[A-Za-zΑ-Ωα-ω]+")){
+            this.New_Appointment_Patient_Name.setBorder(BorderFactory.createLineBorder(Color.red));
+            return false;
+        }
+        if(!this.New_Appointment_Doctor.getText().matches("[0-9]+")){
+            this.New_Appointment_Doctor.setBorder(BorderFactory.createLineBorder(Color.red));
+            return false;
+        }
+        if(this.New_Appointment_Date.getText().equals("")){
+            this.New_Appointment_Date.setBorder(BorderFactory.createLineBorder(Color.red));
+            return false;
+        }
+        if(this.New_Appointment_Time.getText().equals("")){
+            this.New_Appointment_Time.setBorder(BorderFactory.createLineBorder(Color.red));
+            return false;
+        }
+        return true;
+    }
+    
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        String dateTime = this.New_Appointment_Date.getText()+" "+ this.New_Appointment_Time.getText();
-        LocalDateTime i = LocalDateTime.parse(dateTime,formatter);
-        
-        Appointment ap = new Appointment(new Patient(new Integer(123),"ddd","ffffff","qqqqqqq",(short) 3,LocalDate.now()),i,Integer.parseInt(this.New_Appointment_Doctor.getText()));
-        
-        //this.New_Appointment_Date;
-        //this.New_Appointment_Doctor;
-        //this.New_Appointment_Time;
-        //this.New_Appointment_Patient_Name;
-        
-        try {
-                conn.sendMessage("C1");
-                //sending an appointment
-                conn.sendMessage(ap);
-            } catch (IOException ex) {
-                System.out.println(ex.getMessage());
-            }
-        
+        if(this.checkNewAppointment()){
+            
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            String dateTime = this.New_Appointment_Date.getText()+" "+ this.New_Appointment_Time.getText();
+            LocalDateTime i = LocalDateTime.parse(dateTime,formatter);
+
+            Appointment ap = new Appointment(new Patient(new Integer(123),"ddd","ffffff","qqqqqqq",(short) 3,LocalDate.now()),i,Integer.parseInt(this.New_Appointment_Doctor.getText()));
+
+            //this.New_Appointment_Date;
+            //this.New_Appointment_Doctor;
+            //this.New_Appointment_Time;
+            //this.New_Appointment_Patient_Name;
+
+            try {
+                    conn.sendMessage("C1");
+                    //sending an appointment
+                    conn.sendMessage((Serializable) ap);
+                } catch (IOException ex) {
+                    System.out.println(ex.getMessage());
+                }
+        }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void paragelia_nameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_paragelia_nameActionPerformed
@@ -1199,6 +1243,22 @@ public class LoginUI extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_kataxorisiActionPerformed
+
+    private void New_Appointment_Patient_NameFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_New_Appointment_Patient_NameFocusGained
+        this.New_Appointment_Patient_Name.setBorder(borderc);
+    }//GEN-LAST:event_New_Appointment_Patient_NameFocusGained
+
+    private void New_Appointment_DoctorFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_New_Appointment_DoctorFocusGained
+        this.New_Appointment_Doctor.setBorder(borderc);
+    }//GEN-LAST:event_New_Appointment_DoctorFocusGained
+
+    private void New_Appointment_DateFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_New_Appointment_DateFocusGained
+        this.New_Appointment_Date.setBorder(borderc);
+    }//GEN-LAST:event_New_Appointment_DateFocusGained
+
+    private void New_Appointment_TimeFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_New_Appointment_TimeFocusGained
+        this.New_Appointment_Time.setBorder(borderc);
+    }//GEN-LAST:event_New_Appointment_TimeFocusGained
 
     /**
      * @param args the command line arguments
