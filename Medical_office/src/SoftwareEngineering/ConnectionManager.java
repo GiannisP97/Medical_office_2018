@@ -27,8 +27,10 @@ public class ConnectionManager {
     private BufferedReader reader;
     
 public <T> T receiveObject() throws IOException, ClassNotFoundException{
-        try(ObjectInputStream ois = new ObjectInputStream(conn.getInputStream())){
+    ObjectInputStream ois = new ObjectInputStream(conn.getInputStream());    
+    try{
             T temp = (T) ois.readObject();
+            
             return temp;
         }
         catch(IOException e){
@@ -62,21 +64,18 @@ public <T> T receiveObject() throws IOException, ClassNotFoundException{
 
     }
     public boolean sendObject(Object obj) throws IOException{
-        try(ObjectOutputStream oos = new ObjectOutputStream(conn.getOutputStream())){
+        ObjectOutputStream oos = new ObjectOutputStream(conn.getOutputStream());
+        try{
             oos.writeObject(obj);
             return true;
         }
         catch(IOException e){
             System.out.println("sendMessage()-> IOException: " + e.getMessage());
-            System.out.println("================StackTrace================");  
-            e.printStackTrace();
-            System.out.println("----------------StackTrace----------------");
             return false;
         }
     }
    
     public boolean sendMessage(String s) throws IOException{
-        short i=2;
         System.out.println("Sending... "+s);
         try{
             writer.println(s);
@@ -87,10 +86,15 @@ public <T> T receiveObject() throws IOException, ClassNotFoundException{
             return false;
         }
     }
-    public void Close() throws IOException{
-        this.sendMessage("L3");
-        System.out.println("Closing Connection");
-        conn.close();
+    public void Close(){
+        try{
+            this.sendMessage("L3");
+            System.out.println("Closing Connection");
+            conn.close();
+        }
+        catch (Exception ex){
+            System.out.println("Could not close connection. Reason -> "+ex.getMessage());
+        }
     }
     public boolean isReadReady() throws IOException{
         return reader.ready();

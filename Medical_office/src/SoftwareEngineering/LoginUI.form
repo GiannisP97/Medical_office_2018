@@ -78,7 +78,7 @@
                 </DimensionLayout>
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="User_Home_LeftSide" pref="979" max="32767" attributes="0"/>
+                      <Component id="User_Home_LeftSide" pref="980" max="32767" attributes="0"/>
                       <Component id="User_Home_RightSide" max="32767" attributes="0"/>
                   </Group>
                 </DimensionLayout>
@@ -164,11 +164,11 @@
                   <Layout>
                     <DimensionLayout dim="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jPanel2" pref="742" max="32767" attributes="0"/>
-                          <Component id="jPanel4" alignment="0" pref="742" max="32767" attributes="0"/>
+                          <Component id="jPanel2" pref="746" max="32767" attributes="0"/>
+                          <Component id="jPanel4" alignment="0" pref="746" max="32767" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jPanel3" pref="718" max="32767" attributes="0"/>
+                              <Component id="jPanel3" pref="722" max="32767" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                           </Group>
                       </Group>
@@ -181,7 +181,7 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jPanel3" min="-2" pref="209" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
-                              <Component id="jPanel4" pref="484" max="32767" attributes="0"/>
+                              <Component id="jPanel4" pref="485" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -554,6 +554,9 @@
                               <Dimension value="[220, 25]"/>
                             </Property>
                           </Properties>
+                          <Events>
+                            <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="New_Appointment_Patient_NameFocusGained"/>
+                          </Events>
                         </Component>
                         <Component class="javax.swing.JLabel" name="jLabel9">
                           <Properties>
@@ -579,6 +582,9 @@
                               <Dimension value="[220, 25]"/>
                             </Property>
                           </Properties>
+                          <Events>
+                            <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="New_Appointment_DoctorFocusGained"/>
+                          </Events>
                         </Component>
                         <Component class="javax.swing.JLabel" name="jLabel13">
                           <Properties>
@@ -608,6 +614,9 @@
                               <Dimension value="[220, 25]"/>
                             </Property>
                           </Properties>
+                          <Events>
+                            <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="New_Appointment_DateFocusGained"/>
+                          </Events>
                         </Component>
                         <Component class="javax.swing.JFormattedTextField" name="New_Appointment_Time">
                           <Properties>
@@ -624,6 +633,9 @@
                               <Dimension value="[220, 25]"/>
                             </Property>
                           </Properties>
+                          <Events>
+                            <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="New_Appointment_TimeFocusGained"/>
+                          </Events>
                         </Component>
                       </SubComponents>
                     </Container>
@@ -648,12 +660,18 @@
                               <Group type="102" alignment="1" attributes="0">
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="1" attributes="0">
-                                      <Component id="kataxorisi" alignment="0" pref="158" max="32767" attributes="0"/>
+                                      <Component id="kataxorisi" alignment="0" pref="160" max="32767" attributes="0"/>
                                       <Component id="paragelia_name" alignment="0" max="32767" attributes="0"/>
                                       <Component id="paragelia_posotita" max="32767" attributes="0"/>
-                                      <Component id="jLabel14" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="jLabel16" alignment="0" min="-2" max="-2" attributes="0"/>
                                       <Component id="jButton5" max="32767" attributes="0"/>
+                                      <Component id="deleteStorageItem" max="32767" attributes="0"/>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Group type="103" groupAlignment="1" attributes="0">
+                                              <Component id="jLabel14" alignment="0" min="-2" max="-2" attributes="0"/>
+                                              <Component id="jLabel16" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                      </Group>
                                   </Group>
                                   <EmptySpace min="-2" pref="132" max="-2" attributes="0"/>
                                   <Component id="jScrollPane4" min="-2" pref="408" max="-2" attributes="0"/>
@@ -675,11 +693,13 @@
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                   <Component id="kataxorisi" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <Component id="deleteStorageItem" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Component id="jButton5" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="32767" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
-                                  <Component id="jScrollPane4" pref="448" max="32767" attributes="0"/>
+                                  <Component id="jScrollPane4" pref="449" max="32767" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                               </Group>
                           </Group>
@@ -704,6 +724,7 @@
                             </Property>
                           </Properties>
                           <Events>
+                            <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="paragelia_nameFocusGained"/>
                             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="paragelia_nameActionPerformed"/>
                           </Events>
                         </Component>
@@ -713,6 +734,9 @@
                               <Dimension value="[69, 22]"/>
                             </Property>
                           </Properties>
+                          <Events>
+                            <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="paragelia_posotitaFocusGained"/>
+                          </Events>
                         </Component>
                         <Component class="javax.swing.JButton" name="kataxorisi">
                           <Properties>
@@ -726,6 +750,9 @@
                           <Properties>
                             <Property name="text" type="java.lang.String" value="&#x391;&#x3c0;&#x3bf;&#x3c3;&#x3c4;&#x3bf;&#x3bb;&#x3ae;"/>
                           </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton5ActionPerformed"/>
+                          </Events>
                         </Component>
                         <Container class="javax.swing.JScrollPane" name="jScrollPane4">
                           <AuxValues>
@@ -749,6 +776,14 @@
                             </Component>
                           </SubComponents>
                         </Container>
+                        <Component class="javax.swing.JButton" name="deleteStorageItem">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="&#x394;&#x3b9;&#x3b1;&#x3b3;&#x3c1;&#x3b1;&#x3c6;&#x3ae;"/>
+                          </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="deleteStorageItemActionPerformed"/>
+                          </Events>
+                        </Component>
                       </SubComponents>
                     </Container>
                   </SubComponents>

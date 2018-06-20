@@ -20,7 +20,12 @@ public class Schedule {
     
     
     public Schedule(){
-        this.appointment_list = new ArrayList<Appointment>();
+        this.appointment_list = new ArrayList<>();
+    }
+    
+    public boolean AddAppointment(Appointment a){
+        this.appointment_list.add(a);
+        return true;
     }
     public boolean AddAppointment(int doctorID, Patient p, LocalDateTime d){
         
@@ -41,8 +46,6 @@ public class Schedule {
     
     
      public ArrayList<Appointment> getSchedule(){
-         
-        Collections.sort(appointment_list);
         return this.appointment_list;
     }
 }
