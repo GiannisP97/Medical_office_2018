@@ -21,7 +21,7 @@ public class Patient implements Serializable{
     private Integer AMKA;
     private LocalDate birth_date;
     private String phone_number;
-    private short gender;
+    private int gender;
     
     
     public Patient(){
@@ -43,13 +43,13 @@ public class Patient implements Serializable{
         this.phone_number=p.phone_number;
     }
     
-    public Patient(Integer AMKA,String name,String surname,String phonenumber,short g,LocalDate d){
+    public Patient(Integer AMKA,String name,String surname,String phonenumber,int g,LocalDate d){
         this.AMKA = AMKA;
         this.name = name;
         this.surname = surname;
         this.phone_number = phonenumber;
         this.birth_date = d;
-        this.gender = (short ) g;
+        this.gender = g;
         
         
     }

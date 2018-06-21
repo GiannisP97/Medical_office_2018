@@ -12,7 +12,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.io.Serializable;
+import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketAddress;
 
 /**
  *
@@ -22,7 +24,7 @@ public class ConnectionManager {
     private Socket conn=null;
     private String hostName;
     private int portNumber;
-    private String iBuffer,oBuffer;
+   // private String iBuffer,oBuffer;
     private PrintWriter writer;
     private BufferedReader reader;
     
@@ -31,7 +33,7 @@ public <T> T receiveObject(){
     try{
             ObjectInputStream ois = new ObjectInputStream(conn.getInputStream());    
             T temp = (T) ois.readObject();
-            
+            System.out.println("Got object of type "+ temp.getClass().getTypeName());
             return temp;
         }
         catch(IOException e){
@@ -46,14 +48,16 @@ public <T> T receiveObject(){
     
     public ConnectionManager(){
         hostName = ""; 
-        iBuffer = "";
-        oBuffer = "";
+      //  iBuffer = "";
+      //  oBuffer = "";
         portNumber = 0;
     }
     public boolean CreateSocket(String host,int port){
         try{
-            conn = new Socket(host,port);
-            conn.setSoTimeout(3000);
+            conn = new Socket();
+            conn.connect(new InetSocketAddress(host,port), 1000000);
+            
+            conn.setSoTimeout(1000000);
             writer = new PrintWriter(conn.getOutputStream(),true);
             reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             return true;
@@ -67,6 +71,7 @@ public <T> T receiveObject(){
     public boolean sendObject(Object obj){
         
         try{
+            System.out.println("Sending object of type "+ obj.getClass().getTypeName());
             ObjectOutputStream oos = new ObjectOutputStream(conn.getOutputStream());
             oos.writeObject(obj);
             return true;
@@ -90,8 +95,9 @@ public <T> T receiveObject(){
     }
     public void Close(){
         try{
-            this.sendMessage("L3");
             System.out.println("Closing Connection");
+            this.sendMessage("L3");
+            
             conn.close();
         }
         catch (Exception ex){
@@ -106,28 +112,9 @@ public <T> T receiveObject(){
             return false;
         }
     }
-    public String receiveMessage() throws IOException{
-        try {
+    public String receiveMessage() throws Exception{
             String recv = reader.readLine();
             return recv;
-        }
-        catch (Exception x) {
-            return "No Response";
-        }
     }
-    
-    public void sendMessage(Serializable s) throws IOException{
-        //System.out.println("Sending: "+s);
-        
-        try{
-           // writer.println(s);
-            ObjectOutputStream server_objects= new ObjectOutputStream(this.conn.getOutputStream());
-            server_objects.writeObject(s);
-            server_objects.flush();
-        }
-        catch (Exception x){
-            System.out.println(x.getMessage());
-        }
-        
-    }
+
 }
