@@ -24,10 +24,10 @@ public class Order implements Serializable
 	this.order_date= LocalDate.now();
     }
     
-    public Order(int y, int m, int d)
+    public Order(LocalDate d, ArrayList a)
     {
-	this.item_list= new ArrayList<>();
-	this.order_date=  LocalDate.of(y, m, d);
+	this.item_list= a;
+	this.order_date= d;
     }
     
     public LocalDate getOrderDate()

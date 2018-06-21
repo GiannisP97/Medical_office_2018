@@ -41,10 +41,10 @@ public class LoginUI extends javax.swing.JFrame {
     private static String hostname;
     private static int port;
     private DefaultListModel<String> dlm = new DefaultListModel<>();
-    private Schedule AppointmentList = new Schedule();
+    private static Schedule AppointmentList = new Schedule();
     private User loginUser;
-    private ArrayList<StorageItem> item_list = new ArrayList<>();
-    private Thread t ;
+    private static ArrayList<StorageItem> item_list = new ArrayList<>();
+    private static  Thread t ;
     public static void setConnectionInfo(String h,int p){
         LoginUI.hostname = h;
         LoginUI.port = p;
@@ -134,11 +134,11 @@ public class LoginUI extends javax.swing.JFrame {
         jLabel16 = new javax.swing.JLabel();
         paragelia_name = new javax.swing.JTextField();
         paragelia_posotita = new javax.swing.JTextField();
-        kataxorisi = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        Order_Add_Product = new javax.swing.JButton();
+        Order_Submit = new javax.swing.JButton();
         jScrollPane4 = new javax.swing.JScrollPane();
-        TableOrder = new javax.swing.JTable();
-        deleteStorageItem = new javax.swing.JButton();
+        New_Order_Table = new javax.swing.JTable();
+        Order_Remove_Last = new javax.swing.JButton();
         User_MenuBar = new javax.swing.JMenuBar();
         UserMenuBar_Display = new javax.swing.JMenu();
         Display_List_Of_Appointments = new javax.swing.JMenuItem();
@@ -563,7 +563,7 @@ public class LoginUI extends javax.swing.JFrame {
         New_Order_Panel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Νέα Παραγγελεία", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.ABOVE_TOP));
         New_Order_Panel.setPreferredSize(new java.awt.Dimension(506, 217));
 
-        jLabel14.setText("Όνομα :");
+        jLabel14.setText("Όνομα Προϊόντος :");
         jLabel14.setMaximumSize(new java.awt.Dimension(220, 25));
         jLabel14.setMinimumSize(new java.awt.Dimension(220, 25));
         jLabel14.setPreferredSize(new java.awt.Dimension(220, 15));
@@ -597,25 +597,25 @@ public class LoginUI extends javax.swing.JFrame {
             }
         });
 
-        kataxorisi.setText("Καταχώριση");
-        kataxorisi.setMaximumSize(new java.awt.Dimension(220, 30));
-        kataxorisi.setMinimumSize(new java.awt.Dimension(220, 30));
-        kataxorisi.setPreferredSize(new java.awt.Dimension(220, 30));
-        kataxorisi.addActionListener(new java.awt.event.ActionListener() {
+        Order_Add_Product.setText("Προσθήκη");
+        Order_Add_Product.setMaximumSize(new java.awt.Dimension(220, 30));
+        Order_Add_Product.setMinimumSize(new java.awt.Dimension(220, 30));
+        Order_Add_Product.setPreferredSize(new java.awt.Dimension(220, 30));
+        Order_Add_Product.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                kataxorisiActionPerformed(evt);
+                Order_Add_ProductActionPerformed(evt);
             }
         });
 
-        jButton5.setText("Αποστολή");
-        jButton5.setPreferredSize(new java.awt.Dimension(220, 30));
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
+        Order_Submit.setText("Αποστολή");
+        Order_Submit.setPreferredSize(new java.awt.Dimension(220, 30));
+        Order_Submit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                Order_SubmitActionPerformed(evt);
             }
         });
 
-        TableOrder.setModel(new javax.swing.table.DefaultTableModel(
+        New_Order_Table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {},
                 {},
@@ -626,16 +626,16 @@ public class LoginUI extends javax.swing.JFrame {
 
             }
         ));
-        TableOrder.setPreferredSize(null);
-        jScrollPane4.setViewportView(TableOrder);
+        New_Order_Table.setPreferredSize(null);
+        jScrollPane4.setViewportView(New_Order_Table);
 
-        deleteStorageItem.setText("Διαγραφή");
-        deleteStorageItem.setMaximumSize(new java.awt.Dimension(220, 30));
-        deleteStorageItem.setMinimumSize(new java.awt.Dimension(220, 30));
-        deleteStorageItem.setPreferredSize(new java.awt.Dimension(220, 30));
-        deleteStorageItem.addActionListener(new java.awt.event.ActionListener() {
+        Order_Remove_Last.setText("Διαγραφή");
+        Order_Remove_Last.setMaximumSize(new java.awt.Dimension(220, 30));
+        Order_Remove_Last.setMinimumSize(new java.awt.Dimension(220, 30));
+        Order_Remove_Last.setPreferredSize(new java.awt.Dimension(220, 30));
+        Order_Remove_Last.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                deleteStorageItemActionPerformed(evt);
+                Order_Remove_LastActionPerformed(evt);
             }
         });
 
@@ -646,14 +646,14 @@ public class LoginUI extends javax.swing.JFrame {
             .addGroup(New_Order_PanelLayout.createSequentialGroup()
                 .addGap(0, 0, 0)
                 .addGroup(New_Order_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Order_Submit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(paragelia_posotita, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(New_Order_PanelLayout.createSequentialGroup()
-                        .addComponent(kataxorisi, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(Order_Add_Product, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(deleteStorageItem, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(Order_Remove_Last, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(paragelia_name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(44, 44, 44)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
@@ -675,10 +675,10 @@ public class LoginUI extends javax.swing.JFrame {
                         .addComponent(paragelia_posotita, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(New_Order_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(kataxorisi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(deleteStorageItem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(Order_Add_Product, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(Order_Remove_Last, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(Order_Submit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(19, 19, 19))
         );
 
@@ -1005,7 +1005,7 @@ public class LoginUI extends javax.swing.JFrame {
         User_Home_LeftSide1Layout.setHorizontalGroup(
             User_Home_LeftSide1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane5)
-            .addComponent(Scedule_Panel_Title, javax.swing.GroupLayout.DEFAULT_SIZE, 526, Short.MAX_VALUE)
+            .addComponent(Scedule_Panel_Title, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
             .addGroup(User_Home_LeftSide1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(User_Home_LeftSide1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -1035,7 +1035,7 @@ public class LoginUI extends javax.swing.JFrame {
                     .addComponent(jLabel18)
                     .addComponent(DateFilter_To, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(DateFilter_Submit, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 633, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -1194,7 +1194,7 @@ public class LoginUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     
-    private void FillSchedule(){
+    private static void FillSchedule(){
         DefaultTableModel model = new DefaultTableModel();
         model.addColumn("ΩΡΑ");
         model.addColumn("ΑΣΘΕΝΗΣ");
@@ -1208,10 +1208,10 @@ public class LoginUI extends javax.swing.JFrame {
             model.addRow(new Object[]{x.getDate().getHour()+":"+x.getDate().getMinute(), x.getPetient().getName(), x.getDoctorId()});
         } 
         
-        this.AppointmentTable.setModel(model);
+        LoginUI.AppointmentTable.setModel(model);
         //this.AppointmentTable.setDefaultRenderer(this.AppointmentTable.getColumnClass(NORMAL), dtcr);
     }
-        private void FillSchedule(ArrayList<Appointment> a){
+        private static void FillSchedule(ArrayList<Appointment> a){
         DefaultTableModel model = new DefaultTableModel();
         model.addColumn("ΗΜΕΡΟΜΗΝΙΑ");
         model.addColumn("ΩΡΑ");
@@ -1227,11 +1227,11 @@ public class LoginUI extends javax.swing.JFrame {
                 x.getDate().getDayOfMonth()+"/"+x.getDate().getMonth().getValue()+"/"+x.getDate().getYear(),
                 x.getDate().getHour()+":"+x.getDate().getMinute(), 
                 x.getPetient().getName(),
-                this.FlagCommander("G4", String.valueOf(x.getDoctorId()))
+                LoginUI.FlagCommander("G4", String.valueOf(x.getDoctorId()))
             });
         } 
         
-        this.DatedAppointmentTable.setModel(model);
+        LoginUI.DatedAppointmentTable.setModel(model);
         //this.AppointmentTable.setDefaultRenderer(this.AppointmentTable.getColumnClass(NORMAL), dtcr);
     }
 
@@ -1253,7 +1253,7 @@ public class LoginUI extends javax.swing.JFrame {
     *   |______________________________________________________|
     */
     @SuppressWarnings("unchecked")
-    private String FlagCommander(String FLAG,Object argv){
+    private static  String FlagCommander(String FLAG,Object argv){
         Object rcv;
         switch(FLAG){
             case "L0":
@@ -1261,8 +1261,6 @@ public class LoginUI extends javax.swing.JFrame {
             case "L1":
                 return "L1";
             case "L2":
-               
-                
                             conn.sendMessage("L2");
                             conn.sendMessage(LoginForm_Username.getText());
                             conn.sendMessage(String.valueOf(LoginForm_Password.getPassword()));
@@ -1270,39 +1268,6 @@ public class LoginUI extends javax.swing.JFrame {
                             rcv = conn.receiveObject();
                             System.out.println("L2: Received "+(String)rcv);
                             return FlagCommander((String) rcv,null);
-                
-                /*
-                t = new Thread(new Runnable(){
-                    @Override
-                        public void run() {
-                        try {
-                            LoginUI.WrongCredentialsMessage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/loader.gif")));
-                            Object rcv;
-                            conn.sendMessage("L2");
-                            conn.sendMessage(LoginForm_Username.getText());
-                            conn.sendMessage(String.valueOf(LoginForm_Password.getPassword()));
-
-                            rcv = conn.receiveObject();
-                            System.out.println("L2: Received "+(String)rcv);
-                            L = FlagCommander((String) rcv,null);
-                        } 
-                        catch (Exception ex) {
-                            New_Patient_Submit_Result.setText("Error: "+ex.getMessage());
-
-                        }
-                    }  
-                    });
-                t.start();
-        {
-            try {
-                t.join();
-            } catch (InterruptedException ex) {
-                Logger.getLogger(LoginUI.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-                
-                return L;
-                */
             case "L3":
                 conn.Close();
                 conn = null;
@@ -1311,8 +1276,8 @@ public class LoginUI extends javax.swing.JFrame {
                 conn.sendMessage("G0");
                 rcv = conn.receiveObject();
                 if (rcv != null){
-                    this.AppointmentList.SetAppointmentList((ArrayList<Appointment>) rcv);
-                    this.FillSchedule();
+                    LoginUI.AppointmentList.SetAppointmentList((ArrayList<Appointment>) rcv);
+                    LoginUI.FillSchedule();
                 }
                 else {
                     System.out.println("receiveObject returned null.");
@@ -1326,14 +1291,26 @@ public class LoginUI extends javax.swing.JFrame {
             
                 
             case "G1":
-                conn.sendMessage("G1");
-                String tmp = this.DateFilter_From.getText();
-                String[] tmp1 = tmp.split("/");
-                conn.sendObject(LocalDate.of(Integer.parseInt(tmp1[2]),Integer.parseInt(tmp1[1]),Integer.parseInt(tmp1[0])));
-                tmp = this.DateFilter_To.getText();
-                tmp1 = tmp.split("/");
-                conn.sendObject(LocalDate.of(Integer.parseInt(tmp1[2]),Integer.parseInt(tmp1[1]),Integer.parseInt(tmp1[0])));
-                this.FillSchedule(conn.receiveObject());
+                
+                    t = new Thread(new Runnable(){
+                    @Override
+                        public void run() {
+                        try {
+                            conn.sendMessage("G1");
+                            String tmp = LoginUI.DateFilter_From.getText();
+                            String[] tmp1 = tmp.split("/");
+                            conn.sendObject(LocalDate.of(Integer.parseInt(tmp1[2]),Integer.parseInt(tmp1[1]),Integer.parseInt(tmp1[0])));
+                            tmp = LoginUI.DateFilter_To.getText();
+                            tmp1 = tmp.split("/");
+                            conn.sendObject(LocalDate.of(Integer.parseInt(tmp1[2]),Integer.parseInt(tmp1[1]),Integer.parseInt(tmp1[0])));
+                            LoginUI.FillSchedule(conn.receiveObject());
+                        } 
+                        catch (Exception ex) {
+                            New_Patient_Submit_Result.setText("Error: "+ex.getMessage());
+                        }
+                    }  
+                    });
+                    t.start();
                 return "";
             case "G2":
                 conn.sendMessage("G2");
@@ -1393,6 +1370,14 @@ public class LoginUI extends javax.swing.JFrame {
                     
                 }
             case "C3":
+                conn.sendMessage("C3");
+                if (!conn.sendObject(new Order(LocalDate.now(),LoginUI.item_list))){
+                    
+                }
+                
+                
+                
+                
                 return "";
             case "C4":
                 return "";
@@ -1609,16 +1594,8 @@ public class LoginUI extends javax.swing.JFrame {
             LocalDateTime i = LocalDateTime.parse(dateTime,formatter);
 
             Appointment ap = new Appointment(new Patient(new Integer(123),"ddd","ffffff","qqqqqqq",(short) 3,LocalDate.now()),i,Integer.parseInt(this.New_Appointment_Doctor.getText()));
-
-            //this.New_Appointment_Date;
-            //this.New_Appointment_Doctor;
-            //this.New_Appointment_Time;
-            //this.New_Appointment_Patient_Name;
-
-            
-                    conn.sendMessage("C1");
-                    //sending an appointment
-                    conn.sendObject((Serializable) ap);
+            conn.sendMessage("C1");
+            conn.sendObject((Serializable) ap);
                 
         }
     }//GEN-LAST:event_jButton3ActionPerformed
@@ -1629,7 +1606,7 @@ public class LoginUI extends javax.swing.JFrame {
             return false;
         }
         
-        if(!this.paragelia_name.getText().matches("[A-Za-zΑ-Ωα-ω]+")){
+        if(!this.paragelia_name.getText().matches("[A-Za-zΑ-Ωα-ωώΏάΆέΈύΎίΊόΌ0-9]+")){
             this.paragelia_name.setBorder(BorderFactory.createLineBorder(Color.red));
             return false;
         }
@@ -1653,28 +1630,36 @@ public class LoginUI extends javax.swing.JFrame {
         this.New_Appointment_Time.setBorder(borderc);
     }//GEN-LAST:event_New_Appointment_TimeFocusGained
 
-    private void deleteStorageItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteStorageItemActionPerformed
+    private void Order_Remove_LastActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Order_Remove_LastActionPerformed
         if(this.item_list.size()>0){
             DefaultTableModel model2 = new DefaultTableModel();
             DefaultTableCellRenderer dtcr = new DefaultTableCellRenderer();
             dtcr.setHorizontalTextPosition(DefaultTableCellRenderer.CENTER);
-
+            
+                    
             model2.addColumn("ΟΝΟΜΑ");
             model2.addColumn("ΠΟΣΟΤΗΤΑ");
 
-            this.item_list.remove(this.item_list.size()-1);
+            this.item_list.remove(this.New_Order_Table.getSelectedRow());
             for ( StorageItem x : item_list){
                 model2.addRow(new Object[]{x.getItemName(),x.getItemQuantity()});
             }
-            this.TableOrder.setModel(model2);
+            this.New_Order_Table.setModel(model2);
         }
-    }//GEN-LAST:event_deleteStorageItemActionPerformed
+    }//GEN-LAST:event_Order_Remove_LastActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+    private void Order_SubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Order_SubmitActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton5ActionPerformed
+        if (this.item_list.size()>0){
+            
+            LoginUI.FlagCommander("C3", this.item_list);
 
-    private void kataxorisiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kataxorisiActionPerformed
+            
+        }
+    }//GEN-LAST:event_Order_SubmitActionPerformed
+
+    private void Order_Add_ProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Order_Add_ProductActionPerformed
+        
         DefaultTableModel model2 = new DefaultTableModel();
         DefaultTableCellRenderer dtcr = new DefaultTableCellRenderer();
         dtcr.setHorizontalTextPosition(DefaultTableCellRenderer.CENTER);
@@ -1685,15 +1670,15 @@ public class LoginUI extends javax.swing.JFrame {
 
             StorageItem tmp = new StorageItem(this.paragelia_name.getText(),Integer.parseInt(this.paragelia_posotita.getText()));
 
-            this.item_list.add(tmp);
+            item_list.add(tmp);
             for ( StorageItem x : item_list){
                 model2.addRow(new Object[]{x.getItemName(),x.getItemQuantity()});
             }
 
-            this.TableOrder.setModel(model2);
+            this.New_Order_Table.setModel(model2);
 
         }
-    }//GEN-LAST:event_kataxorisiActionPerformed
+    }//GEN-LAST:event_Order_Add_ProductActionPerformed
 
     private void paragelia_posotitaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_paragelia_posotitaFocusGained
         this.paragelia_posotita.setBorder(borderc);
@@ -1784,11 +1769,11 @@ public class LoginUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTable AppointmentTable;
-    private javax.swing.JFormattedTextField DateFilter_From;
+    private static javax.swing.JTable AppointmentTable;
+    private static javax.swing.JFormattedTextField DateFilter_From;
     private javax.swing.JButton DateFilter_Submit;
-    private javax.swing.JFormattedTextField DateFilter_To;
-    private javax.swing.JTable DatedAppointmentTable;
+    private static javax.swing.JFormattedTextField DateFilter_To;
+    private static javax.swing.JTable DatedAppointmentTable;
     private javax.swing.JMenuItem Display_List_Of_Appointments;
     private javax.swing.JMenuItem Display_Order_History;
     private javax.swing.JMenuItem Display_Patient_List;
@@ -1807,6 +1792,7 @@ public class LoginUI extends javax.swing.JFrame {
     private javax.swing.JTextField New_Appointment_Patient_Name;
     private javax.swing.JFormattedTextField New_Appointment_Time;
     private javax.swing.JPanel New_Order_Panel;
+    private javax.swing.JTable New_Order_Table;
     private javax.swing.JTextField New_Patient_AMKA;
     private javax.swing.JFormattedTextField New_Patient_BirthDate;
     private javax.swing.JTextField New_Patient_Name;
@@ -1816,12 +1802,14 @@ public class LoginUI extends javax.swing.JFrame {
     private javax.swing.JButton New_Patient_Submit;
     public static javax.swing.JLabel New_Patient_Submit_Result;
     private javax.swing.JTextField New_Patient_Surname;
+    private javax.swing.JButton Order_Add_Product;
+    private javax.swing.JButton Order_Remove_Last;
+    private javax.swing.JButton Order_Submit;
     private javax.swing.JLabel PasswordLabel;
     private javax.swing.JFrame PrescriptionFrame;
     private javax.swing.JTable PrescriptionFrame_AppointmentList;
     private javax.swing.JTextArea PrescriptionFrame_Prescription;
     private javax.swing.JLabel Scedule_Panel_Title;
-    private javax.swing.JTable TableOrder;
     private javax.swing.JLabel Todays_Scedule_Title;
     private javax.swing.JMenu UserMenuBar_Display;
     private javax.swing.JPanel User_Home_Body;
@@ -1836,11 +1824,9 @@ public class LoginUI extends javax.swing.JFrame {
     private javax.swing.JMenuItem User_Profile_Options;
     private javax.swing.JLabel UsernameLabel;
     private static javax.swing.JLabel WrongCredentialsMessage;
-    private javax.swing.JButton deleteStorageItem;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1866,7 +1852,6 @@ public class LoginUI extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
-    private javax.swing.JButton kataxorisi;
     private javax.swing.JTextField paragelia_name;
     private javax.swing.JTextField paragelia_posotita;
     // End of variables declaration//GEN-END:variables
