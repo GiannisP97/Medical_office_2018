@@ -8,6 +8,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import DBEntities.*;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -379,14 +382,101 @@ public final class DBManager {
     }
     
     public synchronized List<Appointment> fetchAppointments(int meduserid , Date date){
+        List<Appointment> aplist = new ArrayList<Appointment>();
         
         MediclaUsers md = findMedicalUser(meduserid);
-        List<Appointment> aplist = new ArrayList<Appointment>();
-        for(Appointments temp: md.getAppointmentsList()){
-            if(temp.getAppointmentDay().equals(date)){
-                aplist.add(temp.toAppointment());
+        if(md.getUserType() == 1){
+            
+            for(Appointments temp: md.getAppointmentsList()){
+                System.out.println(temp.getAppointmentDay());
+                if(temp.getAppointmentDay().equals(date)){
+                    aplist.add(temp.toAppointment());
+                }
             }
         }
+        else if(md.getUserType() == 2){
+            
+            for(MediclaUsers mdl: this.fetchAllMedicalUsers()){
+                for(Appointments temp: mdl.getAppointmentsList()){
+                System.out.println(temp.getAppointmentDay());
+                if(temp.getAppointmentDay().equals(date)){
+                    aplist.add(temp.toAppointment());
+                    }
+                }
+            }
+        }
+        else{
+            System.out.println("Wrong User Type :" + md.getUserType());
+            return null;
+        }
+        
         return aplist;
     }
+    
+    public synchronized List<Appointment> fetchAppointments(int meduserid , Date sdate , Date edate){
+        List<Appointment> aplist = new ArrayList<Appointment>();
+        
+        MediclaUsers md = findMedicalUser(meduserid);
+        if(md.getUserType() == 1){
+            
+            for(Appointments temp: md.getAppointmentsList()){
+                System.out.println(temp.getAppointmentDay());
+                if(sdate.compareTo(temp.getAppointmentDay()) >= 0 && edate.compareTo(temp.getAppointmentDay()) <= 0 ){
+                    aplist.add(temp.toAppointment());
+                    }
+            }
+        }
+        else if(md.getUserType() == 2){
+            
+            for(MediclaUsers mdl: this.fetchAllMedicalUsers()){
+                for(Appointments temp: mdl.getAppointmentsList()){
+                System.out.println(temp.getAppointmentDay());
+                if(sdate.compareTo(temp.getAppointmentDay()) >= 0 && edate.compareTo(temp.getAppointmentDay()) <= 0 ){
+                    aplist.add(temp.toAppointment());
+                    }
+                }
+            }
+        }
+        else{
+            System.out.println("Wrong User Type :" + md.getUserType());
+            return null;
+        }
+        
+        return aplist;
+    }
+    
+
+    public synchronized List<MediclaUsers> fetchAllMedicalUsers(){
+        
+        EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Medical_Office_ServerPU" );
+        
+        EntityManager entitymanager = emfactory.createEntityManager();
+        entitymanager.getTransaction().begin();
+        
+        TypedQuery<MediclaUsers> query= entitymanager.createQuery("SELECT md FROM MediclaUsers md",MediclaUsers.class); 
+        List<MediclaUsers> temp;
+        try{
+            temp = query.getResultList();
+        }
+        catch(NoResultException e){
+            System.out.println("fetchAllMedicalUsers()-> NoResultException: " + e.getMessage());
+            System.out.println("================StackTrace================");  
+            e.printStackTrace();
+            System.out.println("----------------StackTrace----------------");
+            return null;
+        }
+//        System.out.println(query.getParameter("name"));
+//        System.out.println(temp.getName());
+//        System.out.println(obj.getDate());
+        entitymanager.getTransaction( ).commit( );
+        
+        entitymanager.close( );
+        emfactory.close( );
+        return temp;
+        
+    }
+    
+public Date convertToDateViaSqlDate(LocalDate dateToConvert) {
+    return java.sql.Date.valueOf(dateToConvert);
+}
 }

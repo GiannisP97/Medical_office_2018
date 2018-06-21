@@ -15,14 +15,12 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.io.StreamCorruptedException;
-import static java.lang.Thread.sleep;
 import java.net.InetAddress;
-import java.net.ServerSocket;
 import java.net.Socket;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.List;
 
 /**
  *
@@ -34,6 +32,7 @@ public class Connection extends Thread{
     Socket soc;
     ArrayList<String> directiveQueue;
     ArrayList<String> sendQueue;
+    MediclaUsers md;
     
     //---Singletons
     private ConnectionManager conman;
@@ -93,6 +92,7 @@ public class Connection extends Thread{
                         MediclaUsers dbuser = null;
                         try{
                             dbuser = dbmanager.findMedicalUser(cuser);
+                            md = dbuser;
                         }
                         catch(NullPointerException e){
                             System.out.println("Login-> IOException: " + e.getMessage());
@@ -196,9 +196,13 @@ public class Connection extends Thread{
                         code = (char) raw;
                         System.out.println(code);
                         switch(code){
-                            case '0':
-                                Appointment ap = new Appointment();
-                                boolean issent = this.sendMessage(ap);
+                            case '0':{
+                                LocalDate ldate = LocalDate.now();
+                                System.out.println(ldate);
+//                                date = date.getDate();
+                                List<Appointment> aplist = dbmanager.fetchAppointments(this.md.getUserId(), this.dbmanager.convertToDateViaSqlDate(ldate));
+//                                Appointment aplist = new Appointment();
+                                boolean issent = this.sendMessage(aplist);
                                 if(issent){
                                     System.out.println("Sent Succesfully!!!");
                                 }
@@ -206,6 +210,21 @@ public class Connection extends Thread{
                                     System.out.println("Failed to Sent!!!");
                                 }
                                 break;
+                            }                                
+                            case '1':{
+                                LocalDate sdate , edate;
+                                sdate = this.recvMessage();
+                                edate = this.recvMessage();
+                                List<Appointment> aplist = dbmanager.fetchAppointments(this.md.getUserId(), this.dbmanager.convertToDateViaSqlDate(sdate) , this.dbmanager.convertToDateViaSqlDate(edate));
+                                boolean issent = this.sendMessage(aplist);
+                                if(issent){
+                                    System.out.println("Sent Succesfully!!!");
+                                }
+                                else{
+                                    System.out.println("Failed to Sent!!!");
+                                }
+                                break;
+                            }                                
                         }                        
                         break;
                 }
