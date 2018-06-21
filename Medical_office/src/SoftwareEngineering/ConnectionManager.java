@@ -26,9 +26,10 @@ public class ConnectionManager {
     private PrintWriter writer;
     private BufferedReader reader;
     
-public <T> T receiveObject() throws IOException, ClassNotFoundException{
-    ObjectInputStream ois = new ObjectInputStream(conn.getInputStream());    
+public <T> T receiveObject(){
+    
     try{
+            ObjectInputStream ois = new ObjectInputStream(conn.getInputStream());    
             T temp = (T) ois.readObject();
             
             return temp;
@@ -49,7 +50,7 @@ public <T> T receiveObject() throws IOException, ClassNotFoundException{
         oBuffer = "";
         portNumber = 0;
     }
-    public boolean CreateSocket(String host,int port) throws IOException{
+    public boolean CreateSocket(String host,int port){
         try{
             conn = new Socket(host,port);
             conn.setSoTimeout(3000);
@@ -63,19 +64,20 @@ public <T> T receiveObject() throws IOException, ClassNotFoundException{
         }
 
     }
-    public boolean sendObject(Object obj) throws IOException{
-        ObjectOutputStream oos = new ObjectOutputStream(conn.getOutputStream());
+    public boolean sendObject(Object obj){
+        
         try{
+            ObjectOutputStream oos = new ObjectOutputStream(conn.getOutputStream());
             oos.writeObject(obj);
             return true;
         }
         catch(IOException e){
-            System.out.println("sendMessage()-> IOException: " + e.getMessage());
+            System.out.println("Catch: 'sendMessage()-> IOException: " + e.getMessage()+"'");
             return false;
         }
     }
    
-    public boolean sendMessage(String s) throws IOException{
+    public boolean sendMessage(String s){
         System.out.println("Sending... "+s);
         try{
             writer.println(s);
@@ -96,8 +98,13 @@ public <T> T receiveObject() throws IOException, ClassNotFoundException{
             System.out.println("Could not close connection. Reason -> "+ex.getMessage());
         }
     }
-    public boolean isReadReady() throws IOException{
-        return reader.ready();
+    public boolean isReadReady(){
+        try{
+            return reader.ready();
+        }
+        catch (Exception c){
+            return false;
+        }
     }
     public String receiveMessage() throws IOException{
         try {

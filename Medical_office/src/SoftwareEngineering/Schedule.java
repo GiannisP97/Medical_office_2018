@@ -27,6 +27,9 @@ public class Schedule {
         this.appointment_list.add(a);
         return true;
     }
+    public void SetAppointmentList(ArrayList<Appointment> a){
+        this.appointment_list = a;
+    }
     public boolean AddAppointment(int doctorID, Patient p, LocalDateTime d){
         
         // ΔΗΜΙΟΥΡΓΙΑ ΕΝΟΣ TMP APPOINTMENT
