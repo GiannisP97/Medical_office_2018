@@ -37,6 +37,9 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "MediclaUsers.findByAfm", query = "SELECT m FROM MediclaUsers m WHERE m.afm = :afm")})
 public class MediclaUsers implements Serializable {
 
+    @Column(name = "username")
+    private String username;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -164,6 +167,14 @@ public class MediclaUsers implements Serializable {
     @Override
     public String toString() {
         return "DBEntities.MediclaUsers[ userId=" + userId + " ]";
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
     
 }

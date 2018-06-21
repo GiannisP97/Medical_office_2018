@@ -195,6 +195,7 @@ public final class DBManager {
         
         MediclaUsers md = entitymanager.find(MediclaUsers.class, obj.getUserId());
         System.out.println("Medical User: " + md.getName());
+        md.setUsername(obj.getUsername());
         md.setAfm(obj.getAfm());
         md.setName(obj.getName());
         md.setPassword(obj.getPassword());
@@ -322,7 +323,7 @@ public final class DBManager {
         EntityManager entitymanager = emfactory.createEntityManager();
         entitymanager.getTransaction().begin();
         
-        TypedQuery<MediclaUsers> query= entitymanager.createQuery("SELECT md FROM MediclaUsers AS md WHERE md.name = :username",MediclaUsers.class); 
+        TypedQuery<MediclaUsers> query= entitymanager.createQuery("SELECT md FROM MediclaUsers AS md WHERE md.username = :username",MediclaUsers.class); 
         query.setParameter("username", username);
 //        query 
         MediclaUsers temp;

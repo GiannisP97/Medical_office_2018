@@ -111,10 +111,10 @@ public class Connection extends Thread{
                             conman.removeConnection(addr);
                             return;
                         }
-                        System.out.println(dbuser.getName());
-                        System.out.println(dbuser.getPassword());
+                        System.out.println("dbuser: " + dbuser.getUsername());
+                        System.out.println("dbuser: " + dbuser.getPassword());
                         
-                        if(cuser.equals(dbuser.getName()) && cpass.equals(dbuser.getPassword())){
+                        if(cuser.equals(dbuser.getUsername()) && cpass.equals(dbuser.getPassword())){
 //                            out.println("L1");
                             this.sendMessage("L1");
                             logged = true;
@@ -224,7 +224,17 @@ public class Connection extends Thread{
                                     System.out.println("Failed to Sent!!!");
                                 }
                                 break;
-                            }                                
+                            } 
+                            case '2':{
+                                boolean issent = this.sendMessage(this.md.getName());
+                                if(issent){
+                                    System.out.println("Sent Succesfully!!!");
+                                }
+                                else{
+                                    System.out.println("Failed to Sent!!!");
+                                }
+                                break;
+                            }
                         }                        
                         break;
                 }

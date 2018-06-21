@@ -7,14 +7,14 @@
     <class>DBEntities.MediclaUsers</class>
     <class>DBEntities.Restocks</class>
     <properties>
-      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/MedicalOffice?zeroDateTimeBehavior=convertToNull"/>
+<!--      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/MedicalOffice?zeroDateTimeBehavior=convertToNull"/>
       <property name="javax.persistence.jdbc.user" value="root"/>
       <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
-      <property name="javax.persistence.jdbc.password" value="ubforme11"/>
-<!--      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://83.212.100.72:3306/MedicalOffice?zeroDateTimeBehavior=convertToNull"/>
+      <property name="javax.persistence.jdbc.password" value="ubforme11"/>-->
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://83.212.100.72:3306/MedicalOffice?zeroDateTimeBehavior=convertToNull"/>
       <property name="javax.persistence.jdbc.user" value="remoteuser"/>
       <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
-      <property name="javax.persistence.jdbc.password" value="remote"/>-->
+      <property name="javax.persistence.jdbc.password" value="remote"/>
     </properties>
   </persistence-unit>
 </persistence>
