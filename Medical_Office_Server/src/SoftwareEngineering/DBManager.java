@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import DBEntities.*;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -112,7 +113,7 @@ public final class DBManager {
         return true;
     }
 
-   public synchronized Integer createRestock(int meduserid , String fn){
+   public synchronized Integer createRestock(int meduserid , String fn, Date date){
         EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Medical_Office_ServerPU" );
 
         EntityManager entitymanager = emfactory.createEntityManager( );
@@ -122,6 +123,7 @@ public final class DBManager {
         MediclaUsers md = entitymanager.find(MediclaUsers.class, meduserid);
         temp.setMedicaluserId(md);
         temp.setFileName(fn);
+        temp.setRestockDate(date);
         
         entitymanager.persist( temp );
         entitymanager.getTransaction( ).commit( );
@@ -133,7 +135,7 @@ public final class DBManager {
     }
     
     
-    public synchronized boolean updateRestock(int meduserid , String fn , int rid){
+    public synchronized boolean updateRestock(int meduserid , String fn , int rid , Date date){
         EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Medical_Office_ServerPU" );
         
         EntityManager entitymanager = emfactory.createEntityManager();
@@ -144,6 +146,7 @@ public final class DBManager {
         MediclaUsers md = entitymanager.find(MediclaUsers.class, meduserid);
         temp.setMedicaluserId(md);
         temp.setFileName(fn);
+        temp.setRestockDate(date);
         
         entitymanager.getTransaction( ).commit( );
         
@@ -228,29 +231,45 @@ public final class DBManager {
         return true;
     }
     
-//    public synchronized Patients createPatient(Patient obj){
-//        EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Medical_Office_ServerPU" );
-//
-//        EntityManager entitymanager = emfactory.createEntityManager( );
-//        entitymanager.getTransaction( ).begin( );
-//        
-//        Patients pt = new Patients();
-//        pt.setAmka(obj.getAMKA());
-//        pt.setBirthDate(obj.g);
-//        pt.setContactNumber(obj.getContactNumber());
-//        pt.setName(obj.getName());
-//        pt.setSex(obj.getSex());
-//        
-//        entitymanager.persist( pt );
-//        entitymanager.getTransaction( ).commit( );
-//        
-//        entitymanager.close( );
-//        emfactory.close( );
-//        
-//        System.out.println("Patient: " + obj.getAmka());
-//        
-//        return pt;
-//    }
+    public synchronized boolean createPatient(Patient obj){
+        EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Medical_Office_ServerPU" );
+
+        EntityManager entitymanager = emfactory.createEntityManager( );
+        entitymanager.getTransaction( ).begin( );
+        
+        Patients pt = new Patients();
+        pt.setAmka(obj.getAMKA());
+        pt.setBirthDate(this.convertToDateViaSqlDate(obj.getBDate()));
+        pt.setContactNumber(obj.getPhoneNum());
+        pt.setName(obj.getName());
+        if(obj.getSex() == 1){
+            pt.setSex("FEMALE");
+        }
+        else{
+            pt.setSex("MALE");
+        }
+        
+        
+        entitymanager.persist( pt );
+        try{
+            entitymanager.getTransaction( ).commit( );
+        }
+        catch(Exception e){
+            System.out.println("createPatient()-> Exception: " + e.getMessage());
+            System.out.println("================StackTrace================");  
+//            e.printStackTrace();
+            System.out.println("----------------StackTrace----------------");
+            return false;
+        }
+        
+        
+        entitymanager.close( );
+        emfactory.close( );
+        
+        System.out.println("Patient: " + obj.getAMKA());
+        
+        return true;
+    }
     
     public synchronized boolean updatePatient(Patients obj){
         EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Medical_Office_ServerPU" );
@@ -347,7 +366,7 @@ public final class DBManager {
         return temp;
     }
     
-    public synchronized Patients findPatient(int amka){
+    public synchronized Patient findPatient(int amka){
         EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Medical_Office_ServerPU" );
         
         EntityManager entitymanager = emfactory.createEntityManager();
@@ -361,7 +380,7 @@ public final class DBManager {
         
         entitymanager.close( );
         emfactory.close( );
-        return temp;
+        return temp.toPatient();
     }
     
     public synchronized Appointment findAppointment(int id){
@@ -421,9 +440,11 @@ public final class DBManager {
         if(md.getUserType() == 1){
             
             for(Appointments temp: md.getAppointmentsList()){
-                System.out.println(temp.getAppointmentDay());
-                if(sdate.compareTo(temp.getAppointmentDay()) >= 0 && edate.compareTo(temp.getAppointmentDay()) <= 0 ){
+                System.out.println(temp.getAppointmentDay().toString());
+//                sdate.compareTo(temp.getAppointmentDay()) >= 0 && edate.compareTo(temp.getAppointmentDay()) <= 0
+                if(sdate.compareTo(temp.getAppointmentDay()) <= 0 && edate.compareTo(temp.getAppointmentDay()) >= 0 ){
                     aplist.add(temp.toAppointment());
+                    System.out.println(temp.getAppointmentDay());
                     }
             }
         }
@@ -431,8 +452,8 @@ public final class DBManager {
             
             for(MediclaUsers mdl: this.fetchAllMedicalUsers()){
                 for(Appointments temp: mdl.getAppointmentsList()){
-                System.out.println(temp.getAppointmentDay());
-                if(sdate.compareTo(temp.getAppointmentDay()) >= 0 && edate.compareTo(temp.getAppointmentDay()) <= 0 ){
+                System.out.println(temp.getAppointmentDay().toString());
+                if(sdate.compareTo(temp.getAppointmentDay()) <= 0 && edate.compareTo(temp.getAppointmentDay()) >= 0 ){
                     aplist.add(temp.toAppointment());
                     }
                 }

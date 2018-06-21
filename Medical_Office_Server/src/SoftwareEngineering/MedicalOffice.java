@@ -55,7 +55,7 @@ public class MedicalOffice {
 //        System.out.println(dbmanager.updateRestock(1, "/file83.txt" , 1));
 //        System.out.println(dbmanager.deleteRestock(2));
 
-//        MediclaUsers md = new MediclaUsers(2,"Nursey Nurse", "987654321", new Integer(2).shortValue(), 665198665);
+//        MediclaUsers md = new MediclaUsers(2,"Nursey Nurse", "987654321", new Integer(2).intValue(), 665198665);
 //        dbmanager.createMedicalUser(md);
 //        dbmanager.updateMedicalUser(md);
 //        dbmanager.deleteMedicalUser(md);

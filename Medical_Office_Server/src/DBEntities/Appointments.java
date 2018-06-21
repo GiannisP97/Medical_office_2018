@@ -7,6 +7,9 @@ package DBEntities;
 
 import SoftwareEngineering.Appointment;
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -134,7 +137,12 @@ public class Appointments implements Serializable {
         ap.setPatient(this.patientAMKA.toPatient());
         ap.setPrescription(this.doctorPrescription);
         ap.setDoctorID(this.mediclauserId.getUserId());
+        ap.setDate(this.convertToLocalDateTimeViaInstant(appointmentDay));
         
         return ap;
+    }
+    
+    public LocalDateTime convertToLocalDateTimeViaInstant(Date dateToConvert) {
+    return dateToConvert.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
     }
 }

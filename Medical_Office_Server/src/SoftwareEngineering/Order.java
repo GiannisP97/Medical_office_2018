@@ -45,6 +45,11 @@ public class Order implements Serializable
 	return null;
     }
     
+    public ArrayList<StorageItem> getStorageItemList()
+    {
+	return this.item_list;
+    }
+    
 }
 
 

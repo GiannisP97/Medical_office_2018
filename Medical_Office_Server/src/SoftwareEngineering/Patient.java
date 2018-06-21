@@ -20,7 +20,7 @@ public class Patient implements Serializable{
     private Integer AMKA;
     private LocalDate birth_date;
     private String phone_number;
-    private short gender;
+    private int gender;
     
     
     public Patient(){
@@ -62,7 +62,7 @@ public class Patient implements Serializable{
         this.AMKA = AMKA;
     }
 
-    public void setGender(short gender){
+    public void setGender(int gender){
         this.gender = gender;
     }
     
@@ -75,4 +75,19 @@ public class Patient implements Serializable{
         return this.AMKA;
     }
     
+    public LocalDate getBDate(){
+        return this.birth_date;
+    }
+    
+    public String getPhoneNum(){
+        return this.phone_number;
+    }
+    
+    public String getName(){
+        return this.name;
+    }
+    
+    public int getSex(){
+        return this.gender;
+    }
 }

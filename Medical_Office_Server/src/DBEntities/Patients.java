@@ -153,8 +153,8 @@ public class Patients implements Serializable {
         Patient pt = new Patient();
         pt.setAMKA(this.amka);
         pt.setBirth(convertToLocalDateViaInstant(this.birthDate));
-        if(sex.equals("MALE")) pt.setGender(new Integer(1).shortValue());
-        else pt.setGender(new Integer(0).shortValue());
+        if(sex.equals("MALE")) pt.setGender(new Integer(1).intValue());
+        else pt.setGender(new Integer(0).intValue());
 //        pt.setGender(this.sex);
         pt.setName(this.name);
         pt.setPhoneNumber(this.contactNumber);

@@ -6,6 +6,7 @@
 package DBEntities;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,6 +18,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -31,6 +34,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Restocks.findByRestockId", query = "SELECT r FROM Restocks r WHERE r.restockId = :restockId")
     , @NamedQuery(name = "Restocks.findByFileName", query = "SELECT r FROM Restocks r WHERE r.fileName = :fileName")})
 public class Restocks implements Serializable {
+
+    @Column(name = "restock_date")
+    @Temporal(TemporalType.DATE)
+    private Date restockDate;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -107,5 +114,13 @@ public class Restocks implements Serializable {
 //        
 //        return rs;
 //    }
+
+    public Date getRestockDate() {
+        return restockDate;
+    }
+
+    public void setRestockDate(Date restockDate) {
+        this.restockDate = restockDate;
+    }
     
 }

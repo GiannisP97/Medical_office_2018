@@ -8,7 +8,13 @@ package ServerUtill;
 import DBEntities.MediclaUsers;
 import SoftwareEngineering.Appointment;
 import SoftwareEngineering.DBManager;
+import SoftwareEngineering.Order;
+import SoftwareEngineering.Patient;
+import SoftwareEngineering.StorageItem;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
@@ -189,6 +195,30 @@ public class Connection extends Thread{
                                 }
                                 
                                 break;
+                            case '2':{
+                                Patient pt = this.recvMessage();
+                                boolean iscreated = this.dbmanager.createPatient(pt);
+                                if(iscreated){
+                                    System.out.println("Patient Created Succesfully!!!");
+                                    out.println("S0");
+                                }
+                                else{
+                                    System.out.println("Failed to Create!!!");
+                                    out.println("F0");
+                                }
+                                break;                                
+                            }
+                            case '3':{
+                                
+                                Order or = this.recvMessage();
+                                int orid = this.dbmanager.createRestock(this.md.getUserId(), "" , null);
+                                String fin = "..\\Orders\\order_" + orid + ".ord";
+                                this.dbmanager.updateRestock(this.md.getUserId(), fin, orid, this.dbmanager.convertToDateViaSqlDate(or.getOrderDate()));
+                                FileOutputStream fstream = new FileOutputStream(fin);
+                                ObjectOutputStream foos = new ObjectOutputStream(fstream);
+                                foos.writeObject(or);                                
+                                break;
+                            }
                         }
                         break;
                     case 'G':
@@ -205,9 +235,11 @@ public class Connection extends Thread{
                                 boolean issent = this.sendMessage(aplist);
                                 if(issent){
                                     System.out.println("Sent Succesfully!!!");
+//                                    out.write("S0");
                                 }
                                 else{
                                     System.out.println("Failed to Sent!!!");
+//                                    out.write("F0");
                                 }
                                 break;
                             }                                
@@ -215,6 +247,10 @@ public class Connection extends Thread{
                                 LocalDate sdate , edate;
                                 sdate = this.recvMessage();
                                 edate = this.recvMessage();
+                                System.out.println("sdate: " + sdate.toString());
+                                System.out.println("sdate->Date: " + this.dbmanager.convertToDateViaSqlDate(sdate));
+                                System.out.println("edate: " + edate.toString());
+                                System.out.println("edate->Date: " + this.dbmanager.convertToDateViaSqlDate(edate));
                                 List<Appointment> aplist = dbmanager.fetchAppointments(this.md.getUserId(), this.dbmanager.convertToDateViaSqlDate(sdate) , this.dbmanager.convertToDateViaSqlDate(edate));
                                 boolean issent = this.sendMessage(aplist);
                                 if(issent){
@@ -227,6 +263,7 @@ public class Connection extends Thread{
                             } 
                             case '2':{
                                 boolean issent = this.sendMessage(this.md.getName());
+                                System.out.println("Sent: " + md.getName());
                                 if(issent){
                                     System.out.println("Sent Succesfully!!!");
                                 }
@@ -235,6 +272,18 @@ public class Connection extends Thread{
                                 }
                                 break;
                             }
+                            case '4':{
+                                int uid = this.recvMessage();
+                                boolean issent = this.sendMessage(this.dbmanager.findMedicalUser(uid).getName());
+                                if(issent){
+                                    System.out.println("Sent Succesfully!!!");
+                                }
+                                else{
+                                    System.out.println("Failed to Sent!!!");
+                                }
+                                break;
+                            }
+                            
                         }                        
                         break;
                 }
