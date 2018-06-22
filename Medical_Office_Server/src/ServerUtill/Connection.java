@@ -195,7 +195,7 @@ public class Connection extends Thread{
 //                                    System.out.println(str);
                                     System.out.println("Appointment ID: " + ap.getID());
                                     if(dbmanager.createAppointment(ap)){
-                                        this.sendMessage("S0");
+                                        out.println("S0");
                                     }
                                 }
                                 catch(StreamCorruptedException e){
@@ -203,8 +203,9 @@ public class Connection extends Thread{
                                     System.out.println("================StackTrace================");  
                                     e.printStackTrace();
                                     System.out.println("----------------StackTrace----------------");
-                                    conman.removeConnection(addr);
                                     soc.close();
+                                    out.println("F0");
+                                    conman.removeConnection(addr);                                    
                                     logged = false;
                                 }
                                 
