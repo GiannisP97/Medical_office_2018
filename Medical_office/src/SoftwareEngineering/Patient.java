@@ -86,6 +86,22 @@ public class Patient implements Serializable{
     public String getName(){
         return this.name;
     }
+    public String getSurname(){
+        return this.surname;
+    }
+    public String getPhoneNumber(){
+        return this.phone_number;
+    }
+    public int getGender(){
+        return this.gender;
+    }
+    public Integer getAMKA(){
+        return this.AMKA;
+    }   
+    public LocalDate getBirth(){
+        return this.birth_date;
+    }
+    
     
     @Override
     public String toString(){

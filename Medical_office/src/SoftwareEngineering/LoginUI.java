@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
@@ -41,7 +42,10 @@ public class LoginUI extends javax.swing.JFrame {
     private static Schedule AppointmentList = new Schedule();
     private User loginUser;
     private static ArrayList<StorageItem> item_list = new ArrayList<>();
+    private static ArrayList<Patient> patient_list = new ArrayList<>();
     private static  Thread t = new Thread();
+    private static  Thread PatientListRefreshThread = new Thread();
+    
     public static void setConnectionInfo(String h,int p){
         LoginUI.hostname = h;
         LoginUI.port = p;
@@ -62,7 +66,7 @@ public class LoginUI extends javax.swing.JFrame {
         borderc = LoginForm_Username.getBorder(); // USED FOR CREDENTIAL VALIDATION
         FillSchedule();
         this.setVisible(false);
-        this.Display_Patients.setVisible(true);
+        //this.Display_Patients.setVisible(true);
     }
     public LoginUI(int a) {
         initComponents();
@@ -171,15 +175,18 @@ public class LoginUI extends javax.swing.JFrame {
         Patients_Panel = new javax.swing.JPanel();
         Scedule_Panel_Title1 = new javax.swing.JLabel();
         jScrollPane6 = new javax.swing.JScrollPane();
-        DatedAppointmentTable1 = new javax.swing.JTable();
-        Dated_Order_Fetch_ProgressBar1 = new javax.swing.JProgressBar();
+        Patients_Table = new javax.swing.JTable();
+        Patients_Fetch_ProgressBar = new javax.swing.JProgressBar();
         jPanel4 = new javax.swing.JPanel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
-        jTextField6 = new javax.swing.JTextField();
+        Patient_Name = new javax.swing.JTextField();
+        Patient_Surname = new javax.swing.JTextField();
+        Patient_AMKA = new javax.swing.JTextField();
+        Patient_Phone = new javax.swing.JTextField();
+        Patient_Gender = new javax.swing.JTextField();
+        Patient_BirthDate = new javax.swing.JTextField();
+        jButton4 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
+        Patient_List_Refresh = new javax.swing.JLabel();
         LoginFrame = new javax.swing.JPanel();
         LoginForm = new javax.swing.JPanel();
         LoginForm_Username = new javax.swing.JTextField();
@@ -768,6 +775,11 @@ public class LoginUI extends javax.swing.JFrame {
         UserMenuBar_Display.add(Display_List_Of_Appointments);
 
         Display_Patient_List.setText("Λίστα Ασθενών");
+        Display_Patient_List.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Display_Patient_ListActionPerformed(evt);
+            }
+        });
         UserMenuBar_Display.add(Display_Patient_List);
 
         Display_Order_History.setText("Ιστορικό Παραγγελιών");
@@ -1168,9 +1180,15 @@ public class LoginUI extends javax.swing.JFrame {
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
+        Display_Patients.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         Display_Patients.setPreferredSize(new java.awt.Dimension(1024, 720));
         Display_Patients.setResizable(false);
         Display_Patients.setSize(new java.awt.Dimension(1024, 720));
+        Display_Patients.addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                Display_PatientsWindowClosed(evt);
+            }
+        });
 
         Patients_Panel.setBackground(new java.awt.Color(255, 255, 255));
         Patients_Panel.setAlignmentX(0.0F);
@@ -1187,47 +1205,67 @@ public class LoginUI extends javax.swing.JFrame {
         Scedule_Panel_Title1.setFocusable(false);
         Scedule_Panel_Title1.setPreferredSize(new java.awt.Dimension(505, 20));
 
-        DatedAppointmentTable1.setModel(new javax.swing.table.DefaultTableModel(
+        Patients_Table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Όνομα", "ΑΜΚΑ"
+                "ONOMA", "ΑΜΚΑ"
             }
         ));
-        jScrollPane6.setViewportView(DatedAppointmentTable1);
+        Patients_Table.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Patients_TableMouseClicked(evt);
+            }
+        });
+        jScrollPane6.setViewportView(Patients_Table);
 
-        Dated_Order_Fetch_ProgressBar1.setBorder(null);
-        Dated_Order_Fetch_ProgressBar1.setBorderPainted(false);
-        Dated_Order_Fetch_ProgressBar1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        Patients_Fetch_ProgressBar.setBorder(null);
+        Patients_Fetch_ProgressBar.setBorderPainted(false);
+        Patients_Fetch_ProgressBar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "ΠΛΗΡΟΦΟΡΙΕΣ ΕΠΙΛΕΓΜΕΝΟΥ ΑΣΘΕΝΗ", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.ABOVE_TOP));
         jPanel4.setPreferredSize(new java.awt.Dimension(540, 690));
 
-        jTextField1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Όνομα", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.ABOVE_TOP));
-        jTextField1.setMinimumSize(new java.awt.Dimension(220, 50));
-        jTextField1.setPreferredSize(new java.awt.Dimension(245, 50));
+        Patient_Name.setEditable(false);
+        Patient_Name.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)), "Όνομα", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.ABOVE_TOP));
+        Patient_Name.setMinimumSize(new java.awt.Dimension(220, 50));
+        Patient_Name.setPreferredSize(new java.awt.Dimension(245, 50));
 
-        jTextField2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Επώνυμο", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.ABOVE_TOP));
-        jTextField2.setMinimumSize(new java.awt.Dimension(220, 50));
-        jTextField2.setPreferredSize(new java.awt.Dimension(245, 50));
+        Patient_Surname.setEditable(false);
+        Patient_Surname.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)), "Επώνυμο", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.ABOVE_TOP));
+        Patient_Surname.setMinimumSize(new java.awt.Dimension(220, 50));
+        Patient_Surname.setPreferredSize(new java.awt.Dimension(245, 50));
 
-        jTextField3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Ημερομηνία Γέννησης", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.ABOVE_TOP));
-        jTextField3.setMinimumSize(new java.awt.Dimension(220, 50));
-        jTextField3.setPreferredSize(new java.awt.Dimension(245, 50));
+        Patient_AMKA.setEditable(false);
+        Patient_AMKA.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)), "ΑΜΚΑ", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.ABOVE_TOP));
+        Patient_AMKA.setMinimumSize(new java.awt.Dimension(220, 50));
+        Patient_AMKA.setPreferredSize(new java.awt.Dimension(245, 50));
 
-        jTextField4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "ΑΜΚΑ", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.ABOVE_TOP));
-        jTextField4.setMinimumSize(new java.awt.Dimension(220, 50));
-        jTextField4.setPreferredSize(new java.awt.Dimension(245, 50));
+        Patient_Phone.setEditable(false);
+        Patient_Phone.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)), "Αριθμός Τηλεφώνου", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.ABOVE_TOP));
+        Patient_Phone.setMinimumSize(new java.awt.Dimension(220, 50));
+        Patient_Phone.setPreferredSize(new java.awt.Dimension(245, 50));
 
-        jTextField5.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Φύλο", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.ABOVE_TOP));
-        jTextField5.setMinimumSize(new java.awt.Dimension(220, 50));
-        jTextField5.setPreferredSize(new java.awt.Dimension(245, 50));
+        Patient_Gender.setEditable(false);
+        Patient_Gender.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)), "Φύλο", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.ABOVE_TOP));
+        Patient_Gender.setMinimumSize(new java.awt.Dimension(220, 50));
+        Patient_Gender.setPreferredSize(new java.awt.Dimension(245, 50));
 
-        jTextField6.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Αριθμός Τηλεφώνου", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.ABOVE_TOP));
-        jTextField6.setMinimumSize(new java.awt.Dimension(220, 50));
-        jTextField6.setPreferredSize(new java.awt.Dimension(245, 50));
+        Patient_BirthDate.setEditable(false);
+        Patient_BirthDate.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)), "Ημερομηνία Γέννησης", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.ABOVE_TOP));
+        Patient_BirthDate.setMinimumSize(new java.awt.Dimension(220, 50));
+        Patient_BirthDate.setPreferredSize(new java.awt.Dimension(245, 50));
+
+        jButton4.setText("ΔΙΑΓΡΑΦΗ");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
+        jButton5.setText("ΤΡΟΠΟΠΟΙΗΣΗ");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -1235,16 +1273,17 @@ public class LoginUI extends javax.swing.JFrame {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jButton4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(Patient_Name, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(Patient_Surname, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(Patient_BirthDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(25, 25, 25)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 0, 0))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(Patient_AMKA, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(Patient_Phone, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(Patient_Gender, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1252,19 +1291,30 @@ public class LoginUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(jTextField4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(Patient_Phone, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(6, 6, 6)
-                        .addComponent(jTextField3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(Patient_AMKA, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(6, 6, 6)
-                        .addComponent(jTextField5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(Patient_Gender, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(Patient_Name, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(6, 6, 6)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(Patient_Surname, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(6, 6, 6)
-                        .addComponent(jTextField6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(Patient_BirthDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton4)
+                    .addComponent(jButton5))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        Patient_List_Refresh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/refresh.png"))); // NOI18N
+        Patient_List_Refresh.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Patient_List_RefreshMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout Patients_PanelLayout = new javax.swing.GroupLayout(Patients_Panel);
         Patients_Panel.setLayout(Patients_PanelLayout);
@@ -1273,9 +1323,12 @@ public class LoginUI extends javax.swing.JFrame {
             .addGroup(Patients_PanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(Patients_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(Dated_Order_Fetch_ProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(Patients_Fetch_ProgressBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jScrollPane6)
-                    .addComponent(Scedule_Panel_Title1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addGroup(Patients_PanelLayout.createSequentialGroup()
+                        .addComponent(Scedule_Panel_Title1, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(Patient_List_Refresh)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -1285,14 +1338,16 @@ public class LoginUI extends javax.swing.JFrame {
             .addGroup(Patients_PanelLayout.createSequentialGroup()
                 .addGroup(Patients_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(Patients_PanelLayout.createSequentialGroup()
-                        .addComponent(Scedule_Panel_Title1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(Patients_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(Scedule_Panel_Title1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(Patient_List_Refresh))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 624, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(Patients_PanelLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 644, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(Dated_Order_Fetch_ProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(Patients_Fetch_ProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(41, 41, 41))
         );
 
@@ -1300,13 +1355,13 @@ public class LoginUI extends javax.swing.JFrame {
         Display_Patients.getContentPane().setLayout(Display_PatientsLayout);
         Display_PatientsLayout.setHorizontalGroup(
             Display_PatientsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 526, Short.MAX_VALUE)
+            .addGap(0, 1024, Short.MAX_VALUE)
             .addGroup(Display_PatientsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(Patients_Panel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         Display_PatientsLayout.setVerticalGroup(
             Display_PatientsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 717, Short.MAX_VALUE)
+            .addGap(0, 720, Short.MAX_VALUE)
             .addGroup(Display_PatientsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(Patients_Panel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -1528,6 +1583,7 @@ public class LoginUI extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     private static  String FlagCommander(String FLAG,Object argv){
         Object rcv;
+        while (LoginUI.PatientListRefreshThread.isAlive() && !LoginUI.PatientListRefreshThread.getState().equals(Thread.State.TIMED_WAITING)) ;
         switch(FLAG){
             case "L0":
                 return "L0";           
@@ -1605,7 +1661,41 @@ public class LoginUI extends javax.swing.JFrame {
                 conn.sendMessage("G4");
                 conn.sendObject(Integer.valueOf((String)argv));
                 return conn.receiveObject();
-            
+            case "G5":
+                try {
+                    t = new Thread(new Runnable(){
+                    @Override
+                        public void run() {
+                        try {
+                            //New_Patient_Submit_Result.setText("Sending...");
+                            conn.sendMessage("G5");
+                            LoginUI.Patients_Fetch_ProgressBar.setIndeterminate(true);
+                            ArrayList<Patient> retval = conn.receiveObject();
+                            LoginUI.patient_list = retval;
+                            DefaultTableModel model = new DefaultTableModel();
+                            model.addColumn("ONOMA");
+                            model.addColumn("AMKA");
+                            for (Patient x : retval){
+                                model.addRow(new Object[] {x.getName(),Integer.toString(x.getAMKA())});
+                            }
+                            LoginUI.Patients_Table.setModel(model);
+                            LoginUI.Patients_Fetch_ProgressBar.setIndeterminate(false);
+                            
+                            
+                        } 
+                        catch (Exception ex) {
+                            New_Patient_Submit_Result.setText("Error: "+ex.getMessage());
+                        }
+                    }  
+                    });
+                    t.start();
+                    
+
+                    return "";
+                }
+                catch (Exception ex){
+                    
+                }
             case "C1":
                 return "";
             case "C2":
@@ -1690,11 +1780,51 @@ public class LoginUI extends javax.swing.JFrame {
             case "C4":
                 return "";
             
-            
+            case "D0":
+                    if(!t.isAlive()){
+                    t = new Thread(new Runnable(){
+                    @Override
+                        public void run() {
+                        //LoginUI.Order_Loading.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/loader.gif")));
+                        Integer tmp;
+                        if (LoginUI.Patients_Table.getSelectedRow()>=0)
+                         tmp = Integer.valueOf((String)LoginUI.Patients_Table.getValueAt(LoginUI.Patients_Table.getSelectedRow(), 1));
+                        else tmp=null;
+                        if(tmp!=null){
+                            conn.sendMessage("D0");
+                            if (conn.sendObject(tmp) ){
+                            String retval;
+                            try {
+                                retval = conn.receiveMessage();
+                                if (retval!= null && retval.equals("S0")){
+                                    System.out.println("Patient deletion success");
+                                }
+                                else {
+                                    System.out.println("Patient deletion failed");
+                                    LoginUI.Order_Loading.setIcon(null);
+                                    LoginUI.Order_Loading.setForeground(Color.red);
+                                    LoginUI.Order_Loading.setText("X");
+                                }
+                                LoginUI.FlagCommander("G5", null);
+                                Thread.sleep(2000);
+                                LoginUI.Order_Loading.setText("");
+                            } catch (Exception ex) {
+                                Logger.getLogger(LoginUI.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                        }
+                        
+                    }  
+                    });
+                    t.start();
+                }
+               
             
             default:
                 return "";
         }
+        
+        
     }
     
     
@@ -1871,7 +2001,12 @@ public class LoginUI extends javax.swing.JFrame {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
             LocalDate birthdate = LocalDate.parse(this.New_Patient_BirthDate.getText(),formatter);
             
-            Patient tmp = new Patient(Integer.parseInt(this.New_Patient_AMKA.getText()),this.New_Patient_Name.getText(),this.New_Patient_Surname.getText(),this.New_Patient_Phone.getText(),this.New_Patient_Sex.getSelectedIndex(),birthdate);
+            Patient tmp = new Patient(Integer.parseInt(
+                    this.New_Patient_AMKA.getText()),
+                    this.New_Patient_Name.getText(),
+                    this.New_Patient_Surname.getText(),
+                    this.New_Patient_Phone.getText(),
+                    this.New_Patient_Sex.getSelectedIndex(),birthdate);
             this.FlagCommander("C2", tmp);
             
         }
@@ -2077,7 +2212,92 @@ public class LoginUI extends javax.swing.JFrame {
         
     }//GEN-LAST:event_Button_Update_Connection_InfoActionPerformed
 
+    private void Display_Patient_ListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Display_Patient_ListActionPerformed
+        // TODO add your handling code here:
+        this.User_MainMenu.setVisible(false);
+        this.Display_Patients.setVisible(true);
+    }//GEN-LAST:event_Display_Patient_ListActionPerformed
 
+    private void Display_PatientsWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_Display_PatientsWindowClosed
+        // TODO add your handling code here:
+        if (LoginUI.PatientListRefreshThread != null){
+        this.stopPatient_Table_Refresher();
+        }
+        this.User_MainMenu.setVisible(true);
+        
+        
+    }//GEN-LAST:event_Display_PatientsWindowClosed
+
+    private void Patients_TableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Patients_TableMouseClicked
+        // TODO add your handling code here:
+        Patient tmp = new Patient() ;
+        for (Patient x : patient_list){
+            if (x.getAMKA().toString().equals((String)LoginUI.Patients_Table.getValueAt(LoginUI.Patients_Table.getSelectedRow(), 1))){
+                tmp = x;
+                break;
+            }
+        }
+        LoginUI.Patient_Name.setText(tmp.getName());
+        LoginUI.Patient_Surname.setText(tmp.getSurname());
+        LoginUI.Patient_Phone.setText(tmp.getPhoneNumber());
+        LoginUI.Patient_AMKA.setText(String.valueOf(tmp.getAMKA()));
+        LoginUI.Patient_Gender.setText(tmp.getGender() == 1? "Άντρας" : "Γυναίκα");
+        LoginUI.Patient_BirthDate.setText(tmp.getBirth().toString());
+
+    }//GEN-LAST:event_Patients_TableMouseClicked
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        LoginUI.FlagCommander("D0", null);
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void Patient_List_RefreshMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Patient_List_RefreshMouseClicked
+        // TODO add your handling code here:
+        this.startPatient_Table_Refresher();
+    }//GEN-LAST:event_Patient_List_RefreshMouseClicked
+    private void stopPatient_Table_Refresher(){
+        LoginUI.PatientListRefreshThread.interrupt();
+    }
+    private void startPatient_Table_Refresher(){
+        try {
+            LoginUI.PatientListRefreshThread = new Thread(new Runnable(){
+                @Override
+                public void run() {
+                            try {
+                                //New_Patient_Submit_Result.setText("Sending...");
+                                while  (t.isAlive()) {Thread.sleep(100);} ;
+                                System.out.println("Updator is performing a refresh.");
+                                conn.sendMessage("G5");
+                                LoginUI.Patients_Fetch_ProgressBar.setIndeterminate(true);
+                                ArrayList<Patient> retval = conn.receiveObject();
+                                if (retval==null){
+                                    throw (new Exception("retval is null"));
+                                }
+                                LoginUI.patient_list = retval;
+                                DefaultTableModel model = new DefaultTableModel();
+                                model.addColumn("ONOMA");
+                                model.addColumn("AMKA");
+                                for (Patient x : retval){
+                                    model.addRow(new Object[] {x.getName(),Integer.toString(x.getAMKA())});
+                                }
+                                LoginUI.Patients_Table.setModel(model);
+                                LoginUI.Patients_Fetch_ProgressBar.setIndeterminate(false);
+                                System.out.println("Updator finished sucessfully");
+                            }
+                            
+                            catch (Exception ex) {
+                                System.out.println("Updator crashed: "+ex.getMessage());
+                                return;
+                            }
+                    }
+            });
+            LoginUI.PatientListRefreshThread.start();
+                   
+        }
+        catch (Exception ex){  
+            
+        }
+    }
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -2124,14 +2344,12 @@ public class LoginUI extends javax.swing.JFrame {
     private javax.swing.JButton DateFilter_Submit;
     private static javax.swing.JFormattedTextField DateFilter_To;
     private static javax.swing.JTable DatedAppointmentTable;
-    private static javax.swing.JTable DatedAppointmentTable1;
     private static javax.swing.JProgressBar Dated_Order_Fetch_ProgressBar;
-    private static javax.swing.JProgressBar Dated_Order_Fetch_ProgressBar1;
     private javax.swing.JPanel Dated_Schedule_Panel;
     private javax.swing.JMenuItem Display_List_Of_Appointments;
     private javax.swing.JMenuItem Display_Order_History;
     private javax.swing.JMenuItem Display_Patient_List;
-    private javax.swing.JFrame Display_Patients;
+    private static javax.swing.JFrame Display_Patients;
     private javax.swing.JFrame Display_Schedule_Frame;
     private javax.swing.JDialog ErrorDialog;
     private javax.swing.JPanel LoginForm;
@@ -2163,7 +2381,16 @@ public class LoginUI extends javax.swing.JFrame {
     private javax.swing.JButton Order_Remove_Last;
     private static javax.swing.JButton Order_Submit;
     private javax.swing.JLabel PasswordLabel;
+    private static javax.swing.JTextField Patient_AMKA;
+    private static javax.swing.JTextField Patient_BirthDate;
+    private static javax.swing.JTextField Patient_Gender;
+    private javax.swing.JLabel Patient_List_Refresh;
+    private static javax.swing.JTextField Patient_Name;
+    private static javax.swing.JTextField Patient_Phone;
+    private static javax.swing.JTextField Patient_Surname;
+    private static javax.swing.JProgressBar Patients_Fetch_ProgressBar;
     private javax.swing.JPanel Patients_Panel;
+    private static javax.swing.JTable Patients_Table;
     private javax.swing.JFrame PrescriptionFrame;
     private javax.swing.JTable PrescriptionFrame_AppointmentList;
     private javax.swing.JTextArea PrescriptionFrame_Prescription;
@@ -2187,6 +2414,8 @@ public class LoginUI extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private static javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -2217,12 +2446,6 @@ public class LoginUI extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField paragelia_name;
     private javax.swing.JTextField paragelia_posotita;
     // End of variables declaration//GEN-END:variables
