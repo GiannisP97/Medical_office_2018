@@ -42,6 +42,12 @@ public <T> T receiveObject(){
         }
         catch(ClassNotFoundException e){
             System.out.println("recvMessage()-> ClassNotFoundException: " + e.getMessage());
+            System.out.println("Retrying to connect ... ");
+            for (int i=0;i<5;i++) {
+                if (this.CreateSocket(hostName, portNumber)) {
+                    
+                }
+            }
             return null;
         }
     }
@@ -54,10 +60,12 @@ public <T> T receiveObject(){
     }
     public boolean CreateSocket(String host,int port){
         try{
+            this.hostName = host;
+            this.portNumber = port;
             conn = new Socket();
-            conn.connect(new InetSocketAddress(host,port), 1000000);
+            conn.connect(new InetSocketAddress(host,port), 5000);
             
-            conn.setSoTimeout(1000000);
+            conn.setSoTimeout(5000);
             writer = new PrintWriter(conn.getOutputStream(),true);
             reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             return true;

@@ -42,9 +42,6 @@ public class MedicalOffice {
                     String[] split = line.split(":");
                     if (split[0].equals("hostname")) h = split[1];
                     else if (split[0].equals("port")) p = Integer.parseInt(split[1]);   
-
-
-
                 }
             }
             catch (Exception ex){
@@ -54,7 +51,7 @@ public class MedicalOffice {
             LoginUI.setConnectionInfo(h, p);
             
         }
-        System.out.println(h+":"+p);
+        //System.out.println(h+":"+p);
        LoginUI.main(params);
 
         

@@ -6,7 +6,8 @@
 package SoftwareEngineering;
 
 import java.awt.Color;
-import java.io.IOException;
+import java.io.File;
+import java.io.PrintWriter;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -18,13 +19,9 @@ import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.DefaultListModel;
-import javax.swing.Icon;
-import javax.swing.SwingUtilities;
-import javax.swing.SwingWorker;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 
 
 /**
@@ -44,7 +41,7 @@ public class LoginUI extends javax.swing.JFrame {
     private static Schedule AppointmentList = new Schedule();
     private User loginUser;
     private static ArrayList<StorageItem> item_list = new ArrayList<>();
-    private static  Thread t ;
+    private static  Thread t = new Thread();
     public static void setConnectionInfo(String h,int p){
         LoginUI.hostname = h;
         LoginUI.port = p;
@@ -62,30 +59,19 @@ public class LoginUI extends javax.swing.JFrame {
     public LoginUI() {
 
         initComponents();
-        //LoginLoadingGif.setVisible(false);
         borderc = LoginForm_Username.getBorder(); // USED FOR CREDENTIAL VALIDATION
         FillSchedule();
         this.setVisible(false);
-        /*
-        TableModel model = new DefaultTableModel() {
-            @Override
-            public boolean isCellEditable(int rowIndex, int mColIndex) {
-              return false;
-            }
-        };
-        this.TableOrder.setModel(model);
-        */
-        //this.User_MainMenu.setVisible(true);
-        
- 
-
+        this.Display_Patients.setVisible(true);
     }
     public LoginUI(int a) {
-
         initComponents();
+        
         borderc = LoginForm_Username.getBorder(); // USED FOR CREDENTIAL VALIDATION        
-        this.ErrorDialog.setVisible(true);
-        this.ErrorDialog.requestFocus();
+        FillSchedule();
+        //this.setVisible(false);
+        //this.Change_Connection_Info.setVisible(true);
+       
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -139,6 +125,7 @@ public class LoginUI extends javax.swing.JFrame {
         jScrollPane4 = new javax.swing.JScrollPane();
         New_Order_Table = new javax.swing.JTable();
         Order_Remove_Last = new javax.swing.JButton();
+        Order_Loading = new javax.swing.JLabel();
         User_MenuBar = new javax.swing.JMenuBar();
         UserMenuBar_Display = new javax.swing.JMenu();
         Display_List_Of_Appointments = new javax.swing.JMenuItem();
@@ -162,7 +149,7 @@ public class LoginUI extends javax.swing.JFrame {
         PrescriptionFrame_Prescription = new javax.swing.JTextArea();
         jButton2 = new javax.swing.JButton();
         Display_Schedule_Frame = new javax.swing.JFrame();
-        User_Home_LeftSide1 = new javax.swing.JPanel();
+        Dated_Schedule_Panel = new javax.swing.JPanel();
         Scedule_Panel_Title = new javax.swing.JLabel();
         jScrollPane5 = new javax.swing.JScrollPane();
         DatedAppointmentTable = new javax.swing.JTable();
@@ -172,6 +159,27 @@ public class LoginUI extends javax.swing.JFrame {
         DateFilter_From = new javax.swing.JFormattedTextField();
         DateFilter_To = new javax.swing.JFormattedTextField();
         DateFilter_Submit = new javax.swing.JButton();
+        Dated_Order_Fetch_ProgressBar = new javax.swing.JProgressBar();
+        Change_Connection_Info = new javax.swing.JFrame();
+        jPanel2 = new javax.swing.JPanel();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel19 = new javax.swing.JLabel();
+        Settings_New_Host = new javax.swing.JTextField();
+        Settings_New_Port = new javax.swing.JTextField();
+        Button_Update_Connection_Info = new javax.swing.JButton();
+        Display_Patients = new javax.swing.JFrame();
+        Patients_Panel = new javax.swing.JPanel();
+        Scedule_Panel_Title1 = new javax.swing.JLabel();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        DatedAppointmentTable1 = new javax.swing.JTable();
+        Dated_Order_Fetch_ProgressBar1 = new javax.swing.JProgressBar();
+        jPanel4 = new javax.swing.JPanel();
+        jTextField1 = new javax.swing.JTextField();
+        jTextField2 = new javax.swing.JTextField();
+        jTextField3 = new javax.swing.JTextField();
+        jTextField4 = new javax.swing.JTextField();
+        jTextField5 = new javax.swing.JTextField();
+        jTextField6 = new javax.swing.JTextField();
         LoginFrame = new javax.swing.JPanel();
         LoginForm = new javax.swing.JPanel();
         LoginForm_Username = new javax.swing.JTextField();
@@ -181,6 +189,7 @@ public class LoginUI extends javax.swing.JFrame {
         UsernameLabel = new javax.swing.JLabel();
         PasswordLabel = new javax.swing.JLabel();
         WrongCredentialsMessage = new javax.swing.JLabel();
+        Login_Button_Change_Connection_Info = new javax.swing.JButton();
 
         User_MainMenu.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         User_MainMenu.setTitle("Αρχική Σελίδα Γραμματέας");
@@ -277,9 +286,7 @@ public class LoginUI extends javax.swing.JFrame {
             User_Home_LeftSideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(User_Home_LeftSideLayout.createSequentialGroup()
                 .addGroup(User_Home_LeftSideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, User_Home_LeftSideLayout.createSequentialGroup()
-                        .addGap(0, 0, 0)
-                        .addComponent(Todays_Scedule_Title, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(Todays_Scedule_Title, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane1))
                 .addGap(0, 0, 0))
         );
@@ -639,14 +646,14 @@ public class LoginUI extends javax.swing.JFrame {
             }
         });
 
+        Order_Loading.setForeground(new java.awt.Color(0, 0, 0));
+
         javax.swing.GroupLayout New_Order_PanelLayout = new javax.swing.GroupLayout(New_Order_Panel);
         New_Order_Panel.setLayout(New_Order_PanelLayout);
         New_Order_PanelLayout.setHorizontalGroup(
             New_Order_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(New_Order_PanelLayout.createSequentialGroup()
-                .addGap(0, 0, 0)
-                .addGroup(New_Order_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(Order_Submit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(New_Order_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(paragelia_posotita, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -654,9 +661,13 @@ public class LoginUI extends javax.swing.JFrame {
                         .addComponent(Order_Add_Product, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(Order_Remove_Last, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(paragelia_name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(44, 44, 44)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(paragelia_name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(New_Order_PanelLayout.createSequentialGroup()
+                        .addComponent(Order_Submit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(Order_Loading, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 225, Short.MAX_VALUE)
                 .addContainerGap())
         );
         New_Order_PanelLayout.setVerticalGroup(
@@ -664,12 +675,14 @@ public class LoginUI extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, New_Order_PanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(New_Order_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addGroup(New_Order_PanelLayout.createSequentialGroup()
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addGap(19, 19, 19))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, New_Order_PanelLayout.createSequentialGroup()
                         .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(paragelia_name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(paragelia_posotita, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -678,8 +691,10 @@ public class LoginUI extends javax.swing.JFrame {
                             .addComponent(Order_Add_Product, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(Order_Remove_Last, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(Order_Submit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(19, 19, 19))
+                        .addGroup(New_Order_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(Order_Loading, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(Order_Submit, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE))
+                        .addContainerGap(29, Short.MAX_VALUE))))
         );
 
         javax.swing.GroupLayout User_Home_RightSideLayout = new javax.swing.GroupLayout(User_Home_RightSide);
@@ -957,10 +972,10 @@ public class LoginUI extends javax.swing.JFrame {
         Display_Schedule_Frame.setResizable(false);
         Display_Schedule_Frame.setSize(new java.awt.Dimension(526, 712));
 
-        User_Home_LeftSide1.setBackground(new java.awt.Color(255, 255, 255));
-        User_Home_LeftSide1.setAlignmentX(0.0F);
-        User_Home_LeftSide1.setAlignmentY(0.0F);
-        User_Home_LeftSide1.setPreferredSize(new java.awt.Dimension(480, 700));
+        Dated_Schedule_Panel.setBackground(new java.awt.Color(255, 255, 255));
+        Dated_Schedule_Panel.setAlignmentX(0.0F);
+        Dated_Schedule_Panel.setAlignmentY(0.0F);
+        Dated_Schedule_Panel.setPreferredSize(new java.awt.Dimension(526, 712));
 
         Scedule_Panel_Title.setBackground(new java.awt.Color(153, 153, 153));
         Scedule_Panel_Title.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
@@ -1000,17 +1015,20 @@ public class LoginUI extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout User_Home_LeftSide1Layout = new javax.swing.GroupLayout(User_Home_LeftSide1);
-        User_Home_LeftSide1.setLayout(User_Home_LeftSide1Layout);
-        User_Home_LeftSide1Layout.setHorizontalGroup(
-            User_Home_LeftSide1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane5)
+        Dated_Order_Fetch_ProgressBar.setBorder(null);
+        Dated_Order_Fetch_ProgressBar.setBorderPainted(false);
+        Dated_Order_Fetch_ProgressBar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        javax.swing.GroupLayout Dated_Schedule_PanelLayout = new javax.swing.GroupLayout(Dated_Schedule_Panel);
+        Dated_Schedule_Panel.setLayout(Dated_Schedule_PanelLayout);
+        Dated_Schedule_PanelLayout.setHorizontalGroup(
+            Dated_Schedule_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(Scedule_Panel_Title, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-            .addGroup(User_Home_LeftSide1Layout.createSequentialGroup()
+            .addGroup(Dated_Schedule_PanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(User_Home_LeftSide1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(User_Home_LeftSide1Layout.createSequentialGroup()
+                .addGroup(Dated_Schedule_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Dated_Schedule_PanelLayout.createSequentialGroup()
                         .addComponent(jLabel17)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(DateFilter_From, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1018,25 +1036,32 @@ public class LoginUI extends javax.swing.JFrame {
                         .addComponent(jLabel18)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(DateFilter_To, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(DateFilter_Submit, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
+                        .addComponent(DateFilter_Submit, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Dated_Schedule_PanelLayout.createSequentialGroup()
+                        .addGroup(Dated_Schedule_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane5)
+                            .addComponent(Dated_Order_Fetch_ProgressBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap())))
         );
-        User_Home_LeftSide1Layout.setVerticalGroup(
-            User_Home_LeftSide1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(User_Home_LeftSide1Layout.createSequentialGroup()
+        Dated_Schedule_PanelLayout.setVerticalGroup(
+            Dated_Schedule_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(Dated_Schedule_PanelLayout.createSequentialGroup()
                 .addComponent(Scedule_Panel_Title, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(User_Home_LeftSide1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(Dated_Schedule_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel17)
                     .addComponent(DateFilter_From, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel18)
                     .addComponent(DateFilter_To, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(DateFilter_Submit, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 633, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 361, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(Dated_Order_Fetch_ProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(244, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout Display_Schedule_FrameLayout = new javax.swing.GroupLayout(Display_Schedule_Frame.getContentPane());
@@ -1045,13 +1070,245 @@ public class LoginUI extends javax.swing.JFrame {
             Display_Schedule_FrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 526, Short.MAX_VALUE)
             .addGroup(Display_Schedule_FrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(User_Home_LeftSide1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 526, Short.MAX_VALUE))
+                .addComponent(Dated_Schedule_Panel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         Display_Schedule_FrameLayout.setVerticalGroup(
             Display_Schedule_FrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 717, Short.MAX_VALUE)
             .addGroup(Display_Schedule_FrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(User_Home_LeftSide1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 717, Short.MAX_VALUE))
+                .addComponent(Dated_Schedule_Panel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        Change_Connection_Info.setPreferredSize(null);
+        Change_Connection_Info.setResizable(false);
+        Change_Connection_Info.setSize(new java.awt.Dimension(400, 300));
+
+        jPanel2.setBackground(new java.awt.Color(204, 204, 255));
+
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel19.setFont(new java.awt.Font("Verdana", 1, 12)); // NOI18N
+        jLabel19.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel19.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel19.setText("ΑΛΛΑΓΗ ΡΥΘΜΙΣΕΩΝ ΣΥΝΔΕΣΗΣ");
+
+        Settings_New_Host.setText(LoginUI.hostname);
+        Settings_New_Host.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Hostname", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.ABOVE_TOP));
+        Settings_New_Host.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Settings_New_HostActionPerformed(evt);
+            }
+        });
+
+        Settings_New_Port.setText(String.valueOf(LoginUI.port));
+        Settings_New_Port.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Port", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.ABOVE_TOP));
+
+        Button_Update_Connection_Info.setText("Ενημέρωση");
+        Button_Update_Connection_Info.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Button_Update_Connection_InfoActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel19, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(Settings_New_Host)
+                    .addComponent(Settings_New_Port))
+                .addContainerGap())
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(136, 136, 136)
+                .addComponent(Button_Update_Connection_Info, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(139, Short.MAX_VALUE))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(Settings_New_Host, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(Settings_New_Port, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(Button_Update_Connection_Info)
+                .addContainerGap(12, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        javax.swing.GroupLayout Change_Connection_InfoLayout = new javax.swing.GroupLayout(Change_Connection_Info.getContentPane());
+        Change_Connection_Info.getContentPane().setLayout(Change_Connection_InfoLayout);
+        Change_Connection_InfoLayout.setHorizontalGroup(
+            Change_Connection_InfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        Change_Connection_InfoLayout.setVerticalGroup(
+            Change_Connection_InfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        Display_Patients.setPreferredSize(new java.awt.Dimension(1024, 720));
+        Display_Patients.setResizable(false);
+        Display_Patients.setSize(new java.awt.Dimension(1024, 720));
+
+        Patients_Panel.setBackground(new java.awt.Color(255, 255, 255));
+        Patients_Panel.setAlignmentX(0.0F);
+        Patients_Panel.setAlignmentY(0.0F);
+        Patients_Panel.setMaximumSize(new java.awt.Dimension(1024, 720));
+        Patients_Panel.setMinimumSize(new java.awt.Dimension(1024, 720));
+        Patients_Panel.setPreferredSize(new java.awt.Dimension(1024, 720));
+
+        Scedule_Panel_Title1.setBackground(new java.awt.Color(153, 153, 153));
+        Scedule_Panel_Title1.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        Scedule_Panel_Title1.setForeground(new java.awt.Color(51, 51, 51));
+        Scedule_Panel_Title1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Scedule_Panel_Title1.setText("ΛΙΣΤΑ ΑΣΘΕΝΩΝ");
+        Scedule_Panel_Title1.setFocusable(false);
+        Scedule_Panel_Title1.setPreferredSize(new java.awt.Dimension(505, 20));
+
+        DatedAppointmentTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Όνομα", "ΑΜΚΑ"
+            }
+        ));
+        jScrollPane6.setViewportView(DatedAppointmentTable1);
+
+        Dated_Order_Fetch_ProgressBar1.setBorder(null);
+        Dated_Order_Fetch_ProgressBar1.setBorderPainted(false);
+        Dated_Order_Fetch_ProgressBar1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "ΠΛΗΡΟΦΟΡΙΕΣ ΕΠΙΛΕΓΜΕΝΟΥ ΑΣΘΕΝΗ", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.ABOVE_TOP));
+        jPanel4.setPreferredSize(new java.awt.Dimension(540, 690));
+
+        jTextField1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Όνομα", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.ABOVE_TOP));
+        jTextField1.setMinimumSize(new java.awt.Dimension(220, 50));
+        jTextField1.setPreferredSize(new java.awt.Dimension(245, 50));
+
+        jTextField2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Επώνυμο", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.ABOVE_TOP));
+        jTextField2.setMinimumSize(new java.awt.Dimension(220, 50));
+        jTextField2.setPreferredSize(new java.awt.Dimension(245, 50));
+
+        jTextField3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Ημερομηνία Γέννησης", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.ABOVE_TOP));
+        jTextField3.setMinimumSize(new java.awt.Dimension(220, 50));
+        jTextField3.setPreferredSize(new java.awt.Dimension(245, 50));
+
+        jTextField4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "ΑΜΚΑ", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.ABOVE_TOP));
+        jTextField4.setMinimumSize(new java.awt.Dimension(220, 50));
+        jTextField4.setPreferredSize(new java.awt.Dimension(245, 50));
+
+        jTextField5.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Φύλο", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.ABOVE_TOP));
+        jTextField5.setMinimumSize(new java.awt.Dimension(220, 50));
+        jTextField5.setPreferredSize(new java.awt.Dimension(245, 50));
+
+        jTextField6.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Αριθμός Τηλεφώνου", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.ABOVE_TOP));
+        jTextField6.setMinimumSize(new java.awt.Dimension(220, 50));
+        jTextField6.setPreferredSize(new java.awt.Dimension(245, 50));
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(25, 25, 25)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, 0))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jTextField4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(6, 6, 6)
+                        .addComponent(jTextField3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(6, 6, 6)
+                        .addComponent(jTextField5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(6, 6, 6)
+                        .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(6, 6, 6)
+                        .addComponent(jTextField6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout Patients_PanelLayout = new javax.swing.GroupLayout(Patients_Panel);
+        Patients_Panel.setLayout(Patients_PanelLayout);
+        Patients_PanelLayout.setHorizontalGroup(
+            Patients_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(Patients_PanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(Patients_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(Dated_Order_Fetch_ProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane6)
+                    .addComponent(Scedule_Panel_Title1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        Patients_PanelLayout.setVerticalGroup(
+            Patients_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(Patients_PanelLayout.createSequentialGroup()
+                .addGroup(Patients_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(Patients_PanelLayout.createSequentialGroup()
+                        .addComponent(Scedule_Panel_Title1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 624, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(Patients_PanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 644, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(Dated_Order_Fetch_ProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(41, 41, 41))
+        );
+
+        javax.swing.GroupLayout Display_PatientsLayout = new javax.swing.GroupLayout(Display_Patients.getContentPane());
+        Display_Patients.getContentPane().setLayout(Display_PatientsLayout);
+        Display_PatientsLayout.setHorizontalGroup(
+            Display_PatientsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 526, Short.MAX_VALUE)
+            .addGroup(Display_PatientsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(Patients_Panel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        Display_PatientsLayout.setVerticalGroup(
+            Display_PatientsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 717, Short.MAX_VALUE)
+            .addGroup(Display_PatientsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(Patients_Panel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -1119,6 +1376,17 @@ public class LoginUI extends javax.swing.JFrame {
         WrongCredentialsMessage.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         WrongCredentialsMessage.setFocusable(false);
 
+        Login_Button_Change_Connection_Info.setBackground(new java.awt.Color(153, 153, 153));
+        Login_Button_Change_Connection_Info.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/settings.png"))); // NOI18N
+        Login_Button_Change_Connection_Info.setBorderPainted(false);
+        Login_Button_Change_Connection_Info.setFocusable(false);
+        Login_Button_Change_Connection_Info.setPreferredSize(new java.awt.Dimension(35, 35));
+        Login_Button_Change_Connection_Info.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Login_Button_Change_Connection_InfoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout LoginFormLayout = new javax.swing.GroupLayout(LoginForm);
         LoginForm.setLayout(LoginFormLayout);
         LoginFormLayout.setHorizontalGroup(
@@ -1137,13 +1405,18 @@ public class LoginUI extends javax.swing.JFrame {
                             .addComponent(LoginForm_SubmitButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(UsernameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(PasswordLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(0, 63, Short.MAX_VALUE)))
+                        .addGap(0, 63, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, LoginFormLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(Login_Button_Change_Connection_Info, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         LoginFormLayout.setVerticalGroup(
             LoginFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, LoginFormLayout.createSequentialGroup()
-                .addGap(59, 59, 59)
+                .addContainerGap()
+                .addComponent(Login_Button_Change_Connection_Info, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(LoginForm_Image, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(UsernameLabel)
@@ -1267,7 +1540,9 @@ public class LoginUI extends javax.swing.JFrame {
 
                             rcv = conn.receiveObject();
                             System.out.println("L2: Received "+(String)rcv);
-                            return FlagCommander((String) rcv,null);
+                            if(rcv != null)
+                                return FlagCommander((String) rcv,null);
+                            else return "L";
             case "L3":
                 conn.Close();
                 conn = null;
@@ -1291,11 +1566,12 @@ public class LoginUI extends javax.swing.JFrame {
             
                 
             case "G1":
-                
+                    
                     t = new Thread(new Runnable(){
                     @Override
                         public void run() {
                         try {
+                            
                             conn.sendMessage("G1");
                             String tmp = LoginUI.DateFilter_From.getText();
                             String[] tmp1 = tmp.split("/");
@@ -1304,11 +1580,12 @@ public class LoginUI extends javax.swing.JFrame {
                             tmp1 = tmp.split("/");
                             conn.sendObject(LocalDate.of(Integer.parseInt(tmp1[2]),Integer.parseInt(tmp1[1]),Integer.parseInt(tmp1[0])));
                             LoginUI.FillSchedule(conn.receiveObject());
+                            LoginUI.Dated_Order_Fetch_ProgressBar.setIndeterminate(false);
                         } 
                         catch (Exception ex) {
                             New_Patient_Submit_Result.setText("Error: "+ex.getMessage());
                         }
-                    }  
+                        }
                     });
                     t.start();
                 return "";
@@ -1370,10 +1647,41 @@ public class LoginUI extends javax.swing.JFrame {
                     
                 }
             case "C3":
-                conn.sendMessage("C3");
-                if (!conn.sendObject(new Order(LocalDate.now(),LoginUI.item_list))){
-                    
+                
+                
+                if(!t.isAlive()){
+                    t = new Thread(new Runnable(){
+                    @Override
+                        public void run() {
+                        LoginUI.Order_Loading.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/loader.gif")));
+                        conn.sendMessage("C3");
+                        if (conn.sendObject(new Order(LocalDate.now(),LoginUI.item_list))){
+                            String retval;
+                            try {
+                                retval = conn.receiveMessage();
+                                if (retval!= null && retval.equals("S0")){
+                                    System.out.println("Order insertion success");
+                                    LoginUI.Order_Loading.setIcon(null);
+                                    LoginUI.Order_Loading.setForeground(Color.GREEN);
+                                    LoginUI.Order_Loading.setText("OK!");
+                                }
+                                else {
+                                    System.out.println("Order insertion failed");
+                                    LoginUI.Order_Loading.setIcon(null);
+                                    LoginUI.Order_Loading.setForeground(Color.red);
+                                    LoginUI.Order_Loading.setText("X");
+                                }
+                                Thread.sleep(2000);
+                                LoginUI.Order_Loading.setText("");
+                            } catch (Exception ex) {
+                                Logger.getLogger(LoginUI.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                    }  
+                    });
+                    t.start();
                 }
+                
                 
                 
                 
@@ -1514,10 +1822,17 @@ public class LoginUI extends javax.swing.JFrame {
     }//GEN-LAST:event_User_Profile_LogoutActionPerformed
 
     private void User_MainMenuWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_User_MainMenuWindowClosed
-        this.setVisible(true);
+        
         this.FlagCommander("L3",null);
+        //this.removeAll();
+        //this.initComponents();
+        //this.revalidate();
+       // this.repaint();
+        this.setVisible(true);
     }//GEN-LAST:event_User_MainMenuWindowClosed
 
+    
+    
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         System.exit(0);
@@ -1538,11 +1853,11 @@ public class LoginUI extends javax.swing.JFrame {
             this.New_Patient_Name.setBorder(BorderFactory.createLineBorder(Color.red));
             return false;
         }
-        if(!this.New_Patient_Phone.getText().matches("[0-9]+") && this.New_Patient_Phone.getText().length()>10 ){
+        if(!this.New_Patient_Phone.getText().matches("[0-9]+") && this.New_Patient_Phone.getText().length()!=10 ){
             this.New_Patient_Phone.setBorder(BorderFactory.createLineBorder(Color.red));
             return false;
         }
-        if(!this.New_Patient_AMKA.getText().matches("[0-9]+") && this.New_Patient_Phone.getText().length()>10){
+        if(!this.New_Patient_AMKA.getText().matches("[0-9]+") && this.New_Patient_Phone.getText().length()!=10){
             this.New_Patient_AMKA.setBorder(BorderFactory.createLineBorder(Color.red));
             return false;
         }
@@ -1711,6 +2026,7 @@ public class LoginUI extends javax.swing.JFrame {
 
     private void DateFilter_SubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DateFilter_SubmitActionPerformed
         // TODO add your handling code here:
+        LoginUI.Dated_Order_Fetch_ProgressBar.setIndeterminate(true);
         this.FlagCommander("G1",null);
     }//GEN-LAST:event_DateFilter_SubmitActionPerformed
 
@@ -1725,6 +2041,41 @@ public class LoginUI extends javax.swing.JFrame {
         if (evt.getKeyChar() == '\n')
             this.LoginForm_SubmitButton.doClick();
     }//GEN-LAST:event_LoginForm_UsernameKeyPressed
+
+    private void Login_Button_Change_Connection_InfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Login_Button_Change_Connection_InfoActionPerformed
+        // TODO add your handling code here:
+        this.Change_Connection_Info.setVisible(true);
+    }//GEN-LAST:event_Login_Button_Change_Connection_InfoActionPerformed
+
+    private void Settings_New_HostActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Settings_New_HostActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_Settings_New_HostActionPerformed
+
+    private void Button_Update_Connection_InfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_Update_Connection_InfoActionPerformed
+        // TODO add your handling code here:
+        LoginUI.hostname = LoginUI.Settings_New_Host.getText();
+        LoginUI.port = Integer.parseInt(LoginUI.Settings_New_Port.getText());
+        this.Change_Connection_Info.setVisible(false);
+        this.setVisible(true);
+        t = new Thread(new Runnable(){
+            @Override
+            public void run() {
+                try {
+                    PrintWriter writer = new PrintWriter("config.ini");
+                    writer.println("hostname:"+LoginUI.hostname);
+                    writer.println("port:"+String.valueOf(LoginUI.port));
+                    writer.flush();
+                    writer.close();
+                }
+                catch(Exception ex){
+                    
+                }
+            }
+        });
+        t.start();
+        
+        
+    }//GEN-LAST:event_Button_Update_Connection_InfoActionPerformed
 
 
     public static void main(String args[]) {
@@ -1754,14 +2105,11 @@ public class LoginUI extends javax.swing.JFrame {
         /* Create and display the form */
         if (MedicalOffice.ConfigFileExists() == false || args[0] == "-1"){
             java.awt.EventQueue.invokeLater(() -> {
-            new LoginUI(1);
+            new LoginUI(1).Change_Connection_Info.setVisible(true);
             
             });
         }
         else {
-        
-            
-            
             java.awt.EventQueue.invokeLater(() -> {
                 new LoginUI().setVisible(true);
             });
@@ -1770,13 +2118,20 @@ public class LoginUI extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private static javax.swing.JTable AppointmentTable;
+    private javax.swing.JButton Button_Update_Connection_Info;
+    private javax.swing.JFrame Change_Connection_Info;
     private static javax.swing.JFormattedTextField DateFilter_From;
     private javax.swing.JButton DateFilter_Submit;
     private static javax.swing.JFormattedTextField DateFilter_To;
     private static javax.swing.JTable DatedAppointmentTable;
+    private static javax.swing.JTable DatedAppointmentTable1;
+    private static javax.swing.JProgressBar Dated_Order_Fetch_ProgressBar;
+    private static javax.swing.JProgressBar Dated_Order_Fetch_ProgressBar1;
+    private javax.swing.JPanel Dated_Schedule_Panel;
     private javax.swing.JMenuItem Display_List_Of_Appointments;
     private javax.swing.JMenuItem Display_Order_History;
     private javax.swing.JMenuItem Display_Patient_List;
+    private javax.swing.JFrame Display_Patients;
     private javax.swing.JFrame Display_Schedule_Frame;
     private javax.swing.JDialog ErrorDialog;
     private javax.swing.JPanel LoginForm;
@@ -1785,6 +2140,7 @@ public class LoginUI extends javax.swing.JFrame {
     private javax.swing.JButton LoginForm_SubmitButton;
     private static javax.swing.JTextField LoginForm_Username;
     private javax.swing.JPanel LoginFrame;
+    private javax.swing.JButton Login_Button_Change_Connection_Info;
     private javax.swing.JMenu MenuBar_Prescribe;
     private javax.swing.JFormattedTextField New_Appointment_Date;
     private javax.swing.JTextField New_Appointment_Doctor;
@@ -1799,22 +2155,26 @@ public class LoginUI extends javax.swing.JFrame {
     private javax.swing.JPanel New_Patient_Panel;
     private javax.swing.JTextField New_Patient_Phone;
     private javax.swing.JComboBox<String> New_Patient_Sex;
-    private javax.swing.JButton New_Patient_Submit;
+    private static javax.swing.JButton New_Patient_Submit;
     public static javax.swing.JLabel New_Patient_Submit_Result;
     private javax.swing.JTextField New_Patient_Surname;
     private javax.swing.JButton Order_Add_Product;
+    private static javax.swing.JLabel Order_Loading;
     private javax.swing.JButton Order_Remove_Last;
-    private javax.swing.JButton Order_Submit;
+    private static javax.swing.JButton Order_Submit;
     private javax.swing.JLabel PasswordLabel;
+    private javax.swing.JPanel Patients_Panel;
     private javax.swing.JFrame PrescriptionFrame;
     private javax.swing.JTable PrescriptionFrame_AppointmentList;
     private javax.swing.JTextArea PrescriptionFrame_Prescription;
     private javax.swing.JLabel Scedule_Panel_Title;
+    private javax.swing.JLabel Scedule_Panel_Title1;
+    private static javax.swing.JTextField Settings_New_Host;
+    private static javax.swing.JTextField Settings_New_Port;
     private javax.swing.JLabel Todays_Scedule_Title;
     private javax.swing.JMenu UserMenuBar_Display;
     private javax.swing.JPanel User_Home_Body;
     private javax.swing.JPanel User_Home_LeftSide;
-    private javax.swing.JPanel User_Home_LeftSide1;
     private javax.swing.JPanel User_Home_Panel;
     private javax.swing.JPanel User_Home_RightSide;
     private javax.swing.JFrame User_MainMenu;
@@ -1826,7 +2186,7 @@ public class LoginUI extends javax.swing.JFrame {
     private static javax.swing.JLabel WrongCredentialsMessage;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private static javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1837,6 +2197,7 @@ public class LoginUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -1846,12 +2207,22 @@ public class LoginUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField jTextField4;
+    private javax.swing.JTextField jTextField5;
+    private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField paragelia_name;
     private javax.swing.JTextField paragelia_posotita;
     // End of variables declaration//GEN-END:variables
