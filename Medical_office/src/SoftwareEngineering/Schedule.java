@@ -22,7 +22,9 @@ public class Schedule {
     public Schedule(){
         this.appointment_list = new ArrayList<>();
     }
-    
+    public Schedule(ArrayList<Appointment> a){
+        this.appointment_list = a;
+    }
     public boolean AddAppointment(Appointment a){
         this.appointment_list.add(a);
         return true;

@@ -40,6 +40,7 @@ public class Appointment implements Serializable,Comparable<Appointment>{
         this.doctor_id = did;
     }
     
+
     public Appointment(Patient p,LocalDateTime d,int did)
     {  
         this.p = p;
@@ -67,7 +68,9 @@ public class Appointment implements Serializable,Comparable<Appointment>{
     public void setId(int y){
         this.id = y;
     }
-
+    public void setPrescription(String s){
+        this.prescription = s;
+    }
     @Override
     public int compareTo(Appointment o) {
         return getDate().compareTo(o.getDate());

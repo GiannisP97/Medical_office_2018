@@ -63,9 +63,9 @@ public <T> T receiveObject(){
             this.hostName = host;
             this.portNumber = port;
             conn = new Socket();
-            conn.connect(new InetSocketAddress(host,port), 5000);
+            conn.connect(new InetSocketAddress(host,port), 10000);
             
-            conn.setSoTimeout(5000);
+            conn.setSoTimeout(10000);
             writer = new PrintWriter(conn.getOutputStream(),true);
             reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             return true;

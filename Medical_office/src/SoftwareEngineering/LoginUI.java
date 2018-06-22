@@ -12,6 +12,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -152,6 +153,9 @@ public class LoginUI extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         PrescriptionFrame_Prescription = new javax.swing.JTextArea();
         jButton2 = new javax.swing.JButton();
+        jLabel20 = new javax.swing.JLabel();
+        GetAppointments_For_Perscription_ProgressBar = new javax.swing.JProgressBar();
+        AppointmentList_Refresh_Button = new javax.swing.JLabel();
         Display_Schedule_Frame = new javax.swing.JFrame();
         Dated_Schedule_Panel = new javax.swing.JPanel();
         Scedule_Panel_Title = new javax.swing.JLabel();
@@ -201,7 +205,6 @@ public class LoginUI extends javax.swing.JFrame {
         User_MainMenu.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         User_MainMenu.setTitle("Αρχική Σελίδα Γραμματέας");
         User_MainMenu.setMinimumSize(new java.awt.Dimension(1024, 720));
-        User_MainMenu.setPreferredSize(new java.awt.Dimension(1024, 720));
         User_MainMenu.setResizable(false);
         User_MainMenu.setSize(new java.awt.Dimension(1024, 720));
         User_MainMenu.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -303,7 +306,7 @@ public class LoginUI extends javax.swing.JFrame {
                 .addGap(0, 0, 0)
                 .addComponent(Todays_Scedule_Title, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 624, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 623, Short.MAX_VALUE)
                 .addGap(50, 50, 50))
         );
 
@@ -653,8 +656,6 @@ public class LoginUI extends javax.swing.JFrame {
             }
         });
 
-        Order_Loading.setForeground(new java.awt.Color(0, 0, 0));
-
         javax.swing.GroupLayout New_Order_PanelLayout = new javax.swing.GroupLayout(New_Order_Panel);
         New_Order_Panel.setLayout(New_Order_PanelLayout);
         New_Order_PanelLayout.setHorizontalGroup(
@@ -701,7 +702,7 @@ public class LoginUI extends javax.swing.JFrame {
                         .addGroup(New_Order_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(Order_Loading, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(Order_Submit, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE))
-                        .addContainerGap(29, Short.MAX_VALUE))))
+                        .addContainerGap(14, Short.MAX_VALUE))))
         );
 
         javax.swing.GroupLayout User_Home_RightSideLayout = new javax.swing.GroupLayout(User_Home_RightSide);
@@ -901,10 +902,17 @@ public class LoginUI extends javax.swing.JFrame {
 
         PrescriptionFrame.setAlwaysOnTop(true);
         PrescriptionFrame.setSize(new java.awt.Dimension(611, 572));
+        PrescriptionFrame.addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                PrescriptionFrameWindowOpened(evt);
+            }
+        });
 
-        jLabel11.setText("ΡΑΝΤΕΒΟΥ");
+        jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel11.setText("Επιλογή Ραντεβού");
 
-        jLabel15.setText("Συνταγή :");
+        jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel15.setText("Συνταγή Επιλογής :");
 
         PrescriptionFrame_AppointmentList.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -917,16 +925,32 @@ public class LoginUI extends javax.swing.JFrame {
 
             }
         ));
+        PrescriptionFrame_AppointmentList.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                PrescriptionFrame_AppointmentListMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(PrescriptionFrame_AppointmentList);
 
         PrescriptionFrame_Prescription.setColumns(20);
         PrescriptionFrame_Prescription.setRows(5);
         jScrollPane3.setViewportView(PrescriptionFrame_Prescription);
 
-        jButton2.setText("OK");
+        jButton2.setText("ΕΝΗΜΕΡΩΣΗ ΣΥΝΤΑΓΗΣ");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
+            }
+        });
+
+        jLabel20.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel20.setText("ΝΕΑ ΣΥΝΤΑΓΩΓΡΑΦΗΣΗ");
+        jLabel20.setToolTipText("");
+
+        AppointmentList_Refresh_Button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/refresh.png"))); // NOI18N
+        AppointmentList_Refresh_Button.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                AppointmentList_Refresh_ButtonMouseClicked(evt);
             }
         });
 
@@ -936,38 +960,43 @@ public class LoginUI extends javax.swing.JFrame {
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel20, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(jLabel15)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE))
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 340, Short.MAX_VALUE)
+                            .addComponent(GetAppointments_For_Perscription_ProgressBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(AppointmentList_Refresh_Button)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
+                            .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(22, 22, 22))
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGap(152, 152, 152)
-                .addComponent(jLabel11)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(AppointmentList_Refresh_Button)
+                    .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel15)
+                        .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 343, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 343, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 372, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(jLabel15)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane3)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2)
-                .addContainerGap(123, Short.MAX_VALUE))
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(GetAppointments_For_Perscription_ProgressBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(87, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout PrescriptionFrameLayout = new javax.swing.GroupLayout(PrescriptionFrame.getContentPane());
@@ -1027,7 +1056,6 @@ public class LoginUI extends javax.swing.JFrame {
             }
         });
 
-        Dated_Order_Fetch_ProgressBar.setBorder(null);
         Dated_Order_Fetch_ProgressBar.setBorderPainted(false);
         Dated_Order_Fetch_ProgressBar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
@@ -1035,25 +1063,25 @@ public class LoginUI extends javax.swing.JFrame {
         Dated_Schedule_Panel.setLayout(Dated_Schedule_PanelLayout);
         Dated_Schedule_PanelLayout.setHorizontalGroup(
             Dated_Schedule_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(Scedule_Panel_Title, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+            .addComponent(Scedule_Panel_Title, javax.swing.GroupLayout.DEFAULT_SIZE, 526, Short.MAX_VALUE)
             .addGroup(Dated_Schedule_PanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(Dated_Schedule_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Dated_Schedule_PanelLayout.createSequentialGroup()
-                        .addComponent(jLabel17)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(DateFilter_From, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel18)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(DateFilter_To, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
-                        .addComponent(DateFilter_Submit, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Dated_Schedule_PanelLayout.createSequentialGroup()
-                        .addGroup(Dated_Schedule_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(Dated_Schedule_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(Dated_Schedule_PanelLayout.createSequentialGroup()
+                        .addGroup(Dated_Schedule_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(Dated_Order_Fetch_ProgressBar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jScrollPane5)
-                            .addComponent(Dated_Order_Fetch_ProgressBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(Dated_Schedule_PanelLayout.createSequentialGroup()
+                                .addComponent(jLabel17)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(DateFilter_From, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel18)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(DateFilter_To, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(DateFilter_Submit, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addContainerGap())))
         );
         Dated_Schedule_PanelLayout.setVerticalGroup(
@@ -1070,10 +1098,10 @@ public class LoginUI extends javax.swing.JFrame {
                     .addComponent(DateFilter_To, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(DateFilter_Submit, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 361, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 497, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(Dated_Order_Fetch_ProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(244, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout Display_Schedule_FrameLayout = new javax.swing.GroupLayout(Display_Schedule_Frame.getContentPane());
@@ -1088,10 +1116,9 @@ public class LoginUI extends javax.swing.JFrame {
             Display_Schedule_FrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 717, Short.MAX_VALUE)
             .addGroup(Display_Schedule_FrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(Dated_Schedule_Panel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(Dated_Schedule_Panel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 717, Short.MAX_VALUE))
         );
 
-        Change_Connection_Info.setPreferredSize(null);
         Change_Connection_Info.setResizable(false);
         Change_Connection_Info.setSize(new java.awt.Dimension(400, 300));
 
@@ -1100,7 +1127,6 @@ public class LoginUI extends javax.swing.JFrame {
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel19.setFont(new java.awt.Font("Verdana", 1, 12)); // NOI18N
-        jLabel19.setForeground(new java.awt.Color(0, 0, 0));
         jLabel19.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel19.setText("ΑΛΛΑΓΗ ΡΥΘΜΙΣΕΩΝ ΣΥΝΔΕΣΗΣ");
 
@@ -1149,7 +1175,7 @@ public class LoginUI extends javax.swing.JFrame {
                 .addComponent(Settings_New_Port, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(Button_Update_Connection_Info)
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -1181,12 +1207,14 @@ public class LoginUI extends javax.swing.JFrame {
         );
 
         Display_Patients.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        Display_Patients.setPreferredSize(new java.awt.Dimension(1024, 720));
         Display_Patients.setResizable(false);
         Display_Patients.setSize(new java.awt.Dimension(1024, 720));
         Display_Patients.addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 Display_PatientsWindowClosed(evt);
+            }
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                Display_PatientsWindowOpened(evt);
             }
         });
 
@@ -1220,7 +1248,6 @@ public class LoginUI extends javax.swing.JFrame {
         });
         jScrollPane6.setViewportView(Patients_Table);
 
-        Patients_Fetch_ProgressBar.setBorder(null);
         Patients_Fetch_ProgressBar.setBorderPainted(false);
         Patients_Fetch_ProgressBar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
@@ -1345,7 +1372,7 @@ public class LoginUI extends javax.swing.JFrame {
                         .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 624, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(Patients_PanelLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 644, Short.MAX_VALUE)))
+                        .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 638, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(Patients_Fetch_ProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(41, 41, 41))
@@ -1397,6 +1424,11 @@ public class LoginUI extends javax.swing.JFrame {
         LoginForm_Password.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 LoginForm_PasswordFocusGained(evt);
+            }
+        });
+        LoginForm_Password.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                LoginForm_PasswordActionPerformed(evt);
             }
         });
         LoginForm_Password.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -1539,7 +1571,8 @@ public class LoginUI extends javax.swing.JFrame {
         LoginUI.AppointmentTable.setModel(model);
         //this.AppointmentTable.setDefaultRenderer(this.AppointmentTable.getColumnClass(NORMAL), dtcr);
     }
-        private static void FillSchedule(ArrayList<Appointment> a){
+    
+    private static void FillSchedule(ArrayList<Appointment> a){
         DefaultTableModel model = new DefaultTableModel();
         model.addColumn("ΗΜΕΡΟΜΗΝΙΑ");
         model.addColumn("ΩΡΑ");
@@ -1560,6 +1593,32 @@ public class LoginUI extends javax.swing.JFrame {
         } 
         
         LoginUI.DatedAppointmentTable.setModel(model);
+        //this.AppointmentTable.setDefaultRenderer(this.AppointmentTable.getColumnClass(NORMAL), dtcr);
+    }
+    
+    
+        private static void FillAppointmentTable(ArrayList<Appointment> a){
+        LoginUI.AppointmentList = new Schedule(a);
+        DefaultTableModel model = new DefaultTableModel();
+        model.addColumn("ΗΜΕΡΟΜΗΝΙΑ");
+        model.addColumn("ΩΡΑ");
+        model.addColumn("ΑΣΘΕΝΗΣ");
+        model.addColumn("ΙΑΤΡΟΣ");
+        DefaultTableCellRenderer dtcr = new DefaultTableCellRenderer();
+        dtcr.setHorizontalTextPosition(DefaultTableCellRenderer.CENTER);
+        
+        
+        
+        for ( Appointment x : a){
+            model.addRow(new Object[]{
+                x.getDate().getDayOfMonth()+"/"+x.getDate().getMonth().getValue()+"/"+x.getDate().getYear(),
+                x.getDate().getHour()+":"+x.getDate().getMinute(), 
+                x.getPetient().getName(),
+                LoginUI.FlagCommander("G4", String.valueOf(x.getDoctorId()))
+            });
+        } 
+        
+        LoginUI.PrescriptionFrame_AppointmentList.setModel(model);
         //this.AppointmentTable.setDefaultRenderer(this.AppointmentTable.getColumnClass(NORMAL), dtcr);
     }
 
@@ -1583,7 +1642,7 @@ public class LoginUI extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     private static  String FlagCommander(String FLAG,Object argv){
         Object rcv;
-        while (LoginUI.PatientListRefreshThread.isAlive() && !LoginUI.PatientListRefreshThread.getState().equals(Thread.State.TIMED_WAITING)) ;
+        //while (LoginUI.PatientListRefreshThread.isAlive() && !LoginUI.PatientListRefreshThread.getState().equals(Thread.State.TIMED_WAITING)) ;
         switch(FLAG){
             case "L0":
                 return "L0";           
@@ -1623,26 +1682,46 @@ public class LoginUI extends javax.swing.JFrame {
                 
             case "G1":
                     
-                    t = new Thread(new Runnable(){
-                    @Override
-                        public void run() {
-                        try {
-                            
-                            conn.sendMessage("G1");
-                            String tmp = LoginUI.DateFilter_From.getText();
-                            String[] tmp1 = tmp.split("/");
-                            conn.sendObject(LocalDate.of(Integer.parseInt(tmp1[2]),Integer.parseInt(tmp1[1]),Integer.parseInt(tmp1[0])));
-                            tmp = LoginUI.DateFilter_To.getText();
-                            tmp1 = tmp.split("/");
-                            conn.sendObject(LocalDate.of(Integer.parseInt(tmp1[2]),Integer.parseInt(tmp1[1]),Integer.parseInt(tmp1[0])));
-                            LoginUI.FillSchedule(conn.receiveObject());
-                            LoginUI.Dated_Order_Fetch_ProgressBar.setIndeterminate(false);
-                        } 
-                        catch (Exception ex) {
-                            New_Patient_Submit_Result.setText("Error: "+ex.getMessage());
-                        }
-                        }
-                    });
+                    if (argv == null) {
+                        t = new Thread(new Runnable(){
+                        @Override
+                            public void run() {
+                                try {
+
+                                    conn.sendMessage("G1");
+                                    String tmp = LoginUI.DateFilter_From.getText();
+                                    String[] tmp1 = tmp.split("/");
+                                    conn.sendObject(LocalDate.of(Integer.parseInt(tmp1[2]),Integer.parseInt(tmp1[1]),Integer.parseInt(tmp1[0])));
+                                    tmp = LoginUI.DateFilter_To.getText();
+                                    tmp1 = tmp.split("/");
+                                    conn.sendObject(LocalDate.of(Integer.parseInt(tmp1[2]),Integer.parseInt(tmp1[1]),Integer.parseInt(tmp1[0])));
+                                    LoginUI.FillSchedule(conn.receiveObject());
+                                    LoginUI.Dated_Order_Fetch_ProgressBar.setIndeterminate(false);
+                                } 
+                                catch (Exception ex) {
+                                    New_Patient_Submit_Result.setText("Error: "+ex.getMessage());
+                                }
+                            }
+                        });
+                    }
+                    else {
+                            t = new Thread(new Runnable(){
+                            @Override
+                            public void run() {
+                            try {
+                                LoginUI.GetAppointments_For_Perscription_ProgressBar.setIndeterminate(true);
+                                conn.sendMessage("G1");
+                                conn.sendObject(LocalDate.of(100, 1, 1));
+                                conn.sendObject(LocalDate.of(999999,1,1));
+                                LoginUI.FillAppointmentTable(conn.receiveObject());
+                                LoginUI.GetAppointments_For_Perscription_ProgressBar.setIndeterminate(false);
+                            } 
+                            catch (Exception ex) {
+                                //New_Patient_Submit_Result.setText("Error: "+ex.getMessage());
+                            }
+                            }
+                        });
+                    }
                     t.start();
                 return "";
             case "G2":
@@ -1696,8 +1775,9 @@ public class LoginUI extends javax.swing.JFrame {
                 catch (Exception ex){
                     
                 }
+                break;
             case "C1":
-                return "";
+                break;
             case "C2":
                 try {
                     t = new Thread(new Runnable(){
@@ -1730,8 +1810,7 @@ public class LoginUI extends javax.swing.JFrame {
                     });
                     t.start();
                     
-
-                    return "";
+                    break;
                 }
                 catch (Exception ex){
                     
@@ -1776,9 +1855,9 @@ public class LoginUI extends javax.swing.JFrame {
                 
                 
                 
-                return "";
+                break;
             case "C4":
-                return "";
+                break;
             
             case "D0":
                     if(!t.isAlive()){
@@ -1818,13 +1897,16 @@ public class LoginUI extends javax.swing.JFrame {
                     });
                     t.start();
                 }
-               
-            
+                    break;
+            case "U0":
+                conn.sendMessage("U0");
+                conn.sendObject(argv);
+                break;
             default:
                 return "";
         }
         
-        
+        return "";
     }
     
     
@@ -1887,11 +1969,11 @@ public class LoginUI extends javax.swing.JFrame {
         if (this.isUserInputValid() == true){
             if ( Connection() == true){
                 
-                switch (this.FlagCommander("L2",null)) {
+                switch (LoginUI.FlagCommander("L2",null)) {
                     case "L1": // LOGIN SUCCESS
                         this.setVisible(false); // HIDE LOGIN WINDOW
                         this.User_MainMenu.setVisible(true); // SHOW HOME SCREEN
-                        this.FlagCommander("G0",null);
+                        LoginUI.FlagCommander("G0",null);
                         this.UIPopulator();
                         break;
                     case "L0": // LOGIN FAILED
@@ -2014,6 +2096,19 @@ public class LoginUI extends javax.swing.JFrame {
 //
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        
+        if (AppointmentTable.getSelectedRow()>=0 && LoginUI.AppointmentList.getSchedule().size()>=0){
+            String s = LoginUI.PrescriptionFrame_Prescription.getText();
+            Appointment tmp = LoginUI.AppointmentList.getSchedule().get(LoginUI.AppointmentTable.getSelectedRow());
+            tmp.setPrescription(s);
+            LoginUI.FlagCommander("U0", tmp);
+            
+            
+            
+            
+        }
+        
+        
     }//GEN-LAST:event_jButton2ActionPerformed
 
     public boolean checkNewAppointment(){
@@ -2143,9 +2238,7 @@ public class LoginUI extends javax.swing.JFrame {
     }//GEN-LAST:event_paragelia_nameFocusGained
 
     private void MenuBar_PrescribeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuBar_PrescribeActionPerformed
-
         this.PrescriptionFrame.setVisible(true);
-
     }//GEN-LAST:event_MenuBar_PrescribeActionPerformed
 
     private void MenuBar_PrescribeMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_MenuBar_PrescribeMousePressed
@@ -2255,6 +2348,37 @@ public class LoginUI extends javax.swing.JFrame {
         // TODO add your handling code here:
         this.startPatient_Table_Refresher();
     }//GEN-LAST:event_Patient_List_RefreshMouseClicked
+
+    private void Display_PatientsWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_Display_PatientsWindowOpened
+        // TODO add your handling code here:
+        this.startPatient_Table_Refresher();
+
+    }//GEN-LAST:event_Display_PatientsWindowOpened
+
+    private void PrescriptionFrameWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_PrescriptionFrameWindowOpened
+        // TODO add your handling code here:
+        LoginUI.FlagCommander("G1", "1");
+    }//GEN-LAST:event_PrescriptionFrameWindowOpened
+
+    private void LoginForm_PasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoginForm_PasswordActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_LoginForm_PasswordActionPerformed
+
+    private void AppointmentList_Refresh_ButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AppointmentList_Refresh_ButtonMouseClicked
+        // TODO add your handling code here:
+        LoginUI.FlagCommander("G1", "1");
+    }//GEN-LAST:event_AppointmentList_Refresh_ButtonMouseClicked
+
+    private void PrescriptionFrame_AppointmentListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_PrescriptionFrame_AppointmentListMouseClicked
+        // TODO add your handling code here:
+        Appointment tmp;
+        if (AppointmentTable.getSelectedRow()>=0 && LoginUI.AppointmentList.getSchedule().size()>=0){
+            tmp = LoginUI.AppointmentList.getSchedule().get(AppointmentTable.getSelectedRow());
+            LoginUI.PrescriptionFrame_Prescription.setText(tmp.getPrescription());
+        }
+            
+        
+    }//GEN-LAST:event_PrescriptionFrame_AppointmentListMouseClicked
     private void stopPatient_Table_Refresher(){
         LoginUI.PatientListRefreshThread.interrupt();
     }
@@ -2337,6 +2461,7 @@ public class LoginUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel AppointmentList_Refresh_Button;
     private static javax.swing.JTable AppointmentTable;
     private javax.swing.JButton Button_Update_Connection_Info;
     private javax.swing.JFrame Change_Connection_Info;
@@ -2352,6 +2477,7 @@ public class LoginUI extends javax.swing.JFrame {
     private static javax.swing.JFrame Display_Patients;
     private javax.swing.JFrame Display_Schedule_Frame;
     private javax.swing.JDialog ErrorDialog;
+    private static javax.swing.JProgressBar GetAppointments_For_Perscription_ProgressBar;
     private javax.swing.JPanel LoginForm;
     private javax.swing.JLabel LoginForm_Image;
     private static javax.swing.JPasswordField LoginForm_Password;
@@ -2392,8 +2518,8 @@ public class LoginUI extends javax.swing.JFrame {
     private javax.swing.JPanel Patients_Panel;
     private static javax.swing.JTable Patients_Table;
     private javax.swing.JFrame PrescriptionFrame;
-    private javax.swing.JTable PrescriptionFrame_AppointmentList;
-    private javax.swing.JTextArea PrescriptionFrame_Prescription;
+    private static javax.swing.JTable PrescriptionFrame_AppointmentList;
+    private static javax.swing.JTextArea PrescriptionFrame_Prescription;
     private javax.swing.JLabel Scedule_Panel_Title;
     private javax.swing.JLabel Scedule_Panel_Title1;
     private static javax.swing.JTextField Settings_New_Host;
@@ -2428,6 +2554,7 @@ public class LoginUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
