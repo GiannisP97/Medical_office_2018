@@ -293,13 +293,13 @@ public final class DBManager {
         return true;
     }
     
-    public synchronized boolean deletePatient(Patients obj){
+    public synchronized boolean deletePatient(int amka){
         EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Medical_Office_ServerPU" );
         
         EntityManager entitymanager = emfactory.createEntityManager();
         entitymanager.getTransaction().begin();
         
-        Patients pt = entitymanager.find(Patients.class, obj.getAmka());
+        Patients pt = entitymanager.find(Patients.class, amka);
         
         entitymanager.remove(pt);
         
@@ -479,6 +479,40 @@ public final class DBManager {
         List<MediclaUsers> temp;
         try{
             temp = query.getResultList();
+        }
+        catch(NoResultException e){
+            System.out.println("fetchAllMedicalUsers()-> NoResultException: " + e.getMessage());
+            System.out.println("================StackTrace================");  
+            e.printStackTrace();
+            System.out.println("----------------StackTrace----------------");
+            return null;
+        }
+//        System.out.println(query.getParameter("name"));
+//        System.out.println(temp.getName());
+//        System.out.println(obj.getDate());
+        entitymanager.getTransaction( ).commit( );
+        
+        entitymanager.close( );
+        emfactory.close( );
+        return temp;
+        
+    }
+    
+    public synchronized List<Patient> fetchAllPatients(){
+        
+        EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Medical_Office_ServerPU" );
+        
+        EntityManager entitymanager = emfactory.createEntityManager();
+        entitymanager.getTransaction().begin();
+        
+        TypedQuery<Patients> query= entitymanager.createQuery("SELECT pt FROM Patients pt",Patients.class); 
+        List<Patients> templist;
+        List<Patient> temp = new ArrayList<>();
+        try{
+            templist = query.getResultList();            
+            for(Patients pts: templist){
+                temp.add(pts.toPatient());
+            }
         }
         catch(NoResultException e){
             System.out.println("fetchAllMedicalUsers()-> NoResultException: " + e.getMessage());

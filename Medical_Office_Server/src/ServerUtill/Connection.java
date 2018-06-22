@@ -248,7 +248,7 @@ public class Connection extends Thread{
                             }
                         }
                         break;
-                    case 'G':
+                    case 'G':{
                         raw = in.read();
                         code = (char) raw;
                         System.out.println(code);
@@ -310,9 +310,94 @@ public class Connection extends Thread{
                                 }
                                 break;
                             }
+                            case '5':{                                
+                                boolean issent = this.sendMessage(this.dbmanager.fetchAllPatients());
+                                if(issent){
+                                    System.out.println("Sent Succesfully!!!");
+                                }
+                                else{
+                                    System.out.println("Failed to Sent!!!");
+                                }
+                                break;
+                            }
                             
                         }                        
                         break;
+                    }
+                    case 'D':{
+                        raw = in.read();
+                        code = (char) raw;
+                        System.out.println(code);
+                        switch(code){
+                            case '0':{
+                                int amka = this.recvMessage();
+                                boolean isdeleted = this.dbmanager.deletePatient(amka);
+                                if(isdeleted){
+                                    System.out.println("Deleted Succesfully!!!");
+                                    out.println("S0");
+                                }
+                                else{
+                                    System.out.println("Failed to Deleted!!!");
+                                    out.println("F0");
+                                }
+                                break;
+                            }                                
+                            case '1':{
+                                
+                                break;
+                            } 
+                            case '2':{
+                               
+                            }
+                            case '4':{
+                                
+                                break;
+                            }
+                            case '5':{                                
+                                
+                                break;
+                            }
+                            
+                        }                        
+                        break;
+                    }
+                case 'U':{
+                        raw = in.read();
+                        code = (char) raw;
+                        System.out.println(code);
+                        switch(code){
+                            case '0':{
+                                Appointment ap = this.recvMessage();
+                                boolean isupdated = this.dbmanager.updateAppointment(ap);
+                                if(isupdated){
+                                    System.out.println("Updated Succesfully!!!");
+                                    out.println("S0");
+                                }
+                                else{
+                                    System.out.println("Failed to Update!!!");
+                                    out.println("F0");
+                                }
+                                break;
+                            }                                
+                            case '1':{
+                                
+                                break;
+                            } 
+                            case '2':{
+                               
+                            }
+                            case '4':{
+                                
+                                break;
+                            }
+                            case '5':{                                
+                                
+                                break;
+                            }
+                            
+                        }                        
+                        break;
+                    }
                 }
                 
                 }

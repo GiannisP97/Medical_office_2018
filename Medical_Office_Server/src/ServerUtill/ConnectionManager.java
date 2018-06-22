@@ -54,7 +54,13 @@ public class ConnectionManager implements Runnable{
     public ConnectionManager() throws IOException{
         connections = new ConcurrentLinkedQueue();
         PollCycle = true;
-        DBManager dbmanager = DBManager.getInstance();
+        try{
+            DBManager dbmanager = DBManager.getInstance();
+        }
+        catch(java.lang.NoClassDefFoundError e){
+            System.out.println("ConnectionManager()-> NoClassDefFoundError: " + e.getMessage());
+        }
+        
         
         try{
             serverSocket = new ServerSocket(portNumber);
