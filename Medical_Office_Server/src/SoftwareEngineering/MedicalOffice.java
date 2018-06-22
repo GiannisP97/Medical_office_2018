@@ -21,6 +21,7 @@ public class MedicalOffice {
      */
     public static void main(String[] args) throws IOException {
         
+//        ServerGUI gui = ServerGUI.getInstance();
 //        DBManager dbmanager = DBManager.getInstance();
 //        dbmanager.findMedicalUser("Nick Nickolson");
         ConnectionManager connman = ConnectionManager.getInstance();

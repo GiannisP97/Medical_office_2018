@@ -35,12 +35,14 @@ public class ConnectionManager implements Runnable{
     
     //---Singleton
     DBManager dbmanager;
+//    static ServerGUI gui;
     //------------
     
     public static ConnectionManager getInstance(){
         if(connectionManagerInstance == null){
             try {
                 connectionManagerInstance = new ConnectionManager();
+//                gui = ServerGUI.getInstance();
             } catch (IOException ex) {
                 System.out.println("getInstance()-> IOException: " + ex.getMessage());
             }            

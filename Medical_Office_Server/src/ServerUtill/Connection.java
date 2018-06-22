@@ -10,11 +10,8 @@ import SoftwareEngineering.Appointment;
 import SoftwareEngineering.DBManager;
 import SoftwareEngineering.Order;
 import SoftwareEngineering.Patient;
-import SoftwareEngineering.StorageItem;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
@@ -43,6 +40,7 @@ public class Connection extends Thread{
     //---Singletons
     private ConnectionManager conman;
     private DBManager dbmanager;
+//    static ServerGUI gui;
     //-------------
     
     int raw;
@@ -62,12 +60,14 @@ public class Connection extends Thread{
 //        conman = ConnectionManager.getInstance();
         conman = cm; // Need to check for Singleton Behavior
         dbmanager = DBManager.getInstance();
+//        gui = ServerGUI.getInstance();
 //        System.out.println(addr);
         directiveQueue = new ArrayList<>();
         sendQueue = new ArrayList<>();
         
         System.out.print("Client");
         System.out.println(addr);
+//        gui.printToOutput("Client" + addr.toString());
         
         this.start();
     }
@@ -108,12 +108,19 @@ public class Connection extends Thread{
 //                            this.sendMessage("L0");
                             out.println("L0");
                             System.out.println("Client:" + addr + " Failed to Log In!- Wrong Username");
+                            
+                            //---ServerOutput-------
+//                            gui.printToOutput(this.getName() + ":Login-> IOException: " + e.getMessage());
+                            //---ServerOutput-------
                             conman.removeConnection(addr);
                             return;
                         }
                         if(dbuser == null){
                             this.sendMessage("L0");
                             System.out.println("Client:" + addr + " Failed to Log In!- Wrong Username");
+                            //---ServerOutput-------
+//                            gui.printToOutput(this.getName() + ":" + "Client:" + addr + " Failed to Log In!- Wrong Username");
+                            //---ServerOutput-------
                             conman.removeConnection(addr);
                             return;
                         }
@@ -127,10 +134,17 @@ public class Connection extends Thread{
                             LocalDateTime date = null;
                             date = date.now();
                             System.out.println("Client:" + addr + " Logged In! - " + date);
+                            //---ServerOutput-------
+//                            gui.printToOutput(this.getName() + ":" + "Client:" + addr + " Logged In! - " + date);
+                            //---ServerOutput-------
                         }
                         else{
-                            out.println("L0");
+//                            out.println("L0");
+                            this.sendMessage("L0");
                             System.out.println("Client:" + addr + " Failed to Log In!");
+                            //---ServerOutput-------
+//                            gui.printToOutput(this.getName() + ":" + "Client:" + addr + " Failed to Log In!- Wrong Username");
+                            //---ServerOutput-------
                             conman.removeConnection(addr);
                         }
                 }
@@ -212,11 +226,24 @@ public class Connection extends Thread{
                                 
                                 Order or = this.recvMessage();
                                 int orid = this.dbmanager.createRestock(this.md.getUserId(), "" , null);
-                                String fin = "..\\Orders\\order_" + orid + ".ord";
-                                this.dbmanager.updateRestock(this.md.getUserId(), fin, orid, this.dbmanager.convertToDateViaSqlDate(or.getOrderDate()));
-                                FileOutputStream fstream = new FileOutputStream(fin);
-                                ObjectOutputStream foos = new ObjectOutputStream(fstream);
-                                foos.writeObject(or);                                
+                                String fin = System.getProperty("user.dir") + "/Orders/order_" + orid + ".ord";
+                                if(this.dbmanager.updateRestock(this.md.getUserId(), fin, orid, this.dbmanager.convertToDateViaSqlDate(or.getOrderDate()))){
+                                    try{
+                                        FileOutputStream fstream = new FileOutputStream(fin);
+                                        ObjectOutputStream foos = new ObjectOutputStream(fstream);
+                                        foos.writeObject(or);  
+                                        out.println("S0");                                        
+                                    }
+                                    catch(IOException e){
+                                        System.out.println("Connection.run()-> IOException: " + e.getMessage());
+                                        System.out.println("================StackTrace================");  
+                                        e.printStackTrace();
+                                        System.out.println("----------------StackTrace----------------");
+                                        dbmanager.deleteRestock(orid);
+                                        out.println("F0");
+                                    }
+                                }
+                                                              
                                 break;
                             }
                         }
@@ -235,11 +262,11 @@ public class Connection extends Thread{
                                 boolean issent = this.sendMessage(aplist);
                                 if(issent){
                                     System.out.println("Sent Succesfully!!!");
-//                                    out.write("S0");
+//                                    out.println("S0");
                                 }
                                 else{
                                     System.out.println("Failed to Sent!!!");
-//                                    out.write("F0");
+//                                    out.println("F0");
                                 }
                                 break;
                             }                                

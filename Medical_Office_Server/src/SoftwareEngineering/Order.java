@@ -15,6 +15,8 @@ import java.time.LocalDate;
  */
 public class Order implements Serializable
 {
+    private static final long serialVersionUID = 4L;
+    
     private ArrayList<StorageItem> item_list;
     private final LocalDate order_date;
     
